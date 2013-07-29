@@ -121,12 +121,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             this.UpdateSplitButtonInsertField(selection);
             this.UpdateButtonBindCustomXMLPart(selection);
 
-            // TODO
             IEnumerable<Word.Field> selectedIncludeFields = selection.SelectedIncludeFields();
             bool includeFieldsAreSelected = selectedIncludeFields.Count() > 0;
-            this.ribbon.buttonOpenSourceFile.Enabled = 1 == selectedIncludeFields.Count();
+            this.ribbon.buttonOpenSourceFile.Enabled = includeFieldsAreSelected;
             this.ribbon.buttonUpdateFromSource.Enabled = includeFieldsAreSelected;
-            this.ribbon.buttonUpdateToSource.Enabled = selection.SelectedIncludeTextFields().Count() > 0;
+            this.ribbon.buttonUpdateToSource.Enabled = includeFieldsAreSelected;
         }
 
         private void UpdateSplitButtonInsertField(Word.Selection selection)
