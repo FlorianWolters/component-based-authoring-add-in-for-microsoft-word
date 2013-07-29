@@ -7,6 +7,7 @@
 
 namespace FlorianWolters.Office.Word.Fields
 {
+    using System;
     using System.IO;
     using System.Runtime.InteropServices;
     using FlorianWolters.IO;
@@ -49,12 +50,12 @@ namespace FlorianWolters.Office.Word.Fields
                 propertyName);
         }
 
-        public Word.Field InsertEmpty(bool mergeFormat = false)
+        public Word.Field InsertEmpty(string data = null, bool mergeFormat = false)
         {
             return this.AddFieldToCurrentSelection(
                 Word.WdFieldType.wdFieldEmpty,
                 mergeFormat,
-                this.application.Selection.Range.Text);
+                data);
         }
 
         public Word.Field InsertListNum(bool mergeFormat = false)
@@ -151,19 +152,23 @@ namespace FlorianWolters.Office.Word.Fields
             string functionName)
         {
             string documentFilePath = this.application.ActiveDocument.Path;
+            string absoluteFilePath = filePath;
+            string relativeFilePath = filePath;
 
             if (Path.IsPathRooted(filePath))
             {
                 // Convert a possible absolute file path to a relative path
-                filePath = PathUtils.GetRelativePath(
+                relativeFilePath = PathUtils.GetRelativePath(
                     documentFilePath,
                     filePath);
             }
             else
             {
-                this.ThrowFileNotFoundExceptionIfFileDoesNotExist(
-                    documentFilePath + Path.DirectorySeparatorChar + filePath);
+                absoluteFilePath = documentFilePath + Path.DirectorySeparatorChar + relativeFilePath;
+                this.ThrowFileNotFoundExceptionIfFileDoesNotExist(absoluteFilePath);
             }
+
+            DateTime lastModified = File.GetLastWriteTimeUtc(absoluteFilePath);
 
             this.application.ScreenUpdating = false;
             this.application.ActiveWindow.View.ShowFieldCodes = true;
@@ -194,9 +199,21 @@ namespace FlorianWolters.Office.Word.Fields
 
             // Insert text AFTER the nested field.
             selection.InsertAfter(
-                "\\\\" + new FieldFilePathTranslator().Encode(filePath) + "\"");
-            selection.Fields.Update();
+                "\\\\" + new FieldFilePathTranslator().Encode(relativeFilePath) + "\"");
 
+            selection.MoveRight(
+                Unit: Word.WdUnits.wdWord,
+                Count: 1,
+                Extend: Word.WdMovementType.wdMove);
+
+            // Insert the last modified datetime of the reference file AFTER the INCLUDE field.
+            selection.Range.Fields.Add(
+                selection.Range,
+                Word.WdFieldType.wdFieldEmpty,
+                Text: lastModified.ToString("u"),
+                PreserveFormatting: false);
+
+            selection.Fields.Update();
             this.application.ActiveWindow.View.ShowFieldCodes = false;
             this.application.ScreenUpdating = true;
         }

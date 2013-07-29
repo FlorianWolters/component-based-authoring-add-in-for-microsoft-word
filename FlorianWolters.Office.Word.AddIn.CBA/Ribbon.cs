@@ -363,6 +363,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         private void OnClick_ButtonIncludePicture(object sender, RibbonControlEventArgs e)
         {
+            // TODO It does not seem to be possible to specify a default path for a built-in dialog.
+            // A possible solution would be, to replace the built-in dialog with a custom Windows form.
+            // http://answers.microsoft.com//office/forum/office_2007-word/ms-word-defaults-to-a-set-folder-under-the/d604a81e-aa68-44e9-b7e0-ca9ad8f17e33
             new InsertPictureDialog(
                 this.Application,
                 this.FieldFactory,
@@ -425,7 +428,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// <param name="e">The data for the event.</param>
         private void OnClick_ButtonInsertEmptyField(object sender, RibbonControlEventArgs e)
         {
-            this.FieldFactory.InsertEmpty(this.toggleButtonFieldFormatMergeFormat.Checked);
+            this.FieldFactory.InsertEmpty(
+                this.Application.Selection.Range.Text,
+                this.toggleButtonFieldFormatMergeFormat.Checked);
         }
 
         /// <summary>
@@ -581,9 +586,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         private void OnClick_ButtonOpenSourceFile(object sender, RibbonControlEventArgs e)
         {
-            IEnumerable<Word.Field> fields = this.Application.Selection.SelectedIncludeFields();
-
-            foreach (Word.Field field in fields)
+            // Open each referenced file (e.g. a Microsoft Word Document) in the current selection.
+            foreach (Word.Field field in this.Application.Selection.SelectedIncludeFields())
             {
                 Process.Start(new IncludeField(field).FilePath);
             }
@@ -591,7 +595,75 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         private void OnClick_ButtonCheckReferences(object sender, RibbonControlEventArgs e)
         {
-            // TODO
+            string filePath;
+            string lastModifiedActual;
+            string lastModifiedExpected;
+
+            foreach (Word.Field field in this.Application.Selection.SelectedIncludeFields())
+            {
+                filePath = new IncludeField(field).FilePath;
+                lastModifiedExpected = File.GetLastWriteTimeUtc(filePath).ToString("u");
+
+                if (null == field.Next || null == field.Next.Next || !field.Next.Next.Type.Equals(Word.WdFieldType.wdFieldEmpty))
+                {
+                    MessageBox.Show(
+                        "An error occured while parsing the field codes. Ensure that the underlying INCLUDE field has been created via the CBA Add-In.",
+                        "Warning",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    continue;
+                }
+
+                lastModifiedActual = field.Next.Next.Code.Text.Trim();
+
+                if (lastModifiedExpected != lastModifiedActual)
+                {
+                    MessageBox.Show(
+                        "The referenced source file " + filePath + " has been modified since it has been included in this target document.",
+                        "Question",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    // TODO How can we solve a possible merge conflict?
+                }
+            }
+
+            MessageBox.Show(
+                "No problems have been found by " + Settings.Default.ApplicationName + " in the current selection of this document.",
+                "Information",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private void OnClick_ButtonFieldUpdate(object sender, RibbonControlEventArgs e)
+        {
+            // Update each field in the current selection.
+            new FieldUpdater(
+                this.Application.Selection.SelectedFields(),
+                new UpdateTarget()).Update();
+        }
+
+        private void OnClick_ToggleButtonFieldLock(object sender, RibbonControlEventArgs e)
+        {
+            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
+            bool lockField = false;
+
+            foreach (Word.Field field in this.Application.Selection.SelectedFields())
+            {
+                lockField = toggleButton.Checked;
+                field.Locked = lockField;
+                this.buttonFieldUpdate.Enabled = !lockField;
+            }
+        }
+
+        private void OnClick_ToggleButtonShowFieldCode(object sender, RibbonControlEventArgs e)
+        {
+            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
+
+            foreach (Word.Field field in this.Application.Selection.SelectedFields())
+            {
+                field.ShowCodes = toggleButton.Checked;
+            }
         }
     }
 }
