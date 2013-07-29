@@ -74,7 +74,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         {
             // We do need to check if the Microsoft Word dialog has been
             // canceled to avoid an exception on calling the method "Execute".
-            if (!this.ResultIsOk(result))
+            if (this.ResultIsOk(result))
             {
                 try
                 {
