@@ -187,7 +187,9 @@
   -->
   <ItemGroup>
     <Compile Include="Commands\ActivateUpdateStylesOnOpenCommand.cs" />
+    <Compile Include="Commands\UpdateFieldsCommand.cs" />
     <Compile Include="CustomDocumentPropertiesDropDown.cs" />
+    <Compile Include="EventHandlers\UpdateFieldsCommandEventHandler.cs" />
     <Compile Include="EventHandlers\RefreshCustomXMLPartsCommandEventHandler.cs" />
     <Compile Include="Commands\RefreshCustomXMLPartsCommand.cs" />
     <Compile Include="EventHandlers\RibbonStateEventHandler.cs" />
