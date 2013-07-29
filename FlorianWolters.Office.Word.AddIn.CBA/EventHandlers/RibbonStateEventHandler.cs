@@ -91,22 +91,20 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             int selectedFieldsCount = selectedFields.Count();
             bool singleFieldSelected = 1 == selectedFieldsCount;
             bool fieldsSelected = 0 < selectedFieldsCount;
+            bool includeFieldsAreSelected = false;
+            bool oneOrMoreFieldsLocked = false;
 
             if (fieldsSelected)
             {
-                bool oneOrMoreFieldsLocked = 0 < (from f in selectedFields
+                oneOrMoreFieldsLocked = 0 < (from f in selectedFields
                                                   where f.Locked == true
                                                   select f).Count();
                 this.ribbon.buttonFieldUpdate.Enabled = !oneOrMoreFieldsLocked;
                 this.ribbon.toggleButtonFieldLock.Checked = oneOrMoreFieldsLocked;
 
-                IEnumerable<Word.Field> selectedIncludeFields = selection.SelectedIncludeFields();
-                bool includeFieldsAreSelected = 0 < selectedIncludeFields.Count();
+                IEnumerable<Word.Field> selectedIncludeFields = selection.SelectedIncludeTextFields();
+                includeFieldsAreSelected = 0 < selectedIncludeFields.Count();
                 
-                this.ribbon.buttonOpenSourceFile.Enabled = includeFieldsAreSelected;
-                this.ribbon.buttonUpdateFromSource.Enabled = includeFieldsAreSelected && !oneOrMoreFieldsLocked;
-                this.ribbon.buttonUpdateToSource.Enabled = includeFieldsAreSelected;
-
                 if (singleFieldSelected)
                 {
                     Word.Field selectedField = selectedFields.ElementAt(0);
@@ -133,6 +131,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             this.ribbon.splitButtonFieldAction.Enabled = fieldsSelected;
             this.ribbon.splitButtonFieldFormatCapitalization.Enabled = singleFieldSelected;
             this.ribbon.splitButtonFieldFormatNumber.Enabled = singleFieldSelected;
+
+            this.ribbon.buttonOpenSourceFile.Enabled = includeFieldsAreSelected;
+            this.ribbon.buttonUpdateFromSource.Enabled = includeFieldsAreSelected && !oneOrMoreFieldsLocked;
+            this.ribbon.buttonUpdateToSource.Enabled = includeFieldsAreSelected;
+
             this.UpdateSplitButtonInsertField(selection);
             this.UpdateButtonBindCustomXMLPart(selection);
         }
