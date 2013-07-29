@@ -24,7 +24,7 @@ namespace FlorianWolters.Office.Word.Dialogs
 
         protected override DialogResults HandleResult(DialogResults result)
         {
-            if (this.ResultIsOK(result))
+            if (this.ResultIsOk(result))
             {
                 // TODO This isn't optimal, since we mix business logic with UI,
                 // but since we do deal with built-in Microsoft Word dialogs

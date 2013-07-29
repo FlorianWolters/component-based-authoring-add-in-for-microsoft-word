@@ -49,9 +49,9 @@ namespace FlorianWolters.Office.Word.Dialogs
             // box. If the return value specifies a file path the user has
             // chosen to link to the file, otherwise the return value specifies
             // a file propertyName and we have to built the file path on our own.
-            string result = this.GetWordDialogResult();
+            string result = this.WordDialog.Name.Trim('"');
 
-            if (!Path.IsPathRooted(result))
+            if (!this.HasUserChosenLinkToFile())
             {
                 string directoryPath = this.Application.Options.DefaultFilePath[Word.WdDefaultFilePath.wdDocumentsPath];
                 result = directoryPath + Path.DirectorySeparatorChar + result;
@@ -60,14 +60,9 @@ namespace FlorianWolters.Office.Word.Dialogs
             return result;
         }
 
-        protected override string GetWordDialogResult()
-        {
-            return this.WordDialog.Name.Trim('"');
-        }
-
         protected override bool HasUserChosenLinkToFile()
         {
-            return Path.IsPathRooted(this.GetWordDialogResult());
+            return Path.IsPathRooted(this.WordDialog.Name.Trim('"'));
         }
     }
 }

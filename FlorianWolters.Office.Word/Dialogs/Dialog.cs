@@ -74,7 +74,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         {
             // We do need to check if the Microsoft Word dialog has been
             // canceled to avoid an exception on calling the method "Execute".
-            if (!this.ResultIsCancel(result))
+            if (!this.ResultIsOk(result))
             {
                 try
                 {
@@ -93,11 +93,6 @@ namespace FlorianWolters.Office.Word.Dialogs
             }
 
             return result;
-        }
-
-        protected virtual string GetWordDialogResult()
-        {
-            return this.WordDialog.Name;
         }
 
         /// <summary>
@@ -121,17 +116,35 @@ namespace FlorianWolters.Office.Word.Dialogs
             return (DialogResults)this.WordDialog.Display(timeout);
         }
 
+        /// <summary>
+        /// Checks whether the specified <see cref="DialogResults"/> is equal to
+        /// <see cref="DialogResults.Cancel"/>.
+        /// </summary>
+        /// <param name="result">The <see cref="DialogResults"/> object to check.</param>
+        /// <returns><c>true</c> on success; <c>false</c> on failure.</returns>
         protected bool ResultIsCancel(DialogResults result)
         {
             return result.Equals(DialogResults.Cancel);
         }
 
+        /// <summary>
+        /// Checks whether the specified <see cref="DialogResults"/> is equal to
+        /// <see cref="DialogResults.Close"/>.
+        /// </summary>
+        /// <param name="result">The <see cref="DialogResults"/> object to check.</param>
+        /// <returns><c>true</c> on success; <c>false</c> on failure.</returns>
         protected bool ResultIsClose(DialogResults result)
         {
             return result.Equals(DialogResults.Close);
         }
 
-        protected bool ResultIsOK(DialogResults result)
+        /// <summary>
+        /// Checks whether the specified <see cref="DialogResults"/> is equal to
+        /// <see cref="DialogResults.Ok"/>.
+        /// </summary>
+        /// <param name="result">The <see cref="DialogResults"/> object to check.</param>
+        /// <returns><c>true</c> on success; <c>false</c> on failure.</returns>
+        protected bool ResultIsOk(DialogResults result)
         {
             return result.Equals(DialogResults.Ok);
         }

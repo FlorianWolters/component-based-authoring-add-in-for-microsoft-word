@@ -49,7 +49,7 @@ namespace FlorianWolters.Office.Word.Dialogs
 
         protected override DialogResults HandleResult(DialogResults result)
         {
-            if (this.ResultIsOK(result))
+            if (this.ResultIsOk(result))
             {
                 if (!this.Application.ActiveDocument.IsSaved())
                 {
@@ -93,7 +93,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         /// <returns>The absolute file path.</returns>
         protected virtual string AbsoluteFilePathOfTargetFile()
         {
-            return this.GetWordDialogResult();
+            return this.WordDialog.Name;
         }
 
         protected void ShowMessageEnableLinkToFile()
