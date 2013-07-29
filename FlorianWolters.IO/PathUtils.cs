@@ -122,7 +122,7 @@ namespace FlorianWolters.IO
             /// <param name="pszTo">A pointer to a null-terminated string of maximum length <c>MAX_PATH</c> that contains the path that defines the endpoint of the relative path.</param>
             /// <param name="dwAttrTo">The file attributes of <c>pszTo</c>. If this value contains <c>FILE_ATTRIBUTE_DIRECTORY</c>, <c>pszTo</c> is assumed to be directory; otherwise, <c>pszTo</c> is assumed to be a file.</param>
             /// <returns><c>true</c>if successful, or <c>false</c> otherwise.</returns>
-            /// <remarks>http://msdn.microsoft.com/windows/desktop/bb773740.aspx</remarks>
+            /// <remarks><a href="http://msdn.microsoft.com/windows/desktop/bb773740.aspx">MSDN</a></remarks>
             [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
             internal static extern int PathRelativePathTo(
                 StringBuilder pszPath,
