@@ -228,7 +228,6 @@
       <DependentUpon>MarkdownForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ThisRibbonCollection.cs" />
-    <Compile Include="Utils\AssemblyInfo.cs" />
     <Compile Include="MessageBoxes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -239,10 +238,7 @@
     <Compile Include="Ribbon.Designer.cs">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\HWndWrapper.cs" />
-    <Compile Include="Utils\AxHostConverter.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Utils\HWndWrapper.cs" />
     <Compile Include="Utils\ProcessUtils.cs" />
     <Content Include="README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -310,6 +306,10 @@
     <ProjectReference Include="..\FlorianWolters.Office.Word\FlorianWolters.Office.Word.csproj">
       <Project>{16b35c1b-2dd7-496b-853d-6fb8726938be}</Project>
       <Name>FlorianWolters.Office.Word</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlorianWolters.Reflection\FlorianWolters.Reflection.csproj">
+      <Project>{2fef12b0-09d7-45d3-8cad-4e8377ff0b41}</Project>
+      <Name>FlorianWolters.Reflection</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

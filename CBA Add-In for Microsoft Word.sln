@@ -25,6 +25,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D062E8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlorianWolters.IO.Tests", "FlorianWolters.IO.Tests\FlorianWolters.IO.Tests.csproj", "{EF8CB1CE-8C02-4DE2-9705-F84578905425}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlorianWolters.Reflection", "FlorianWolters.Reflection\FlorianWolters.Reflection.csproj", "{2FEF12B0-09D7-45D3-8CAD-4E8377FF0B41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlorianWolters.Reflection.Tests", "FlorianWolters.Reflection.Tests\FlorianWolters.Reflection.Tests.csproj", "{C85F4CCE-DF0A-4DB1-9229-FA0E7146FA01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{EF8CB1CE-8C02-4DE2-9705-F84578905425}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF8CB1CE-8C02-4DE2-9705-F84578905425}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF8CB1CE-8C02-4DE2-9705-F84578905425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FEF12B0-09D7-45D3-8CAD-4E8377FF0B41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FEF12B0-09D7-45D3-8CAD-4E8377FF0B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FEF12B0-09D7-45D3-8CAD-4E8377FF0B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FEF12B0-09D7-45D3-8CAD-4E8377FF0B41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C85F4CCE-DF0A-4DB1-9229-FA0E7146FA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C85F4CCE-DF0A-4DB1-9229-FA0E7146FA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C85F4CCE-DF0A-4DB1-9229-FA0E7146FA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C85F4CCE-DF0A-4DB1-9229-FA0E7146FA01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
