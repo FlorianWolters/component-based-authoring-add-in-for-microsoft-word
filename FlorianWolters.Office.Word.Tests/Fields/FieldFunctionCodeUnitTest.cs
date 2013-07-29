@@ -16,14 +16,14 @@ namespace FlorianWolters.Office.Word.Fields
         private static readonly object[] FormatCases =
         {
             new object[] { new FieldFunctionCode("AUTHOR"), string.Empty },
-            new object[] { new FieldFunctionCode(@"AUTHOR \*Lower"), @"\*Lower" },
-            new object[] { new FieldFunctionCode(@"AUTHOR \*MERGEFORMAT \*Lower"), @"\*MERGEFORMAT \*Lower" },
-            new object[] { new FieldFunctionCode(@" AUTHOR  \* Lower "), @"\*Lower" },
+            new object[] { new FieldFunctionCode(@"AUTHOR \*Lower"), @"\*LOWER" },
+            new object[] { new FieldFunctionCode(@"AUTHOR \*MERGEFORMAT \*Lower"), @"\*MERGEFORMAT \*LOWER" },
+            new object[] { new FieldFunctionCode(@" AUTHOR  \* Lower "), @"\*LOWER" },
             new object[]
             {
                 new FieldFunctionCode(
                     @" INCLUDETEXT  ""C:\\Path with multiple   whitespaces\\Document.docx"" \* Upper "),
-                    @"\*Upper"
+                    @"\*UPPER"
             }
         };
 
