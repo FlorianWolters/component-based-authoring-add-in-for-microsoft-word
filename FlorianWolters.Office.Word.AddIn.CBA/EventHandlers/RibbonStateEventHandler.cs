@@ -89,43 +89,52 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
         {
             IEnumerable<Word.Field> selectedFields = selection.SelectedFields();
             int selectedFieldsCount = selectedFields.Count();
-            bool isSingleFieldSelected = 1 == selectedFieldsCount;
+            bool singleFieldSelected = 1 == selectedFieldsCount;
+            bool fieldsSelected = 0 < selectedFieldsCount;
 
-            if (isSingleFieldSelected)
+            if (fieldsSelected)
             {
-                Word.Field selectedField = selectedFields.ElementAt(0);
-                FieldFunctionCode fieldFunctionCode = new FieldFunctionCode(selectedField.Code.Text);
+                bool oneOrMoreFieldsLocked = 0 < (from f in selectedFields
+                                                  where f.Locked == true
+                                                  select f).Count();
+                this.ribbon.buttonFieldUpdate.Enabled = !oneOrMoreFieldsLocked;
+                this.ribbon.toggleButtonFieldLock.Checked = oneOrMoreFieldsLocked;
 
-                this.ribbon.buttonFieldUpdate.Enabled = !selectedField.Locked;
-                this.ribbon.toggleButtonFieldLock.Checked = selectedField.Locked;
-                this.ribbon.toggleButtonShowFieldCode.Checked = selectedField.ShowCodes;
+                IEnumerable<Word.Field> selectedIncludeFields = selection.SelectedIncludeFields();
+                bool includeFieldsAreSelected = 0 < selectedIncludeFields.Count();
+                
+                this.ribbon.buttonOpenSourceFile.Enabled = includeFieldsAreSelected;
+                this.ribbon.buttonUpdateFromSource.Enabled = includeFieldsAreSelected && !oneOrMoreFieldsLocked;
+                this.ribbon.buttonUpdateToSource.Enabled = includeFieldsAreSelected;
 
-                this.ribbon.toggleButtonFieldFormatAlphabetic.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Alphabetic);
-                this.ribbon.toggleButtonFieldFormatArabic.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Arabic);
-                this.ribbon.toggleButtonFieldFormatCaps.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Caps);
-                this.ribbon.toggleButtonFieldFormatCardText.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.CardText);
-                this.ribbon.toggleButtonFieldFormatDollarText.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.DollarText);
-                this.ribbon.toggleButtonFieldFormatFirstCap.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.FirstCap);
-                this.ribbon.toggleButtonFieldFormatHex.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Hex);
-                this.ribbon.toggleButtonFieldFormatLower.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Lower);
-                this.ribbon.toggleButtonFieldFormatMergeFormat.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.MergeFormat);
-                this.ribbon.toggleButtonFieldFormatOrdinal.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Ordinal);
-                this.ribbon.toggleButtonFieldFormatOrdText.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.OrdText);
-                this.ribbon.toggleButtonFieldFormatRoman.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Roman);
-                this.ribbon.toggleButtonFieldFormatUpper.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Upper);
+                if (singleFieldSelected)
+                {
+                    Word.Field selectedField = selectedFields.ElementAt(0);
+                    FieldFunctionCode fieldFunctionCode = new FieldFunctionCode(selectedField.Code.Text);
+
+                    this.ribbon.toggleButtonShowFieldCode.Checked = selectedField.ShowCodes;
+
+                    this.ribbon.toggleButtonFieldFormatAlphabetic.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Alphabetic);
+                    this.ribbon.toggleButtonFieldFormatArabic.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Arabic);
+                    this.ribbon.toggleButtonFieldFormatCaps.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Caps);
+                    this.ribbon.toggleButtonFieldFormatCardText.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.CardText);
+                    this.ribbon.toggleButtonFieldFormatDollarText.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.DollarText);
+                    this.ribbon.toggleButtonFieldFormatFirstCap.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.FirstCap);
+                    this.ribbon.toggleButtonFieldFormatHex.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Hex);
+                    this.ribbon.toggleButtonFieldFormatLower.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Lower);
+                    this.ribbon.toggleButtonFieldFormatMergeFormat.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.MergeFormat);
+                    this.ribbon.toggleButtonFieldFormatOrdinal.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Ordinal);
+                    this.ribbon.toggleButtonFieldFormatOrdText.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.OrdText);
+                    this.ribbon.toggleButtonFieldFormatRoman.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Roman);
+                    this.ribbon.toggleButtonFieldFormatUpper.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Upper);
+                }
             }
 
-            this.ribbon.splitButtonFieldAction.Enabled = isSingleFieldSelected;
-            this.ribbon.splitButtonFieldFormatCapitalization.Enabled = isSingleFieldSelected;
-            this.ribbon.splitButtonFieldFormatNumber.Enabled = isSingleFieldSelected;
+            this.ribbon.splitButtonFieldAction.Enabled = fieldsSelected;
+            this.ribbon.splitButtonFieldFormatCapitalization.Enabled = singleFieldSelected;
+            this.ribbon.splitButtonFieldFormatNumber.Enabled = singleFieldSelected;
             this.UpdateSplitButtonInsertField(selection);
             this.UpdateButtonBindCustomXMLPart(selection);
-
-            IEnumerable<Word.Field> selectedIncludeFields = selection.SelectedIncludeFields();
-            bool includeFieldsAreSelected = selectedIncludeFields.Count() > 0;
-            this.ribbon.buttonOpenSourceFile.Enabled = includeFieldsAreSelected;
-            this.ribbon.buttonUpdateFromSource.Enabled = includeFieldsAreSelected;
-            this.ribbon.buttonUpdateToSource.Enabled = includeFieldsAreSelected;
         }
 
         private void UpdateSplitButtonInsertField(Word.Selection selection)
