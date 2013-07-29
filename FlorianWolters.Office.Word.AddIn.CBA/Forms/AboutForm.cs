@@ -10,7 +10,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
     using System.Diagnostics;
     using System.Windows.Forms;
     using FlorianWolters.Office.Word.AddIn.CBA.Properties;
-    using FlorianWolters.Office.Word.AddIn.CBA.Utils;
     using FlorianWolters.Reflection;
 
     /// <summary>

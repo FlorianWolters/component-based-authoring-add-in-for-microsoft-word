@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlorianWolters.Reflection",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlorianWolters.Reflection.Tests", "FlorianWolters.Reflection.Tests\FlorianWolters.Reflection.Tests.csproj", "{C85F4CCE-DF0A-4DB1-9229-FA0E7146FA01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlorianWolters.Windows.Forms", "FlorianWolters.Windows.Forms\FlorianWolters.Windows.Forms.csproj", "{B7EC839B-2038-4605-9550-E6E832341A92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{C85F4CCE-DF0A-4DB1-9229-FA0E7146FA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C85F4CCE-DF0A-4DB1-9229-FA0E7146FA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C85F4CCE-DF0A-4DB1-9229-FA0E7146FA01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7EC839B-2038-4605-9550-E6E832341A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7EC839B-2038-4605-9550-E6E832341A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7EC839B-2038-4605-9550-E6E832341A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7EC839B-2038-4605-9550-E6E832341A92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

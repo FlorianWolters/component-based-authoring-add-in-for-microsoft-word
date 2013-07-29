@@ -238,8 +238,6 @@
     <Compile Include="Ribbon.Designer.cs">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\HWndWrapper.cs" />
-    <Compile Include="Utils\ProcessUtils.cs" />
     <Content Include="README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -310,6 +308,10 @@
     <ProjectReference Include="..\FlorianWolters.Reflection\FlorianWolters.Reflection.csproj">
       <Project>{2fef12b0-09d7-45d3-8cad-4e8377ff0b41}</Project>
       <Name>FlorianWolters.Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlorianWolters.Windows.Forms\FlorianWolters.Windows.Forms.csproj">
+      <Project>{b7ec839b-2038-4605-9550-e6e832341a92}</Project>
+      <Name>FlorianWolters.Windows.Forms</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

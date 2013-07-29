@@ -20,7 +20,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using FlorianWolters.Office.Word.AddIn.CBA.EventHandlers;
     using FlorianWolters.Office.Word.AddIn.CBA.Forms;
     using FlorianWolters.Office.Word.AddIn.CBA.Properties;
-    using FlorianWolters.Office.Word.AddIn.CBA.Utils;
     using FlorianWolters.Office.Word.AddIn.ComponentAddIn.Commands;
     using FlorianWolters.Office.Word.Commands;
     using FlorianWolters.Office.Word.Dialogs;
@@ -33,6 +32,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using FlorianWolters.Office.Word.Fields.Switches;
     using FlorianWolters.Office.Word.Fields.UpdateStrategies;
     using FlorianWolters.Reflection;
+    using FlorianWolters.Windows.Forms;
     using Microsoft.Office.Tools.Ribbon;
     using NLog;
     using Office = Microsoft.Office.Core;

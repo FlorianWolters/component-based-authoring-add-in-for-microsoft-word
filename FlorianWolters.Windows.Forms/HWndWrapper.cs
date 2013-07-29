@@ -5,7 +5,7 @@
 // <author>Florian Wolters &lt;wolters.fl@gmail.com&gt;</author>
 //------------------------------------------------------------------------------
 
-namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
+namespace FlorianWolters.Windows.Forms
 {
     using System;
     using System.Windows.Forms;
