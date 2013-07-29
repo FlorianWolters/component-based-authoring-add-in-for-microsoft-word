@@ -32,7 +32,8 @@ namespace FlorianWolters.IO.Tests
             new object[] { "C:", "C:\\Windows", ".\\Windows" },
             new object[] { "C:\\Windows", "C:\\", ".." },
             new object[] { "C:\\Windows\\System32\\Drivers", "C:\\System Volume Information", "..\\..\\..\\System Volume Information" },
-            new object[] { "C:\\System Volume Information", "C:\\Windows\\System32\\Drivers", "..\\Windows\\System32\\Drivers" }
+            new object[] { "C:\\System Volume Information", "C:\\Windows\\System32\\Drivers", "..\\Windows\\System32\\Drivers" },
+            new object[] { "C:\\bootmgr", "C:\\Windows\\System32", ".\\Windows\\System32" }
         };
 
         [Test, TestCaseSource("FormatCases")]
