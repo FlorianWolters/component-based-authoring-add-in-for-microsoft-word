@@ -5,16 +5,29 @@
 // <author>Florian Wolters &lt;wolters.fl@gmail.com&gt;</author>
 //------------------------------------------------------------------------------
 
-namespace FlorianWolters.Office.Word.AddIn.CBA.Utils
+namespace FlorianWolters.Reflection
 {
     using System;
     using System.IO;
     using System.Reflection;
 
+    /// <summary>
+    /// The class <see cref="AssemblyInfo"/> represents a reader that can read
+    /// information from an <see cref="Assembly"/>.
+    /// </summary>
     public class AssemblyInfo
     {
+        /// <summary>
+        /// The <see cref="Assembly"/> to read from.
+        /// </summary>
         private readonly Assembly assembly;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyInfo"/> class
+        /// with the specified <see cref="Assembly"/> to read from.
+        /// </summary>
+        /// <param name="assembly">The <see cref="Assembly"/> to read from.</param>
+        /// <exception cref="ArgumentNullException">If the <c>assembly</c> argument is <c>null</c>.</exception>
         public AssemblyInfo(Assembly assembly)
         {
             if (null == assembly)
@@ -25,6 +38,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Utils
             this.assembly = assembly;
         }
 
+        /// <summary>
+        /// Gets the company from the <see cref="Assembly"/>.
+        /// </summary>
         public string Company
         {
             get
@@ -35,6 +51,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Utils
             }
         }
 
+        /// <summary>
+        /// Gets the copyright from the <see cref="Assembly"/>.
+        /// </summary>
         public string Copyright
         {
             get
@@ -45,6 +64,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Utils
             }
         }
 
+        /// <summary>
+        /// Gets the description from the <see cref="Assembly"/>.
+        /// </summary>
         public string Description
         {
             get
@@ -55,6 +77,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Utils
             }
         }
 
+        /// <summary>
+        /// Gets the product from the <see cref="Assembly"/>.
+        /// </summary>
         public string Product
         {
             get
@@ -65,6 +90,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Utils
             }
         }
 
+        /// <summary>
+        /// Gets the title from the <see cref="Assembly"/>.
+        /// </summary>
         public string Title
         {
             get
@@ -75,6 +103,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Utils
             } 
         }
 
+        /// <summary>
+        /// Gets the <see cref="Version"/> from the <see cref="Assembly"/>.
+        /// </summary>
         public Version Version
         {
             get
@@ -83,6 +114,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Utils
             }
         }
 
+        /// <summary>
+        /// Gets the code base path from the <see cref="Assembly"/>.
+        /// </summary>
         public string CodeBasePath
         {
             get

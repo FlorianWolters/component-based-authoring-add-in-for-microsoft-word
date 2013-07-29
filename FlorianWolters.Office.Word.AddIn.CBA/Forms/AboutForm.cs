@@ -11,6 +11,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
     using System.Windows.Forms;
     using FlorianWolters.Office.Word.AddIn.CBA.Properties;
     using FlorianWolters.Office.Word.AddIn.CBA.Utils;
+    using FlorianWolters.Reflection;
 
     /// <summary>
     /// The class <see cref="AboutForm"/> implements a simple <i>About</i>
