@@ -174,21 +174,19 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // - The Factory Method registers the "Event Handler" at the "Global Event Handler".
 
             // A "Command" does not know anything about a "Event Handler". A "Command" implements business logic related to a Word.Application ONLY.
-            // A "Event Handler" class can implement Interfaces which do contain the signature for the events in the Word object model.
-            // Every implementation of that method calls the "HandleResult" method of the "Command" object.
+            // A "Event Handler" class can implement interfaces which do contain the signature for the events in the Word object model.
+            // Every implementation of that method calls the "Excecute" method of the "Command" object.
 
             // ATTENTION: Since we always inject the Word.Application into the objects, we can always access the current state of the Microsoft Word application.
             // If we would work with Word.Document, we would always have to make sure, that the reference is up-to-date.
             ApplicationEventHandler applicationEventHandler = new ApplicationEventHandler(this.Application);
             IEventExceptionHandler eventExceptionHandler = new MessageBoxEventExceptionHandler();
 
-            // TODO Allow configuration of event handlers and simplify creation.
-            this.InitializeRefreshCustomXMLParts(applicationEventHandler, eventExceptionHandler);
-            this.InitializeWriteCustomDocumentProperties(applicationEventHandler);
-            applicationEventHandler.SubscribeEventHandler(
-                new UpdateAttachedTemplateEventHandler(
-                    new UpdateAttachedTemplateCommand(this.Application),
-                    eventExceptionHandler));
+            // TODO Allow configuration of event handlers and simplify/unify creation.
+            this.RegisterRefreshCustomXMLPartsCommandEventHandler(applicationEventHandler, eventExceptionHandler);
+            this.RegisterUpdateAttachedTemplateCommandEventHandler(applicationEventHandler, eventExceptionHandler);
+            this.RegisterUpdateFieldsCommandEventHandler(applicationEventHandler, eventExceptionHandler);
+            this.RegisterWriteCustomDocumentPropertiesCommandEventHandler(applicationEventHandler);
 
             // The RibbonStateEventHandler ensures that the state of the UI of this Ribbon is correctly set.
             IEventHandler eventHandler = new RibbonStateEventHandler(
@@ -198,7 +196,16 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             applicationEventHandler.SubscribeEventHandler(eventHandler);
         }
 
-        private void InitializeRefreshCustomXMLParts(
+        private void RegisterUpdateAttachedTemplateCommandEventHandler(
+            ApplicationEventHandler applicationEventHandler,
+            IEventExceptionHandler eventExceptionHandler)
+        {
+            ICommand command = new UpdateAttachedTemplateCommand(applicationEventHandler.Application);
+            IEventHandler eventHandler = new UpdateAttachedTemplateEventHandler(command, eventExceptionHandler);
+            applicationEventHandler.SubscribeEventHandler(eventHandler);
+        }
+
+        private void RegisterRefreshCustomXMLPartsCommandEventHandler(
             ApplicationEventHandler applicationEventHandler,
             IEventExceptionHandler eventExceptionHandler)
         {
@@ -207,7 +214,16 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             applicationEventHandler.SubscribeEventHandler(eventHandler);
         }
 
-        private void InitializeWriteCustomDocumentProperties(ApplicationEventHandler applicationEventHandler)
+        private void RegisterUpdateFieldsCommandEventHandler(
+            ApplicationEventHandler applicationEventHandler,
+            IEventExceptionHandler eventExceptionHandler)
+        {
+            ICommand command = new UpdateFieldsCommand(applicationEventHandler.Application);
+            IEventHandler eventHandler = new UpdateFieldsCommandEventHandler(command, eventExceptionHandler);
+            applicationEventHandler.SubscribeEventHandler(eventHandler);
+        }
+
+        private void RegisterWriteCustomDocumentPropertiesCommandEventHandler(ApplicationEventHandler applicationEventHandler)
         {
             IEventHandler eventHandler = new WriteCustomDocumentPropertiesEventHandler(applicationEventHandler.Application);
             applicationEventHandler.SubscribeEventHandler(eventHandler);
@@ -515,7 +531,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         private void OnClick_ButtonUpdateFromSource(object sender, RibbonControlEventArgs e)
         {
-            IEnumerable<Word.Field> fields = this.Application.Selection.SelectedIncludeFields();
+            IEnumerable<Word.Field> fields = this.Application.Selection.SelectedIncludeTextFields();
             int fieldCount = fields.Count();
 
             if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentFromSource(fieldCount))
@@ -587,7 +603,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         private void OnClick_ButtonOpenSourceFile(object sender, RibbonControlEventArgs e)
         {
             // Open each referenced file (e.g. a Microsoft Word Document) in the current selection.
-            foreach (Word.Field field in this.Application.Selection.SelectedIncludeFields())
+            foreach (Word.Field field in this.Application.Selection.SelectedIncludeTextFields())
             {
                 Process.Start(new IncludeField(field).FilePath);
             }
@@ -599,7 +615,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             string lastModifiedActual;
             string lastModifiedExpected;
 
-            foreach (Word.Field field in this.Application.Selection.SelectedIncludeFields())
+            // http://pmueller.de/blog/word2007grafik.html
+            // Word Bug: http://stackoverflow.com/questions/17109200/ms-word-includepicture-field-code
+            IList<Word.Field> fields = this.Application.Selection.IncludeFields().ToList();
+
+            foreach (Word.Field field in fields)
             {
                 filePath = new IncludeField(field).FilePath;
                 lastModifiedExpected = File.GetLastWriteTimeUtc(filePath).ToString("u");
@@ -607,7 +627,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 if (null == field.Next || null == field.Next.Next || !field.Next.Next.Type.Equals(Word.WdFieldType.wdFieldEmpty))
                 {
                     MessageBox.Show(
-                        "An error occured while parsing the field codes. Ensure that the underlying INCLUDE field has been created via the CBA Add-In.",
+                        "An error occured while parsing the field code. Ensure that the field has been created via " + Settings.Default.ApplicationName + ".",
                         "Warning",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
