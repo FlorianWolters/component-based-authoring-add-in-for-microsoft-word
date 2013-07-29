@@ -582,21 +582,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         private void OnClick_ButtonOpenSourceFile(object sender, RibbonControlEventArgs e)
         {
             IEnumerable<Word.Field> fields = this.Application.Selection.SelectedIncludeFields();
-            int fieldCount = fields.Count();
 
             foreach (Word.Field field in fields)
             {
-                // TODO Refactor
-                string codeText = field.Code.Text;
-                string match = Regex.Match(codeText, @"(\\\\\.(.+))""").Groups[1].Value;
-                match = match.Replace(@"\\", Path.DirectorySeparatorChar.ToString());
-                string absoluteSourcePath = this.Application.ActiveDocument.Path + match;
-
-                Process.Start(absoluteSourcePath);
+                Process.Start(new IncludeField(field).FilePath);
             }
         }
 
-        private void OnClick_buttonCheckReferences(object sender, RibbonControlEventArgs e)
+        private void OnClick_ButtonCheckReferences(object sender, RibbonControlEventArgs e)
         {
             // TODO
         }

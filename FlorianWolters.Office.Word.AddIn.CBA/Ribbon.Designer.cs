@@ -233,7 +233,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonCheckReferences.Name = "buttonCheckReferences";
             this.buttonCheckReferences.OfficeImageId = "FileDocumentInspect";
             this.buttonCheckReferences.ShowImage = true;
-            this.buttonCheckReferences.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_buttonCheckReferences);
+            this.buttonCheckReferences.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCheckReferences);
             // 
             // groupFields
             // 
