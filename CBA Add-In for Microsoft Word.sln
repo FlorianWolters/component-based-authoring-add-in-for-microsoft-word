@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlorianWolters.Office.Word", "FlorianWolters.Office.Word\FlorianWolters.Office.Word.csproj", "{16B35C1B-2DD7-496B-853D-6FB8726938BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlorianWolters.Office.Word.AddIn.CBA", "FlorianWolters.Office.Word.AddIn.CBA\FlorianWolters.Office.Word.AddIn.CBA.csproj", "{105FE762-7728-4C57-ACA5-9130D230D1AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlorianWolters.IO", "FlorianWolters.IO\FlorianWolters.IO.csproj", "{607D169D-4B6A-46A1-8A50-9ECB2C77EA0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlorianWolters.Office.Word.Tests", "FlorianWolters.Office.Word.Tests\FlorianWolters.Office.Word.Tests.csproj", "{640C5710-8CBD-4403-84FC-E5B470C2A74F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9AA53322-BB4C-4316-B47F-137479A316B4}"
+	ProjectSection(SolutionItems) = preProject
+		COPYING = COPYING
+		COPYING.LESSER = COPYING.LESSER
+		Settings.StyleCop = Settings.StyleCop
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16B35C1B-2DD7-496B-853D-6FB8726938BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16B35C1B-2DD7-496B-853D-6FB8726938BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16B35C1B-2DD7-496B-853D-6FB8726938BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16B35C1B-2DD7-496B-853D-6FB8726938BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{105FE762-7728-4C57-ACA5-9130D230D1AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{105FE762-7728-4C57-ACA5-9130D230D1AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{105FE762-7728-4C57-ACA5-9130D230D1AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{105FE762-7728-4C57-ACA5-9130D230D1AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{607D169D-4B6A-46A1-8A50-9ECB2C77EA0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{607D169D-4B6A-46A1-8A50-9ECB2C77EA0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{607D169D-4B6A-46A1-8A50-9ECB2C77EA0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{607D169D-4B6A-46A1-8A50-9ECB2C77EA0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{640C5710-8CBD-4403-84FC-E5B470C2A74F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{640C5710-8CBD-4403-84FC-E5B470C2A74F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{640C5710-8CBD-4403-84FC-E5B470C2A74F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{640C5710-8CBD-4403-84FC-E5B470C2A74F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
