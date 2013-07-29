@@ -20,5 +20,8 @@
     <Setting Name="HostingServiceUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://github.com/FlorianWolters/component-based-authoring-add-in-for-microsoft-word</Value>
     </Setting>
+    <Setting Name="ApplicationName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Component-Based Authoring Application Level Add-In for Microsoft Word</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

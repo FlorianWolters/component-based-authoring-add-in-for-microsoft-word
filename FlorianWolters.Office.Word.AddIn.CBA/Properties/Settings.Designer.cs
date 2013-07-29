@@ -92,5 +92,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Properties {
                 return ((string)(this["HostingServiceUrl"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Component-Based Authoring Application Level Add-In for Microsoft Word")]
+        public string ApplicationName {
+            get {
+                return ((string)(this["ApplicationName"]));
+            }
+        }
     }
 }
