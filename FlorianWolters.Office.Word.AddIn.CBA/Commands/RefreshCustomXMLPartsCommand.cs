@@ -17,6 +17,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
     {
         private readonly string xmlDirectoryName;
 
+        /// <summary>
+        /// Initializes a new instance of the <see
+        /// cref="RefreshCustomXMLPartsCommand"/> class with the specified
+        /// <i>Receiver</i>.
+        /// </summary>
+        /// <param name="application">The <i>Receiver</i> of the <i>Command</i>.</param>
         public RefreshCustomXMLPartsCommand(Word.Application application)
             : base(application)
         {

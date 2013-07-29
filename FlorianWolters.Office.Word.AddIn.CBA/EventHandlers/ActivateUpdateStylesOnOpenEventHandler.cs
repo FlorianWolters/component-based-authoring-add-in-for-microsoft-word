@@ -27,6 +27,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
         /// cref="ActivateUpdateStylesOnOpenEventHandler"/> class.
         /// </summary>
         /// <param name="command">The <i>Command</i> to execute with this <i>Event Handler</i>.</param>
+        /// <param name="exceptionHandler">The <i>Event Handler</i> used to handle exceptions.</param>
         public ActivateUpdateStylesOnOpenEventHandler(
             ICommand command, IEventExceptionHandler exceptionHandler)
             : base(command, exceptionHandler)

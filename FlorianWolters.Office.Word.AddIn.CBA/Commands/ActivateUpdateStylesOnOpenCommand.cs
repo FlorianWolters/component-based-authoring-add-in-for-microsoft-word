@@ -12,6 +12,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
 
     internal class ActivateUpdateStylesOnOpenCommand : ApplicationCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see
+        /// cref="ActivateUpdateStylesOnOpenCommand"/> class with the specified
+        /// <i>Receiver</i>.
+        /// </summary>
+        /// <param name="application">The <i>Receiver</i> of the <i>Command</i>.</param>
         public ActivateUpdateStylesOnOpenCommand(Word.Application application)
             : base(application)
         {

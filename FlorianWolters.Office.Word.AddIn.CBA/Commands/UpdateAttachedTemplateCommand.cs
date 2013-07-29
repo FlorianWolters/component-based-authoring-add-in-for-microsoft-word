@@ -28,6 +28,12 @@ namespace FlorianWolters.Office.Word.AddIn.ComponentAddIn.Commands
 
         private readonly string[] fileExtensions;
 
+        /// <summary>
+        /// Initializes a new instance of the <see
+        /// cref="UpdateAttachedTemplateCommand"/> class with the specified
+        /// <i>Receiver</i>.
+        /// </summary>
+        /// <param name="application">The <i>Receiver</i> of the <i>Command</i>.</param>
         public UpdateAttachedTemplateCommand(Word.Application application)
             : base(application)
         {
