@@ -89,16 +89,17 @@ namespace FlorianWolters.IO
         /// directory or <see cref="FileAttributeNormal"/> if the file path
         /// specifies a normal file.
         /// </returns>
+        /// <exception cref="FileNotFoundException">If at least one path does not exist.</exception>
         private static int GetPathAttribute(string path)
         {
-            DirectoryInfo di = new DirectoryInfo(path);
-            if (di.Exists)
+            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+            if (directoryInfo.Exists)
             {
                 return FileAttributeDirectory;
             }
 
-            FileInfo fi = new FileInfo(path);
-            if (fi.Exists)
+            FileInfo fileInfo = new FileInfo(path);
+            if (fileInfo.Exists)
             {
                 return FileAttributeNormal;
             }
@@ -112,8 +113,23 @@ namespace FlorianWolters.IO
         /// </summary>
         internal static class NativeMethods
         {
+            /// <summary>
+            /// Creates a relative path from one file or folder to another.
+            /// </summary>
+            /// <param name="pszPath">A pointer to a string that receives the relative path. This buffer must be at least <c>MAX_PATH</c> characters in size.</param>
+            /// <param name="pszFrom">A pointer to a null-terminated string of maximum length <c>MAX_PATH</c> that contains the path that defines the start of the relative path.</param>
+            /// <param name="dwAttrFrom">The file attributes of <c>pszFrom</c>. If this value contains <c>FILE_ATTRIBUTE_DIRECTORY</c>, <c>pszFrom</c> is assumed to be a directory; otherwise, <c>pszFrom</c> is assumed to be a file.</param>
+            /// <param name="pszTo">A pointer to a null-terminated string of maximum length <c>MAX_PATH</c> that contains the path that defines the endpoint of the relative path.</param>
+            /// <param name="dwAttrTo">The file attributes of <c>pszTo</c>. If this value contains <c>FILE_ATTRIBUTE_DIRECTORY</c>, <c>pszTo</c> is assumed to be directory; otherwise, <c>pszTo</c> is assumed to be a file.</param>
+            /// <returns><c>true</c>if successful, or <c>false</c> otherwise.</returns>
+            /// <remarks>http://msdn.microsoft.com/windows/desktop/bb773740.aspx</remarks>
             [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-            internal static extern int PathRelativePathTo(StringBuilder pszPath, string pszFrom, int dwAttrFrom, string pszTo, int dwAttrTo);
+            internal static extern int PathRelativePathTo(
+                StringBuilder pszPath,
+                string pszFrom,
+                int dwAttrFrom,
+                string pszTo,
+                int dwAttrTo);
         }
     }
 }
