@@ -53,7 +53,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 this.UpdateToggleButtonShowFieldShading();
 
                 bool isSaved = this.application.ActiveDocument.IsSaved();
-                this.ribbon.buttonInspect.Enabled = isSaved;
+                this.ribbon.buttonCheckReferences.Enabled = isSaved;
                 this.ribbon.splitButtonInclude.Enabled = isSaved;
             }
             else
@@ -62,7 +62,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 this.customDocumentPropertiesDropDown.Clear();
 
                 this.ribbon.buttonBindCustomXMLPart.Enabled = documentActive;
-                this.ribbon.buttonInspect.Enabled = documentActive;
+                this.ribbon.buttonCheckReferences.Enabled = documentActive;
                 this.ribbon.buttonOpenSourceFile.Enabled = documentActive;
                 this.ribbon.buttonCreateCustomDocumentProperty.Enabled = documentActive;
                 this.ribbon.buttonUpdateFromSource.Enabled = documentActive;
@@ -81,7 +81,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
         public void OnDocumentBeforeSave(Word.Document document, ref bool saveAsUI, ref bool cancel)
         {
-            this.ribbon.buttonInspect.Enabled = true;
+            this.ribbon.buttonCheckReferences.Enabled = true;
             this.ribbon.splitButtonInclude.Enabled = true;
         }
 

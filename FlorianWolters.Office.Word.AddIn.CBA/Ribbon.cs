@@ -374,6 +374,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             new InsertObjectDialog(this.Application).Show();
         }
 
+        private void OnClick_ButtonCompareDocuments(object sender, RibbonControlEventArgs e)
+        {
+            new CompareDocumentsDialog(this.Application).Show();
+        }
+
         private void OnClick_ButtonShowAboutDialog(object sender, RibbonControlEventArgs e)
         {
             this.AboutDialog.ShowDialog(this.ApplicationWindow);
@@ -589,6 +594,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
                 Process.Start(absoluteSourcePath);
             }
+        }
+
+        private void OnClick_buttonCheckReferences(object sender, RibbonControlEventArgs e)
+        {
+            // TODO
         }
     }
 }
