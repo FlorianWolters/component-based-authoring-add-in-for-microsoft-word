@@ -9,7 +9,7 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
 {
     using System;
     using FlorianWolters.Office.Word.Commands;
-    using FlorianWolters.Office.Word.Event.EventExceptionHandlers;
+    using FlorianWolters.Office.Word.Event.ExceptionHandlers;
 
     public abstract class CommandEventHandler : IEventHandler
     {

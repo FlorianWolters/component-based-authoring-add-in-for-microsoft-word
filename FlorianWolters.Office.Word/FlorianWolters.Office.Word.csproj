@@ -68,12 +68,12 @@
     <Compile Include="DocumentProperties\UnknownCustomDocumentPropertyException.cs" />
     <Compile Include="Event\EventHandlers\CommandEventHandler.cs" />
     <Compile Include="Event\ApplicationEventHandler.cs" />
-    <Compile Include="Event\EventExceptionHandlers\NullEventExceptionHandler.cs" />
-    <Compile Include="Event\EventExceptionHandlers\MessageBoxEventExceptionHandler.cs" />
+    <Compile Include="Event\ExceptionHandlers\NullExceptionHandler.cs" />
+    <Compile Include="Event\ExceptionHandlers\MessageBoxExceptionHandler.cs" />
     <Compile Include="Event\EventHandlers\EventHandlerFactory.cs" />
     <Compile Include="Event\EventHandlers\IDocumentBeforeCloseEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IDocumentOpenEventHandler.cs" />
-    <Compile Include="Event\EventExceptionHandlers\IEventExceptionHandler.cs" />
+    <Compile Include="Event\ExceptionHandlers\IExceptionHandler.cs" />
     <Compile Include="Event\EventHandlers\IDocumentChangeEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IDocumentBeforeSaveEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IEventHandler.cs" />

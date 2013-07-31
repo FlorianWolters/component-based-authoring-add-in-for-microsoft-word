@@ -1,16 +1,19 @@
 ﻿//------------------------------------------------------------------------------
-// <copyright file="IEventExceptionHandler.cs" company="Florian Wolters">
+// <copyright file="NullEventExceptionHandler.cs" company="Florian Wolters">
 //     Copyright (c) Florian Wolters. All rights reserved.
 // </copyright>
 // <author>Florian Wolters &lt;wolters.fl@gmail.com&gt;</author>
 //------------------------------------------------------------------------------
 
-namespace FlorianWolters.Office.Word.Event.EventExceptionHandlers
+namespace FlorianWolters.Office.Word.Event.ExceptionHandlers
 {
     using System;
 
-    public interface IEventExceptionHandler
+    public class NullEventExceptionHandler : IEventExceptionHandler
     {
-        void HandleException(Exception ex);
+        public void HandleException(Exception ex)
+        {
+            // NOOP
+        }
     }
 }

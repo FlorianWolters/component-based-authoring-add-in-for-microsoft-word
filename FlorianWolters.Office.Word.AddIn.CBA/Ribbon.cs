@@ -25,7 +25,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using FlorianWolters.Office.Word.Dialogs;
     using FlorianWolters.Office.Word.DocumentProperties;
     using FlorianWolters.Office.Word.Event;
-    using FlorianWolters.Office.Word.Event.EventExceptionHandlers;
+    using FlorianWolters.Office.Word.Event.ExceptionHandlers;
     using FlorianWolters.Office.Word.Event.EventHandlers;
     using FlorianWolters.Office.Word.Extensions;
     using FlorianWolters.Office.Word.Fields;

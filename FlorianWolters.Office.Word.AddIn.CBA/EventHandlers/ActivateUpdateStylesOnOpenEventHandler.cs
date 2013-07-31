@@ -8,7 +8,7 @@
 namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 {
     using FlorianWolters.Office.Word.Commands;
-    using FlorianWolters.Office.Word.Event.EventExceptionHandlers;
+    using FlorianWolters.Office.Word.Event.ExceptionHandlers;
     using FlorianWolters.Office.Word.Event.EventHandlers;
     using Word = Microsoft.Office.Interop.Word;
 

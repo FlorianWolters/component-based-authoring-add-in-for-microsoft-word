@@ -5,7 +5,7 @@
 // <author>Florian Wolters &lt;wolters.fl@gmail.com&gt;</author>
 //------------------------------------------------------------------------------
 
-namespace FlorianWolters.Office.Word.Event.EventExceptionHandlers
+namespace FlorianWolters.Office.Word.Event.ExceptionHandlers
 {
     using System;
     using System.Windows.Forms;
