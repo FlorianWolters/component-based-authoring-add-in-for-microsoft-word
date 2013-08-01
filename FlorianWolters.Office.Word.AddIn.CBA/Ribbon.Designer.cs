@@ -8,39 +8,82 @@
 
 namespace FlorianWolters.Office.Word.AddIn.CBA
 {
+    using System.ComponentModel;
+    using System.Windows.Forms;
+    using FlorianWolters.Office.Word.AddIn.CBA.Forms;
     using Microsoft.Office.Tools.Ribbon;
+    using NLog;
 
+    /// <content>
+    /// Contains both auto-generated source code by the Microsoft Visual Studio
+    /// Designer and essential user source code to initialize the <see
+    /// cref="Ribbon"/>.
+    /// </content>
     internal partial class Ribbon : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
         /// <summary>
-        /// Erforderliche Designervariable.
+        /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
-        public Ribbon()
-            : base(Globals.Factory.GetRibbonFactory())
+        /// <summary>
+        /// The <see cref="Logger"/> for the class <see cref="Ribbon"/>.
+        /// </summary>
+        private readonly Logger logger;
+
+        /// <summary>
+        /// The <see cref="Form"/> whose <see cref="RichTextBox"/> is utilized
+        /// as a target by <see cref="NLog"/>.
+        /// </summary>
+        private readonly Form messagesForm;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Ribbon"/> class.
+        /// </summary>
+        public Ribbon() : base(Globals.Factory.GetRibbonFactory())
         {
             this.InitializeComponent();
+
+            // ATTENTION: The first NLog logger MUST created AFTER the Form with
+            // the RichTextBox that should be utilized for logging. In addition,
+            // the Form has to be displayed for the first time BEFORE the first
+            // NLog logger is created. Sadly, there doesn't exist a Form event
+            // for that use case. The "earliest" event is "Form.Load", which
+            // occurs before a form is displayed for the first time.
+
+            // Therefore we do have to workaround the problem:
+            // 1. Make the Form invisible.
+            // 2. Toogle the visibility of the Form (to initialize its controls).
+            // 3. Restore the default opacity of the Form.
+            this.messagesForm = new MessagesForm();
+            double defaultOpacity = this.messagesForm.Opacity;
+            this.messagesForm.Opacity = 0d;
+            this.messagesForm.Visible = true;
+            this.messagesForm.Visible = false;
+            this.messagesForm.Opacity = defaultOpacity;
+
+            this.logger = LogManager.GetCurrentClassLogger();
         }
 
-        /// <summary> 
-        /// Verwendete Ressourcen bereinigen.
+        /// <summary>
+        /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">"true", wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls "false".</param>
+        /// <param name="disposing"><c>true</c> if managed resources should be disposed; otherwise, <c>false</c>.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (this.components != null))
             {
                 this.components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
-        #region Vom Komponenten-Designer generierter Code
+        #region Windows Form Designer generated code
 
         /// <summary>
-        /// Erforderliche Methode für Designerunterstützung -
-        /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -61,6 +104,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonCheckReferences = this.Factory.CreateRibbonButton();
             this.groupTools = this.Factory.CreateRibbonGroup();
             this.buttonCompareDocuments = this.Factory.CreateRibbonButton();
+            this.toggleButtonShowMessagesForm = this.Factory.CreateRibbonToggleButton();
             this.groupFields = this.Factory.CreateRibbonGroup();
             this.splitButtonFieldInsert = this.Factory.CreateRibbonSplitButton();
             this.buttonInsertEmptyField = this.Factory.CreateRibbonButton();
@@ -93,23 +137,21 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.dropDownCustomDocumentProperties = this.Factory.CreateRibbonDropDown();
             this.checkBoxHideInternal = this.Factory.CreateRibbonCheckBox();
             this.buttonCreateCustomDocumentProperty = this.Factory.CreateRibbonButton();
-            this.groupCustomXMLParts = this.Factory.CreateRibbonGroup();
             this.buttonBindCustomXMLPart = this.Factory.CreateRibbonButton();
             this.groupView = this.Factory.CreateRibbonGroup();
             this.dropDownFieldShading = this.Factory.CreateRibbonDropDown();
             this.toggleButtonShowFieldShading = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonShowFieldCodes = this.Factory.CreateRibbonToggleButton();
             this.groupMiscellaneous = this.Factory.CreateRibbonGroup();
-            this.buttonShowAboutDialog = this.Factory.CreateRibbonButton();
-            this.buttonShowHelp = this.Factory.CreateRibbonButton();
-            this.buttonShowConfigurationDialog = this.Factory.CreateRibbonButton();
+            this.buttonShowAboutForm = this.Factory.CreateRibbonButton();
+            this.buttonShowHelpForm = this.Factory.CreateRibbonButton();
+            this.buttonShowConfigurationForm = this.Factory.CreateRibbonButton();
             this.tabComponentBasedAuthoring.SuspendLayout();
             this.groupReferences.SuspendLayout();
             this.groupTools.SuspendLayout();
             this.groupFields.SuspendLayout();
             this.groupDocumentProperties.SuspendLayout();
             this.box.SuspendLayout();
-            this.groupCustomXMLParts.SuspendLayout();
             this.groupView.SuspendLayout();
             this.groupMiscellaneous.SuspendLayout();
             // 
@@ -119,7 +161,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.tabComponentBasedAuthoring.Groups.Add(this.groupTools);
             this.tabComponentBasedAuthoring.Groups.Add(this.groupFields);
             this.tabComponentBasedAuthoring.Groups.Add(this.groupDocumentProperties);
-            this.tabComponentBasedAuthoring.Groups.Add(this.groupCustomXMLParts);
             this.tabComponentBasedAuthoring.Groups.Add(this.groupView);
             this.tabComponentBasedAuthoring.Groups.Add(this.groupMiscellaneous);
             this.tabComponentBasedAuthoring.Label = "Component-Based Authoring";
@@ -229,6 +270,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // groupTools
             // 
             this.groupTools.Items.Add(this.buttonCompareDocuments);
+            this.groupTools.Items.Add(this.buttonBindCustomXMLPart);
             this.groupTools.Label = "Tools";
             this.groupTools.Name = "groupTools";
             // 
@@ -240,6 +282,15 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonCompareDocuments.OfficeImageId = "ReviewCompareMenu";
             this.buttonCompareDocuments.ShowImage = true;
             this.buttonCompareDocuments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCompareDocuments);
+            // 
+            // toggleButtonShowMessagesForm
+            // 
+            this.toggleButtonShowMessagesForm.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.toggleButtonShowMessagesForm.Label = "Show Messages";
+            this.toggleButtonShowMessagesForm.Name = "toggleButtonShowMessagesForm";
+            this.toggleButtonShowMessagesForm.OfficeImageId = "CreateReportBlankReport";
+            this.toggleButtonShowMessagesForm.ShowImage = true;
+            this.toggleButtonShowMessagesForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonShowMessagesForm);
             // 
             // groupFields
             // 
@@ -485,16 +536,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonCreateCustomDocumentProperty.ShowImage = true;
             this.buttonCreateCustomDocumentProperty.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCreateCustomDocumentProperty);
             // 
-            // groupCustomXMLParts
-            // 
-            this.groupCustomXMLParts.Items.Add(this.buttonBindCustomXMLPart);
-            this.groupCustomXMLParts.Label = "Custom XML Parts";
-            this.groupCustomXMLParts.Name = "groupCustomXMLParts";
-            // 
             // buttonBindCustomXMLPart
             // 
-            this.buttonBindCustomXMLPart.Label = "Bind to Content Control";
+            this.buttonBindCustomXMLPart.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonBindCustomXMLPart.Label = "Bind XML";
             this.buttonBindCustomXMLPart.Name = "buttonBindCustomXMLPart";
+            this.buttonBindCustomXMLPart.ShowImage = true;
             this.buttonBindCustomXMLPart.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonBindCustomXMLPart);
             // 
             // groupView
@@ -545,42 +592,43 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             // groupMiscellaneous
             // 
-            this.groupMiscellaneous.Items.Add(this.buttonShowAboutDialog);
-            this.groupMiscellaneous.Items.Add(this.buttonShowHelp);
-            this.groupMiscellaneous.Items.Add(this.buttonShowConfigurationDialog);
+            this.groupMiscellaneous.Items.Add(this.toggleButtonShowMessagesForm);
+            this.groupMiscellaneous.Items.Add(this.buttonShowAboutForm);
+            this.groupMiscellaneous.Items.Add(this.buttonShowHelpForm);
+            this.groupMiscellaneous.Items.Add(this.buttonShowConfigurationForm);
             this.groupMiscellaneous.Label = "Miscellaneous";
             this.groupMiscellaneous.Name = "groupMiscellaneous";
             // 
-            // buttonShowAboutDialog
+            // buttonShowAboutForm
             // 
-            this.buttonShowAboutDialog.Label = "About";
-            this.buttonShowAboutDialog.Name = "buttonShowAboutDialog";
-            this.buttonShowAboutDialog.OfficeImageId = "FileProperties";
-            this.buttonShowAboutDialog.ShowImage = true;
-            this.buttonShowAboutDialog.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowAboutDialog);
+            this.buttonShowAboutForm.Label = "About";
+            this.buttonShowAboutForm.Name = "buttonShowAboutForm";
+            this.buttonShowAboutForm.OfficeImageId = "FileProperties";
+            this.buttonShowAboutForm.ShowImage = true;
+            this.buttonShowAboutForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowAboutForm);
             // 
-            // buttonShowHelp
+            // buttonShowHelpForm
             // 
-            this.buttonShowHelp.Label = "Help";
-            this.buttonShowHelp.Name = "buttonShowHelp";
-            this.buttonShowHelp.OfficeImageId = "WorkflowPending";
-            this.buttonShowHelp.ShowImage = true;
-            this.buttonShowHelp.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowHelp);
+            this.buttonShowHelpForm.Label = "Help";
+            this.buttonShowHelpForm.Name = "buttonShowHelpForm";
+            this.buttonShowHelpForm.OfficeImageId = "WorkflowPending";
+            this.buttonShowHelpForm.ShowImage = true;
+            this.buttonShowHelpForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowHelpForm);
             // 
-            // buttonShowConfigurationDialog
+            // buttonShowConfigurationForm
             // 
-            this.buttonShowConfigurationDialog.Label = "Configuration";
-            this.buttonShowConfigurationDialog.Name = "buttonShowConfigurationDialog";
-            this.buttonShowConfigurationDialog.OfficeImageId = "ControlsGallery";
-            this.buttonShowConfigurationDialog.ShowImage = true;
-            this.buttonShowConfigurationDialog.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowConfigurationDialog);
+            this.buttonShowConfigurationForm.Label = "Configuration";
+            this.buttonShowConfigurationForm.Name = "buttonShowConfigurationForm";
+            this.buttonShowConfigurationForm.OfficeImageId = "ControlsGallery";
+            this.buttonShowConfigurationForm.ShowImage = true;
+            this.buttonShowConfigurationForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowConfigurationForm);
             // 
             // Ribbon
             // 
             this.Name = "Ribbon";
             this.RibbonType = "Microsoft.Word.Document";
             this.Tabs.Add(this.tabComponentBasedAuthoring);
-            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon_Load);
+            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.OnLoad);
             this.tabComponentBasedAuthoring.ResumeLayout(false);
             this.tabComponentBasedAuthoring.PerformLayout();
             this.groupReferences.ResumeLayout(false);
@@ -593,8 +641,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.groupDocumentProperties.PerformLayout();
             this.box.ResumeLayout(false);
             this.box.PerformLayout();
-            this.groupCustomXMLParts.ResumeLayout(false);
-            this.groupCustomXMLParts.PerformLayout();
             this.groupView.ResumeLayout(false);
             this.groupView.PerformLayout();
             this.groupMiscellaneous.ResumeLayout(false);
@@ -626,8 +672,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertListNumField;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertPageField;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupMiscellaneous;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonShowAboutDialog;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonShowHelp;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonShowAboutForm;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonShowHelpForm;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowFieldCodes;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowFieldShading;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDownFieldShading;
@@ -644,8 +690,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         internal RibbonToggleButton toggleButtonFieldFormatFirstCap;
         internal RibbonToggleButton toggleButtonFieldFormatUpper;
         internal RibbonToggleButton toggleButtonFieldFormatLower;
-        internal RibbonButton buttonShowConfigurationDialog;
-        internal RibbonGroup groupCustomXMLParts;
+        internal RibbonButton buttonShowConfigurationForm;
         internal RibbonButton buttonBindCustomXMLPart;
         internal RibbonGroup groupView;
         internal RibbonSplitButton splitButtonFieldFormatNumber;
@@ -660,11 +705,19 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         internal RibbonToggleButton toggleButtonFieldFormatMergeFormat;
         internal RibbonButton buttonCompareDocuments;
         internal RibbonGroup groupTools;
+        internal RibbonToggleButton toggleButtonShowMessagesForm;
     }
 
+    /// <summary>
+    /// The class <see cref="ThisRibbonCollection"/> contains all ribbons of the
+    /// application.
+    /// </summary>
     partial class ThisRibbonCollection
     {
-        internal Ribbon Ribbon1
+        /// <summary>
+        /// Gets the ribbon.
+        /// </summary>
+        internal Ribbon ThisRibbon
         {
             get { return this.GetRibbon<Ribbon>(); }
         }
