@@ -7,10 +7,11 @@
 
 namespace FlorianWolters.Office.Word.Event
 {
+    using System;
     using FlorianWolters.Office.Word.Event.EventHandlers;
     using Word = Microsoft.Office.Interop.Word;
 
-    // TODO Find a better class propertyName.
+    // TODO Find a better class name.
 
     /// <summary>
     /// The class <see cref="ApplicationEventHandler"/> allows to subscribe and
@@ -20,12 +21,19 @@ namespace FlorianWolters.Office.Word.Event
     {
         /// <summary>
         /// Initializes a new instance of the <see
-        /// cref="ApplicationEventHandler"/> class for the specified Microsoft
-        /// Office Word application.
+        /// cref="ApplicationEventHandler"/> class which allows to subscribe
+        /// <i>Event Handlers</i> to the specified Microsoft Office Word
+        /// application.
         /// </summary>
         /// <param name="application">The Microsoft Office Word application.</param>
+        /// <exception cref="ArgumentNullException">If the <c>application</c> argument is <c>null</c>.</exception>
         public ApplicationEventHandler(Word.Application application)
         {
+            if (null == application)
+            {
+                throw new ArgumentNullException("application");
+            }
+
             this.Application = application;
         }
 
