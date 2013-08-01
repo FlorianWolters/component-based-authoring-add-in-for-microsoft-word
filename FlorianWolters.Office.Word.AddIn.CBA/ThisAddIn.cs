@@ -11,7 +11,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using System.Globalization;
     using System.Threading;
     using Microsoft.Office.Tools;
-    using NLog;
     using Office = Microsoft.Office.Core;
     using Word = Microsoft.Office.Interop.Word;
 
@@ -21,11 +20,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     /// </summary>
     public partial class ThisAddIn
     {
-        /// <summary>
-        /// The logger for the class <see cref="ThisAddIn"/>.
-        /// </summary>
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         /// <summary>
         /// Returns an object that implements the <see
         /// ref="Office.IRibbonExtensibility"/> interface.
@@ -38,8 +32,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// <returns>The extension for the <i>Ribbons</i>.</returns>
         protected override Office.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            Logger.Debug(System.Reflection.MethodBase.GetCurrentMethod().Name);
-
             // We can't access the property "this.Application" here, since this
             // method is invoked before the event handler, triggered by the
             // "this.Startup" event. Therefore "this.Application" is "null" here
@@ -78,48 +70,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // Attention: "VSTO" waits for "Microsoft Word" to be ready before
             // firing the "Startup" event. Therefore the "DocumentOpen" and
             // "WindowActivate" events may have already fired.
-            Logger.Debug(System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             // Sets the culture of this Add-In (e.g. dialogs) to the culture of
-            // "Microsoft Word".
+            // the "Microsoft Word" application.
             this.ChangeCultureOfCurrentThreadToCultureOfWordApplication(
                 this.Application);
-
-            // TODO Remove comments.
-
-            // "Microsoft Word 2010" exposes events http://msdn.microsoft.com/en-us/library/microsoft.office.tools.word.document_events%28v=vs.110%29.aspx.
-
-            // Register the member method "OnDocumentChange" as the event handler for the event "DocumentChange".
-            // WORKAROUND: This ensures that every method can only registered once.
-            ////this.Application.DocumentChange -= this.OnDocumentChange;
-            ////this.Application.DocumentChange += this.OnDocumentChange;
-
-            // Register the static method "OnNewDocument" as the event handler for the event "NewDocument".
-            ////Word.ApplicationEvents2_Event wordEvent = (Word.ApplicationEvents2_Event)this.Application;
-            ////wordEvent.NewDocument += new Word.ApplicationEvents2_NewDocumentEventHandler(OnNewDocument);
-            ////wordEvent.NewDocument += new Word.ApplicationEvents2_NewDocumentEventHandler(OnNewDocument);
-
-            // Conclusion: It is possible to both register member and static methods, but the behaviour is not very intuitive:
-            // * Event handler do have different method signatures (one has to look the up on MSDN).
-            // * The registration of some event handlers requires casting since the events are implemented in different interfaces. The names are bollocks.
-
-            // Solution:
-            // Step 1:
-            //
-            // * Abstract registration of all Word Application events behind a class.
-            // * The client should use the class as follows:
-            //
-            // ApplicationEventRegistry applicationEventRegistry = new ApplicationEventRegistry(this.Application);
-            // applicationEventRegistry.SubscripeDocumentChangeEventHandler(this.OnDocumentChange).
-            // applicationEventRegistry.UnsubscripeDocumentChangeEventHandler(this.OnDocumentChange).
-            //
-            // Step 2: Define an interfaces for every Word Application event, e.g.:
-            // public interface IDocumentChangeEventHandler { void OnDocumentChange(); }
-            //
-            // Step 3: Only allow to pass methods which implement the correct interface to ApplicationEventRegistry.
-            // At the end the user does not have to remember the method signature of every event, the whole registration process is abstracted and no explicit casting to register event handlers is required.
-
-            // TODO Rethink the terminology, e.g. listener, handler, etc.
         }
 
         /// <summary>
@@ -132,7 +87,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// <param name="e">The arguments of the event.</param>
         private void ThisAddIn_Shutdown(object sender, EventArgs e)
         {
-            Logger.Debug(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            // NOOP
         }
 
         /// <summary>
@@ -145,8 +100,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         {
             int localeId = this.GetLocaleIdOfWordApplication(application);
 
-            // TODO Uncomment to test with default UI ("en" culture).
-            localeId = 1033;
+            // TODO Implement I18N:
+            // 1. Set the Localizable property of the Ribbon to true.
+            // 2. Create dedicated resource file for each culture.
+            // Uncomment to test with the "en" culture.
+            // localeId = 1033;
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(localeId);
         }
 
