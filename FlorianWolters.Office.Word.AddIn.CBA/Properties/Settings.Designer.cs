@@ -101,5 +101,65 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Properties {
                 return ((string)(this["ApplicationName"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ActivateUpdateStylesOnOpen {
+            get {
+                return ((bool)(this["ActivateUpdateStylesOnOpen"]));
+            }
+            set {
+                this["ActivateUpdateStylesOnOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RefreshCustomXMLParts {
+            get {
+                return ((bool)(this["RefreshCustomXMLParts"]));
+            }
+            set {
+                this["RefreshCustomXMLParts"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpdateAttachedTemplate {
+            get {
+                return ((bool)(this["UpdateAttachedTemplate"]));
+            }
+            set {
+                this["UpdateAttachedTemplate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool WriteCustomDocumentProperties {
+            get {
+                return ((bool)(this["WriteCustomDocumentProperties"]));
+            }
+            set {
+                this["WriteCustomDocumentProperties"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpdateFields {
+            get {
+                return ((bool)(this["UpdateFields"]));
+            }
+            set {
+                this["UpdateFields"] = value;
+            }
+        }
     }
 }
