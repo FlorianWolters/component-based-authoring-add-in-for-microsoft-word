@@ -51,7 +51,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         {
             return MessageBox.Show(
                 "Do you really want to insert the field \""
-                + this.WordDialog.Field + "\" at the current position in the Document?",
+                + this.WordDialog.Field + "\" at the current position in the document?",
                 "Question",
                 MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);

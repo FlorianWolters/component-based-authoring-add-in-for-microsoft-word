@@ -108,7 +108,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         private void ShowMessageSaveActiveDocumentFirst()
         {
             MessageBox.Show(
-                "The target Document (this Document) has to be saved first, to be able to include a reference to a source file.",
+                "The target document (this document) has to be saved first, to be able to include a reference to a source file.",
                 "Attention",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Exclamation);
@@ -117,7 +117,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         private void ShowMessageFileIdenticalDrive()
         {
             MessageBox.Show(
-                "The source Document (the Document to insert) has to be stored on the identical drive as the target Document (this Document).",
+                "The source document (the document to insert) has to be stored on the identical drive as the target Document (this Document).",
                 "Attention",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Exclamation);
