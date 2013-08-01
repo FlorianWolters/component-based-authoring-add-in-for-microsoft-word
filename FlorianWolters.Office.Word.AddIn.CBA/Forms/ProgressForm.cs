@@ -8,6 +8,7 @@
 namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
 {
     using System.Windows.Forms;
+    using FlorianWolters.Windows.Forms;
 
     /// <summary>
     /// The class <see cref="ProgressForm"/> implements a simple dialog with a
@@ -33,26 +34,17 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         }
 
         /// <summary>
-        /// Raises the <see cref="FormClosing"/> event.
+        /// Handles the <see cref="FormClosing"/> event.
         /// <para>
-        /// Prevents closing of this <see cref="ProgressForm"/> for the user.
+        /// Prevents closing of this <see cref="ProgressForm"/> by the user.
         /// </para>
         /// </summary>
+        /// <param name="sender">The source of the event.</param>
         /// <param name="e">A <see cref="FormClosingEventArgs"/> that contains
         /// the event data.</param>
-        /// <remarks>
-        /// The code has been taken from <a
-        /// href="http://stackoverflow.com/questions/14943/how-to-disable-alt-f4-closing-form">this</a>
-        /// Stack Overflow question.
-        /// </remarks>
-        protected override void OnFormClosing(FormClosingEventArgs e)
+        private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason.Equals(CloseReason.UserClosing))
-            {
-                e.Cancel = true;
-            }
-
-            base.OnFormClosing(e);
+            new FormClosingAction(e).Cancel();
         }
     }
 }
