@@ -7,7 +7,6 @@
 
 namespace FlorianWolters.Office.Word.AddIn.CBA.Properties
 {
-    using System.ComponentModel;
     using System.Configuration;
 
     /// <summary>
