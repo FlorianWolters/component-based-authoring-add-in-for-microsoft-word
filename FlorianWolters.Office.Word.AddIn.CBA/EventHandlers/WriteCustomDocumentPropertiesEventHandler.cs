@@ -9,25 +9,32 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 {
     using System;
     using FlorianWolters.Office.Word.AddIn.CBA.Properties;
+    using FlorianWolters.Office.Word.Commands;
     using FlorianWolters.Office.Word.DocumentProperties;
     using FlorianWolters.Office.Word.Event.EventHandlers;
+    using FlorianWolters.Office.Word.Event.ExceptionHandlers;
     using FlorianWolters.Office.Word.Extensions;
     using FlorianWolters.Office.Word.Fields;
     using Word = Microsoft.Office.Interop.Word;
 
     internal class WriteCustomDocumentPropertiesEventHandler
-        : IEventHandler, IDocumentBeforeSaveEventHandler, IDocumentOpenEventHandler
+        : CommandEventHandler, IDocumentBeforeSaveEventHandler, IDocumentOpenEventHandler
     {
-        private readonly Word.Application application;
-
-        public WriteCustomDocumentPropertiesEventHandler(Word.Application application)
+        /// <summary>
+        /// Initializes a new instance of the <see
+        /// cref="WriteCustomDocumentPropertiesEventHandler"/> class.
+        /// </summary>
+        /// <param name="command">The <i>Command</i> to execute with this <i>Event Handler</i>.</param>
+        /// <param name="exceptionHandler">The <i>Event Handler</i> used to handle exceptions.</param>
+        public WriteCustomDocumentPropertiesEventHandler(
+            ICommand command, IExceptionHandler exceptionHandler)
+            : base(command, exceptionHandler)
         {
-            this.application = application;
         }
 
         public void OnDocumentOpen(Word.Document document)
         {
-            this.SetLastDirectoryPathCustomDocumentProperty(document);
+            this.TryExecute();
         }
 
         public void OnDocumentBeforeSave(Word.Document document, ref bool saveAsUI, ref bool cancel)
@@ -36,24 +43,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             // determine the directory path.
             if (document.IsSaved())
             {
-                this.SetLastDirectoryPathCustomDocumentProperty(document);
+                this.TryExecute();
             }
-        }
-
-        private void SetLastDirectoryPathCustomDocumentProperty(Word.Document document)
-        {
-            if (!document.IsSaved())
-            {
-                throw new Exception("The Document must be saved, to determine its directory path.");
-            }
-
-            string propertyName = Settings.Default.DocPropertyNameForLastDirectoryPath;
-
-            // TODO Fix violation of IoC
-            string propertyValue = new FieldFilePathTranslator().Encode(document.Path);
-
-            new CustomDocumentPropertyWriter(document)
-                .Set(propertyName, propertyValue);
         }
     }
 }

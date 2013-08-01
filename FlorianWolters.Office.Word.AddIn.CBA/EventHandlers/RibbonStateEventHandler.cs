@@ -8,7 +8,6 @@
 namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 {
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using FlorianWolters.Office.Word.Event.EventHandlers;
     using FlorianWolters.Office.Word.Extensions;
@@ -42,12 +41,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
         {
             if (this.application.HasOpenDocuments())
             {
+                this.ribbon.buttonCreateCustomDocumentProperty.Enabled = true;
+                this.ribbon.checkBoxHideInternal.Enabled = true;
+                this.ribbon.dropDownCustomDocumentProperties.Enabled = true;
                 this.ribbon.splitButtonFieldInsert.Enabled = true;
                 this.ribbon.splitButtonFieldFormat.Enabled = true;
-                this.ribbon.dropDownCustomDocumentProperties.Enabled = true;
-                this.ribbon.checkBoxHideInternal.Enabled = true;
                 this.customDocumentPropertiesDropDown.Update(this.ribbon.checkBoxHideInternal.Enabled);
-                this.ribbon.buttonCreateCustomDocumentProperty.Enabled = true;
                 this.UpdateDropDownFieldShading();
                 this.UpdateToggleButtonShowFieldCodes();
                 this.UpdateToggleButtonShowFieldShading();
@@ -61,6 +60,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 bool documentActive = false;
                 this.customDocumentPropertiesDropDown.Clear();
 
+                
                 this.ribbon.buttonBindCustomXMLPart.Enabled = documentActive;
                 this.ribbon.buttonCheckReferences.Enabled = documentActive;
                 this.ribbon.buttonOpenSourceFile.Enabled = documentActive;

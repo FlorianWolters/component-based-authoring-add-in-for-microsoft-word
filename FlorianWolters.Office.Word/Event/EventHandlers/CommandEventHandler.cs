@@ -21,7 +21,7 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
         /// <summary>
         /// The exception handler of this <see cref="CommandEventHandler"/>.
         /// </summary>
-        protected readonly IEventExceptionHandler ExceptionHandler;
+        protected readonly IExceptionHandler ExceptionHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandEventHandler"/>
@@ -32,7 +32,7 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
         /// <param name="exceptionHandler">The exception handler.</param>
         protected CommandEventHandler(
             ICommand command,
-            IEventExceptionHandler exceptionHandler)
+            IExceptionHandler exceptionHandler)
         {
             this.Command = command;
             this.ExceptionHandler = exceptionHandler;

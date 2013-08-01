@@ -8,8 +8,8 @@
 namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 {
     using FlorianWolters.Office.Word.Commands;
-    using FlorianWolters.Office.Word.Event.ExceptionHandlers;
     using FlorianWolters.Office.Word.Event.EventHandlers;
+    using FlorianWolters.Office.Word.Event.ExceptionHandlers;
     using Word = Microsoft.Office.Interop.Word;
 
     internal class UpdateAttachedTemplateEventHandler
@@ -24,7 +24,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
         /// <param name="command">The <i>Command</i> to execute with this <i>Event Handler</i>.</param>
         /// <param name="exceptionHandler">The <i>Event Handler</i> used to handle exceptions.</param>
         public UpdateAttachedTemplateEventHandler(
-            ICommand command, IEventExceptionHandler exceptionHandler)
+            ICommand command, IExceptionHandler exceptionHandler)
             : base(command, exceptionHandler)
         {
         }
