@@ -132,7 +132,7 @@
     <value>45, 13</value>
   </data>
   <data name="labelVersion.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="labelVersion.Text" xml:space="preserve">
     <value>Version:</value>
@@ -162,7 +162,7 @@
     <value>41, 13</value>
   </data>
   <data name="labelAuthor.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="labelAuthor.Text" xml:space="preserve">
     <value>Author:</value>
@@ -192,7 +192,7 @@
     <value>38, 13</value>
   </data>
   <data name="labelName.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="labelName.Text" xml:space="preserve">
     <value>Name:</value>
@@ -222,7 +222,7 @@
     <value>58, 13</value>
   </data>
   <data name="labelContribute.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="labelContribute.Text" xml:space="preserve">
     <value>Contribute:</value>
@@ -239,6 +239,36 @@
   <data name="&gt;&gt;labelContribute.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <metadata name="labelDescription.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="labelDescription.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 94</value>
+  </data>
+  <data name="labelDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 13</value>
+  </data>
+  <data name="labelDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="labelDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="&gt;&gt;labelDescription.Name" xml:space="preserve">
+    <value>labelDescription</value>
+  </data>
+  <data name="&gt;&gt;labelDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelDescription.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;labelDescription.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="textBoxAuthor.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 64</value>
   </data>
@@ -246,7 +276,7 @@
     <value>200, 20</value>
   </data>
   <data name="textBoxAuthor.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;textBoxAuthor.Name" xml:space="preserve">
     <value>textBoxAuthor</value>
@@ -267,7 +297,7 @@
     <value>200, 20</value>
   </data>
   <data name="textBoxVersion.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;textBoxVersion.Name" xml:space="preserve">
     <value>textBoxVersion</value>
@@ -340,7 +370,7 @@
     <value>200, 60</value>
   </data>
   <data name="textBoxDescription.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;textBoxDescription.Name" xml:space="preserve">
     <value>textBoxDescription</value>
@@ -353,36 +383,6 @@
   </data>
   <data name="&gt;&gt;textBoxDescription.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <metadata name="labelDescription.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
-  <data name="labelDescription.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 94</value>
-  </data>
-  <data name="labelDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 13</value>
-  </data>
-  <data name="labelDescription.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="labelDescription.Text" xml:space="preserve">
-    <value>Description:</value>
-  </data>
-  <data name="&gt;&gt;labelDescription.Name" xml:space="preserve">
-    <value>labelDescription</value>
-  </data>
-  <data name="&gt;&gt;labelDescription.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelDescription.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;labelDescription.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

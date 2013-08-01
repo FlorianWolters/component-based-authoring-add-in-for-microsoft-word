@@ -81,6 +81,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
             resources.ApplyResources(labelContribute, "labelContribute");
             labelContribute.Name = "labelContribute";
             // 
+            // labelDescription
+            // 
+            resources.ApplyResources(labelDescription, "labelDescription");
+            labelDescription.Name = "labelDescription";
+            // 
             // textBoxAuthor
             // 
             resources.ApplyResources(this.textBoxAuthor, "textBoxAuthor");
@@ -101,7 +106,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
             // 
             // pictureBoxHostingService
             // 
-            this.pictureBoxHostingService.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBoxHostingService.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxHostingService.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBoxHostingService.Image = global::FlorianWolters.Office.Word.AddIn.CBA.Properties.Resources.GitHub_Logo;
             resources.ApplyResources(this.pictureBoxHostingService, "pictureBoxHostingService");
@@ -115,11 +120,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
             resources.ApplyResources(this.textBoxDescription, "textBoxDescription");
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.ReadOnly = true;
-            // 
-            // labelDescription
-            // 
-            resources.ApplyResources(labelDescription, "labelDescription");
-            labelDescription.Name = "labelDescription";
             // 
             // AboutForm
             // 
