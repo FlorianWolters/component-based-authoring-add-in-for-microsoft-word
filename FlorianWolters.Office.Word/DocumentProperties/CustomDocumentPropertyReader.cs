@@ -129,7 +129,7 @@ namespace FlorianWolters.Office.Word.DocumentProperties
             if (!this.Exists(propertyName))
             {
                 throw new UnknownCustomDocumentPropertyException(
-                    "The custom Document property \"" + propertyName + "\" does not exist in the Microsoft Word Document.");
+                    "The custom document property \"" + propertyName + "\" does not exist in the Microsoft Word document.");
             }
 
             return this.properties[propertyName].Value;
