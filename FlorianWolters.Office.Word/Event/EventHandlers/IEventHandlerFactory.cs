@@ -7,9 +7,12 @@
 
 namespace FlorianWolters.Office.Word.Event.EventHandlers
 {
+    using FlorianWolters.Office.Word.Event.ExceptionHandlers;
+
     public interface IEventHandlerFactory
     {
         IEventHandler RegisterEventHandler(
+            IExceptionHandler exceptionHandler,
             ApplicationEventHandler applicationEventHandler);
     }
 }
