@@ -7,6 +7,7 @@
 
 namespace FlorianWolters.Office.Word.Commands
 {
+    using System;
     using NLog;
     using Word = Microsoft.Office.Interop.Word;
 
@@ -17,12 +18,7 @@ namespace FlorianWolters.Office.Word.Commands
     public abstract class DocumentCommand : ICommand
     {
         /// <summary>
-        /// The logger for the class <see cref="DocumentCommand"/>.
-        /// </summary>
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        /// <summary>
-        /// The Microsoft Word Document of this Command.
+        /// The Microsoft Word document of this <i>Command</i>.
         /// </summary>
         protected readonly Word.Document Document;
 
@@ -31,8 +27,14 @@ namespace FlorianWolters.Office.Word.Commands
         /// class with the specified <i>Receiver</i>.
         /// </summary>
         /// <param name="document">The <i>Receiver</i> of the <i>Command</i>.</param>
+        /// <exception cref="ArgumentNullException">If the <c>application</c> argument is <c>null</c>.</exception>
         protected DocumentCommand(Word.Document document)
         {
+            if (null == document)
+            {
+                throw new ArgumentNullException("document");
+            }
+
             this.Document = document;
         }
 

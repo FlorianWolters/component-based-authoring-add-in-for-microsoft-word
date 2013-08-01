@@ -7,7 +7,7 @@
 
 namespace FlorianWolters.Office.Word.Commands
 {
-    using NLog;
+    using System;
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
@@ -17,22 +17,23 @@ namespace FlorianWolters.Office.Word.Commands
     public abstract class ApplicationCommand : ICommand
     {
         /// <summary>
-        /// The logger for the class <see cref="ApplicationCommand"/>.
-        /// </summary>
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        /// <summary>
-        /// The Microsoft Word Application of this Command.
+        /// The Microsoft Word Application of this <i>Command</i>.
         /// </summary>
         protected readonly Word.Application Application;
 
         /// <summary>
-        /// Initializes a new instance of the <see
-        /// cref="ApplicationCommand"/> class with the specified <i>Receiver</i>.
+        /// Initializes a new instance of the <see cref="ApplicationCommand"/>
+        /// class with the specified <i>Receiver</i>.
         /// </summary>
         /// <param name="application">The <i>Receiver</i> of the <i>Command</i>.</param>
+        /// <exception cref="ArgumentNullException">If the <c>application</c> argument is <c>null</c>.</exception>
         protected ApplicationCommand(Word.Application application)
         {
+            if (null == application)
+            {
+                throw new ArgumentNullException("application");
+            }
+
             this.Application = application;
         }
 
