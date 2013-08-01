@@ -14,11 +14,20 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-        
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabPageAutomatism;
+        private System.Windows.Forms.TabPage tabPageFileNames;
+        private System.Windows.Forms.CheckBox checkBoxWriteCustomDocumentProperties;
+        private System.Windows.Forms.CheckBox checkBoxUpdateFields;
+        private System.Windows.Forms.CheckBox checkBoxUpdateAttachedTemplate;
+        private System.Windows.Forms.CheckBox checkBoxRefreshCustomXMLParts;
+        private System.Windows.Forms.CheckBox checkBoxUpdateStylesOnOpen;
         private System.Windows.Forms.TextBox textBoxGraphicsDirectoryName;
         private System.Windows.Forms.TextBox textBoxXMLDirectoryName;
         private System.Windows.Forms.TextBox textBoxWordTemplateFilePrefix;
         private System.Windows.Forms.TextBox textBoxWordTemplateFileExtensions;
+        private System.Windows.Forms.Button buttonOK;
+        private System.Windows.Forms.Button buttonCancel;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -50,97 +59,228 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
             this.textBoxWordTemplateFilePrefix = new System.Windows.Forms.TextBox();
             this.textBoxWordTemplateFileExtensions = new System.Windows.Forms.TextBox();
             this.textBoxGraphicsDirectoryName = new System.Windows.Forms.TextBox();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabPageAutomatism = new System.Windows.Forms.TabPage();
+            this.checkBoxWriteCustomDocumentProperties = new System.Windows.Forms.CheckBox();
+            this.checkBoxUpdateFields = new System.Windows.Forms.CheckBox();
+            this.checkBoxUpdateAttachedTemplate = new System.Windows.Forms.CheckBox();
+            this.checkBoxRefreshCustomXMLParts = new System.Windows.Forms.CheckBox();
+            this.checkBoxUpdateStylesOnOpen = new System.Windows.Forms.CheckBox();
+            this.tabPageFileNames = new System.Windows.Forms.TabPage();
+            this.buttonOK = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
             labelTemplateFileName = new System.Windows.Forms.Label();
             labelXMLDirectoryName = new System.Windows.Forms.Label();
             labelTemplateFileExtensions = new System.Windows.Forms.Label();
             labelGraphicsDirectoryName = new System.Windows.Forms.Label();
+            this.tabControl.SuspendLayout();
+            this.tabPageAutomatism.SuspendLayout();
+            this.tabPageFileNames.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelTemplateFileName
             // 
             labelTemplateFileName.AutoSize = true;
-            labelTemplateFileName.Location = new System.Drawing.Point(67, 69);
+            labelTemplateFileName.Location = new System.Drawing.Point(35, 61);
             labelTemplateFileName.Name = "labelTemplateFileName";
             labelTemplateFileName.Size = new System.Drawing.Size(99, 13);
-            labelTemplateFileName.TabIndex = 2;
+            labelTemplateFileName.TabIndex = 4;
             labelTemplateFileName.Text = "Template Filename:";
-            // 
-            // textBoxXMLDirectoryName
-            // 
-            this.textBoxXMLDirectoryName.Location = new System.Drawing.Point(172, 40);
-            this.textBoxXMLDirectoryName.Name = "textBoxXMLDirectoryName";
-            this.textBoxXMLDirectoryName.Size = new System.Drawing.Size(100, 20);
-            this.textBoxXMLDirectoryName.TabIndex = 3;
             // 
             // labelXMLDirectoryName
             // 
             labelXMLDirectoryName.AutoSize = true;
-            labelXMLDirectoryName.Location = new System.Drawing.Point(58, 43);
+            labelXMLDirectoryName.Location = new System.Drawing.Point(26, 35);
             labelXMLDirectoryName.Name = "labelXMLDirectoryName";
             labelXMLDirectoryName.Size = new System.Drawing.Size(108, 13);
-            labelXMLDirectoryName.TabIndex = 4;
+            labelXMLDirectoryName.TabIndex = 2;
             labelXMLDirectoryName.Text = "XML Directory Name:";
-            // 
-            // textBoxWordTemplateFilePrefix
-            // 
-            this.textBoxWordTemplateFilePrefix.Location = new System.Drawing.Point(172, 66);
-            this.textBoxWordTemplateFilePrefix.Name = "textBoxWordTemplateFilePrefix";
-            this.textBoxWordTemplateFilePrefix.Size = new System.Drawing.Size(100, 20);
-            this.textBoxWordTemplateFilePrefix.TabIndex = 5;
             // 
             // labelTemplateFileExtensions
             // 
             labelTemplateFileExtensions.AutoSize = true;
-            labelTemplateFileExtensions.Location = new System.Drawing.Point(39, 95);
+            labelTemplateFileExtensions.Location = new System.Drawing.Point(7, 87);
             labelTemplateFileExtensions.Name = "labelTemplateFileExtensions";
             labelTemplateFileExtensions.Size = new System.Drawing.Size(127, 13);
             labelTemplateFileExtensions.TabIndex = 6;
             labelTemplateFileExtensions.Text = "Template File Extensions:";
             // 
-            // textBoxWordTemplateFileExtensions
-            // 
-            this.textBoxWordTemplateFileExtensions.Location = new System.Drawing.Point(172, 92);
-            this.textBoxWordTemplateFileExtensions.Name = "textBoxWordTemplateFileExtensions";
-            this.textBoxWordTemplateFileExtensions.Size = new System.Drawing.Size(100, 20);
-            this.textBoxWordTemplateFileExtensions.TabIndex = 7;
-            // 
             // labelGraphicsDirectoryName
             // 
             labelGraphicsDirectoryName.AutoSize = true;
-            labelGraphicsDirectoryName.Location = new System.Drawing.Point(38, 15);
+            labelGraphicsDirectoryName.Location = new System.Drawing.Point(6, 9);
             labelGraphicsDirectoryName.Name = "labelGraphicsDirectoryName";
             labelGraphicsDirectoryName.Size = new System.Drawing.Size(128, 13);
-            labelGraphicsDirectoryName.TabIndex = 8;
+            labelGraphicsDirectoryName.TabIndex = 0;
             labelGraphicsDirectoryName.Text = "Graphics Directory Name:";
+            // 
+            // textBoxXMLDirectoryName
+            // 
+            this.textBoxXMLDirectoryName.Location = new System.Drawing.Point(146, 32);
+            this.textBoxXMLDirectoryName.Name = "textBoxXMLDirectoryName";
+            this.textBoxXMLDirectoryName.Size = new System.Drawing.Size(120, 20);
+            this.textBoxXMLDirectoryName.TabIndex = 3;
+            // 
+            // textBoxWordTemplateFilePrefix
+            // 
+            this.textBoxWordTemplateFilePrefix.Location = new System.Drawing.Point(146, 58);
+            this.textBoxWordTemplateFilePrefix.Name = "textBoxWordTemplateFilePrefix";
+            this.textBoxWordTemplateFilePrefix.Size = new System.Drawing.Size(120, 20);
+            this.textBoxWordTemplateFilePrefix.TabIndex = 5;
+            // 
+            // textBoxWordTemplateFileExtensions
+            // 
+            this.textBoxWordTemplateFileExtensions.Location = new System.Drawing.Point(146, 84);
+            this.textBoxWordTemplateFileExtensions.Name = "textBoxWordTemplateFileExtensions";
+            this.textBoxWordTemplateFileExtensions.Size = new System.Drawing.Size(120, 20);
+            this.textBoxWordTemplateFileExtensions.TabIndex = 7;
             // 
             // textBoxGraphicsDirectoryName
             // 
-            this.textBoxGraphicsDirectoryName.Location = new System.Drawing.Point(172, 12);
+            this.textBoxGraphicsDirectoryName.Location = new System.Drawing.Point(146, 6);
             this.textBoxGraphicsDirectoryName.Name = "textBoxGraphicsDirectoryName";
-            this.textBoxGraphicsDirectoryName.Size = new System.Drawing.Size(100, 20);
-            this.textBoxGraphicsDirectoryName.TabIndex = 9;
+            this.textBoxGraphicsDirectoryName.Size = new System.Drawing.Size(120, 20);
+            this.textBoxGraphicsDirectoryName.TabIndex = 1;
+            // 
+            // tabControl
+            // 
+            this.tabControl.Controls.Add(this.tabPageAutomatism);
+            this.tabControl.Controls.Add(this.tabPageFileNames);
+            this.tabControl.Location = new System.Drawing.Point(12, 12);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(280, 146);
+            this.tabControl.TabIndex = 10;
+            // 
+            // tabPageAutomatism
+            // 
+            this.tabPageAutomatism.Controls.Add(this.checkBoxWriteCustomDocumentProperties);
+            this.tabPageAutomatism.Controls.Add(this.checkBoxUpdateFields);
+            this.tabPageAutomatism.Controls.Add(this.checkBoxUpdateAttachedTemplate);
+            this.tabPageAutomatism.Controls.Add(this.checkBoxRefreshCustomXMLParts);
+            this.tabPageAutomatism.Controls.Add(this.checkBoxUpdateStylesOnOpen);
+            this.tabPageAutomatism.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAutomatism.Name = "tabPageAutomatism";
+            this.tabPageAutomatism.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageAutomatism.Size = new System.Drawing.Size(272, 120);
+            this.tabPageAutomatism.TabIndex = 0;
+            this.tabPageAutomatism.Text = "Automatism";
+            this.tabPageAutomatism.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxWriteCustomDocumentProperties
+            // 
+            this.checkBoxWriteCustomDocumentProperties.AutoSize = true;
+            this.checkBoxWriteCustomDocumentProperties.Location = new System.Drawing.Point(6, 98);
+            this.checkBoxWriteCustomDocumentProperties.Name = "checkBoxWriteCustomDocumentProperties";
+            this.checkBoxWriteCustomDocumentProperties.Size = new System.Drawing.Size(191, 17);
+            this.checkBoxWriteCustomDocumentProperties.TabIndex = 4;
+            this.checkBoxWriteCustomDocumentProperties.Text = "Write Custom Document Properties";
+            this.checkBoxWriteCustomDocumentProperties.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxUpdateFields
+            // 
+            this.checkBoxUpdateFields.AutoSize = true;
+            this.checkBoxUpdateFields.Location = new System.Drawing.Point(6, 75);
+            this.checkBoxUpdateFields.Name = "checkBoxUpdateFields";
+            this.checkBoxUpdateFields.Size = new System.Drawing.Size(91, 17);
+            this.checkBoxUpdateFields.TabIndex = 3;
+            this.checkBoxUpdateFields.Text = "Update Fields";
+            this.checkBoxUpdateFields.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxUpdateAttachedTemplate
+            // 
+            this.checkBoxUpdateAttachedTemplate.AutoSize = true;
+            this.checkBoxUpdateAttachedTemplate.Location = new System.Drawing.Point(6, 52);
+            this.checkBoxUpdateAttachedTemplate.Name = "checkBoxUpdateAttachedTemplate";
+            this.checkBoxUpdateAttachedTemplate.Size = new System.Drawing.Size(154, 17);
+            this.checkBoxUpdateAttachedTemplate.TabIndex = 2;
+            this.checkBoxUpdateAttachedTemplate.Text = "Update Attached Template";
+            this.checkBoxUpdateAttachedTemplate.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxRefreshCustomXMLParts
+            // 
+            this.checkBoxRefreshCustomXMLParts.AutoSize = true;
+            this.checkBoxRefreshCustomXMLParts.Location = new System.Drawing.Point(6, 29);
+            this.checkBoxRefreshCustomXMLParts.Name = "checkBoxRefreshCustomXMLParts";
+            this.checkBoxRefreshCustomXMLParts.Size = new System.Drawing.Size(153, 17);
+            this.checkBoxRefreshCustomXMLParts.TabIndex = 1;
+            this.checkBoxRefreshCustomXMLParts.Text = "Refresh Custom XML Parts";
+            this.checkBoxRefreshCustomXMLParts.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxUpdateStylesOnOpen
+            // 
+            this.checkBoxUpdateStylesOnOpen.AutoSize = true;
+            this.checkBoxUpdateStylesOnOpen.Location = new System.Drawing.Point(6, 6);
+            this.checkBoxUpdateStylesOnOpen.Name = "checkBoxUpdateStylesOnOpen";
+            this.checkBoxUpdateStylesOnOpen.Size = new System.Drawing.Size(185, 17);
+            this.checkBoxUpdateStylesOnOpen.TabIndex = 0;
+            this.checkBoxUpdateStylesOnOpen.Text = "Activate \"Update Style On Open\"";
+            this.checkBoxUpdateStylesOnOpen.UseVisualStyleBackColor = true;
+            // 
+            // tabPageFileNames
+            // 
+            this.tabPageFileNames.Controls.Add(this.textBoxGraphicsDirectoryName);
+            this.tabPageFileNames.Controls.Add(labelTemplateFileName);
+            this.tabPageFileNames.Controls.Add(labelGraphicsDirectoryName);
+            this.tabPageFileNames.Controls.Add(this.textBoxXMLDirectoryName);
+            this.tabPageFileNames.Controls.Add(this.textBoxWordTemplateFileExtensions);
+            this.tabPageFileNames.Controls.Add(labelXMLDirectoryName);
+            this.tabPageFileNames.Controls.Add(labelTemplateFileExtensions);
+            this.tabPageFileNames.Controls.Add(this.textBoxWordTemplateFilePrefix);
+            this.tabPageFileNames.Location = new System.Drawing.Point(4, 22);
+            this.tabPageFileNames.Name = "tabPageFileNames";
+            this.tabPageFileNames.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageFileNames.Size = new System.Drawing.Size(272, 120);
+            this.tabPageFileNames.TabIndex = 1;
+            this.tabPageFileNames.Text = "File Names";
+            this.tabPageFileNames.UseVisualStyleBackColor = true;
+            // 
+            // buttonOK
+            // 
+            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonOK.Location = new System.Drawing.Point(136, 164);
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.TabIndex = 11;
+            this.buttonOK.Text = "OK";
+            this.buttonOK.UseVisualStyleBackColor = true;
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(217, 164);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 12;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
             // 
             // ConfigurationForm
             // 
+            this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 122);
-            this.Controls.Add(this.textBoxGraphicsDirectoryName);
-            this.Controls.Add(labelGraphicsDirectoryName);
-            this.Controls.Add(this.textBoxWordTemplateFileExtensions);
-            this.Controls.Add(labelTemplateFileExtensions);
-            this.Controls.Add(this.textBoxWordTemplateFilePrefix);
-            this.Controls.Add(labelXMLDirectoryName);
-            this.Controls.Add(this.textBoxXMLDirectoryName);
-            this.Controls.Add(labelTemplateFileName);
+            this.CancelButton = this.buttonCancel;
+            this.ClientSize = new System.Drawing.Size(304, 201);
+            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.buttonOK);
+            this.Controls.Add(this.tabControl);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ConfigurationForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Configuration";
+            this.Text = "Settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
+            this.Load += new System.EventHandler(this.OnLoad);
+            this.tabControl.ResumeLayout(false);
+            this.tabPageAutomatism.ResumeLayout(false);
+            this.tabPageAutomatism.PerformLayout();
+            this.tabPageFileNames.ResumeLayout(false);
+            this.tabPageFileNames.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
+
         }
 
         #endregion
