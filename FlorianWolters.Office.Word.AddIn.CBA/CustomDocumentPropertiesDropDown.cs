@@ -26,6 +26,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             RibbonDropDown dropDown,
             CustomDocumentPropertyReader customDocumentPropertyReader)
         {
+            // TODO Validate parameters.
             this.application = application;
             this.ribbonFactory = ribbonFactory;
             this.dropDown = dropDown;
@@ -63,9 +64,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             string label = customProperty.Name;
             string superTip = "Select to insert the value ('"
                 + customProperty.Value
-                + "') of the custom Document property with the propertyName '"
+                + "') of the custom document property with the name '"
                 + customProperty.Name
-                + "' at the current position into the Document.";
+                + "' at the current position into the document.";
             this.AddItemToCustomPropertiesDropDownList(label, superTip);
         }
 
