@@ -5,7 +5,7 @@
 // <author>Florian Wolters &lt;wolters.fl@gmail.com&gt;</author>
 //------------------------------------------------------------------------------
 
-namespace FlorianWolters.Office.Word.AddIn.ComponentAddIn.Commands
+namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
 {
     using System.IO;
     using FlorianWolters.Office.Word.AddIn.CBA.Properties;
@@ -13,9 +13,8 @@ namespace FlorianWolters.Office.Word.AddIn.ComponentAddIn.Commands
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The <i>Command</i> <see cref="UpdateAttachedTemplateCommand"/>
-    /// automatically sets the document template file of the active document in
-    /// a Microsoft Word application.
+    /// The <i>Command</i> <see cref="UpdateAttachedTemplateCommand"/> sets the
+    /// attached Microsoft Word template for the active Microsoft Word document.
     /// <para>
     /// The <i>Command</i> starts to search in the directory where the the
     /// active document is saved, and ends at the root of the drive, e.g.
@@ -24,8 +23,14 @@ namespace FlorianWolters.Office.Word.AddIn.ComponentAddIn.Commands
     /// </summary>
     internal class UpdateAttachedTemplateCommand : ApplicationCommand
     {
+        /// <summary>
+        /// The file name (without a file extension) to search for.
+        /// </summary>
         private readonly string fileNameWithoutExtension;
 
+        /// <summary>
+        /// The file extensions to search for.
+        /// </summary>
         private readonly string[] fileExtensions;
 
         /// <summary>
@@ -49,14 +54,24 @@ namespace FlorianWolters.Office.Word.AddIn.ComponentAddIn.Commands
         {
             Word.Document document = this.Application.ActiveDocument;
 
-            if (string.Empty == document.Path)
+            if (null == document || string.Empty == document.Path)
             {
                 return;
             }
 
-            string templateFileName = this.RetrieveDocumentTemplateFilePath(document.Path);
-            document.set_AttachedTemplate(templateFileName);
-            document.UpdateStyles();
+            try
+            {
+                string templateFileName = this.RetrieveDocumentTemplateFilePath(document.Path);
+                document.set_AttachedTemplate(templateFileName);
+            }
+            catch (FileNotFoundException)
+            {
+                throw new TemplateNotFoundException(
+                    "Unable to locate a Word Template with the file name \""
+                    + this.fileNameWithoutExtension + ".[" + string.Join("|", this.fileExtensions)
+                    + "]\" in the same directory as the Word document \""
+                    + document.FullName + "\" (or in one of its parent directories).");
+            }
         }
 
         private string RetrieveDocumentTemplateFilePath(string directoryPath)
@@ -79,12 +94,11 @@ namespace FlorianWolters.Office.Word.AddIn.ComponentAddIn.Commands
             if (!found)
             {
                 DirectoryInfo directoryInfo = Directory.GetParent(directoryPath);
+
                 if (null == directoryInfo)
                 {
-                    throw new FileNotFoundException(
-                        "Unable to locate a Word Template file with the filename \""
-                        + this.fileNameWithoutExtension + ".[" + string.Join("|", this.fileExtensions)
-                        + "]\" in the directory of the Document (or one of its parent directories).");
+                    // We reached the root directory of the file system, e.g. "D:".
+                    throw new FileNotFoundException();
                 }
 
                 result = this.RetrieveDocumentTemplateFilePath(directoryInfo.FullName);

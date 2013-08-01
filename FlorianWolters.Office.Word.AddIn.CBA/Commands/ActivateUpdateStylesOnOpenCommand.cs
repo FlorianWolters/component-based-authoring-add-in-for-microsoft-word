@@ -10,6 +10,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
     using FlorianWolters.Office.Word.Commands;
     using Word = Microsoft.Office.Interop.Word;
 
+    /// <summary>
+    /// The <i>Command</i> <see cref="ActivateUpdateStylesOnOpenCommand"/>
+    /// activates the option for the active Microsoft Word document which
+    /// determines if the styles of the active Microsoft Word document are
+    /// updated to match the styles in the attached Microsoft Word template.
+    /// </summary>
     internal class ActivateUpdateStylesOnOpenCommand : ApplicationCommand
     {
         /// <summary>
@@ -30,7 +36,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
         {
             Word.Document document = this.Application.ActiveDocument;
 
-            if (string.Empty != document.Path && !document.UpdateStylesOnOpen)
+            if (null != document && !document.UpdateStylesOnOpen)
             {
                 document.UpdateStylesOnOpen = true;
             }
