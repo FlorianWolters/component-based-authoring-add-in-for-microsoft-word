@@ -48,11 +48,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         private const string ReadMeFileName = "README.md";
 
         /// <summary>
-        /// The Add-In, this <see cref="Ribbon"/> is part of.
-        /// </summary>
-        private ThisAddIn addIn;
-
-        /// <summary>
         /// The <see cref="Word.Application"/>, this <see cref="Ribbon"/> is
         /// running in.
         /// </summary>
@@ -102,11 +97,13 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // handler for the "Load" event of the "Ribbon" is invoked.
             
             // TODO Remove member variable if unused.
-            this.addIn = Globals.ThisAddIn;
-            this.application = this.addIn.Application;
+            this.application = Globals.ThisAddIn.Application;
+
+            // TODO Validate configuration options.
+            Settings settings = Settings.Default;
 
             AssemblyInfo assemblyInfo = new AssemblyInfo(Assembly.GetExecutingAssembly());
-            logger.Info("Loaded " + Settings.Default.ApplicationName + " v" + assemblyInfo.Version.ToString() + ".");
+            this.logger.Info("Loaded " + Settings.Default.ApplicationName + " v" + assemblyInfo.Version.ToString() + ".");
 
             CustomDocumentPropertyReader customDocumentPropertyReader = new CustomDocumentPropertyReader();
             this.FieldFactory = new FieldFactory(this.application, customDocumentPropertyReader);
@@ -115,8 +112,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 this.Factory,
                 this.dropDownCustomDocumentProperties,
                 customDocumentPropertyReader);
-            this.InitializeForms(assemblyInfo);
-            this.RegisterEventHandler();
+
+            this.InitializeForms(settings, assemblyInfo);
+            this.RegisterEventHandler(settings);
         }
 
         /// <summary>
@@ -133,13 +131,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// Initializes the forms used by this <see cref="Ribbon"/>.
         /// </summary>
         /// <param name="assemblyInfo"></param>
-        private void InitializeForms(AssemblyInfo assemblyInfo)
+        private void InitializeForms(Settings settings, AssemblyInfo assemblyInfo)
         {
-        // TODO Validate configuration options.
-            Settings defaultSettings = Settings.Default;
-
-            this.ConfigurationDialog = new ConfigurationForm(defaultSettings);
-            this.AboutDialog = new AboutForm(assemblyInfo, defaultSettings);
+            this.ConfigurationDialog = new ConfigurationForm(settings);
+            this.AboutDialog = new AboutForm(assemblyInfo, settings);
             this.InitializeHelpDialog(assemblyInfo);
             this.CustomXMLPartsDialog = new CustomXMLPartsForm();
         }
@@ -165,7 +160,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// <summary>
         /// Registers all <i>Event Handlers</i> for this <see cref="Ribbon"/>.
         /// </summary>
-        private void RegisterEventHandler()
+        private void RegisterEventHandler(Settings settings)
         {
             IExceptionHandler eventExceptionHandler = new LoggerExceptionHandler(this.logger);
 
@@ -173,12 +168,34 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // If we would work with Word.Document instead, we would always have to make sure that the reference to the document is up-to-date.
             ApplicationEventHandler applicationEventHandler = new ApplicationEventHandler(this.application);
 
-            // TODO Allow configuration of event handlers.
-            ActivateUpdateStylesOnOpenFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
-            RefreshCustomXMLPartsFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
-            UpdateAttachedTemplateFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
-            UpdateFieldsFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
-            WriteCustomDocumentPropertiesFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+            // TODO Improve registration of the event handlers in dependency of the settings.
+
+            if (settings.ActivateUpdateStylesOnOpen)
+            {
+                ActivateUpdateStylesOnOpenFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+            }
+
+            if (settings.RefreshCustomXMLParts)
+            {
+                RefreshCustomXMLPartsFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+            }
+
+            if (settings.UpdateAttachedTemplate)
+            {
+                UpdateAttachedTemplateFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+
+            }
+
+            if (settings.UpdateFields)
+            {
+                UpdateFieldsFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+            }
+
+
+            if (settings.WriteCustomDocumentProperties)
+            {
+                WriteCustomDocumentPropertiesFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+            }
 
             // The RibbonStateEventHandler ensures that the state of the UI of this Ribbon is correctly set.
             // TODO Refactor.
@@ -236,14 +253,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             foreach (Office.CustomXMLNode subsystemNode in subsystems)
             {
                 string systemName = subsystemNode.SelectSingleNode("child::ns0:propertyName").Text;
-                //Logger.Trace("System: " + systemName);
 
                 Office.CustomXMLNodes components = subsystemNode.SelectNodes("child::ns0:components/ns0:component");
 
                 foreach (Office.CustomXMLNode componentNode in components)
                 {
                     string componentName = componentNode.SelectSingleNode("child::ns0:propertyName").Text;
-                    //Logger.Trace("Component: " + componentName);
 
                     Office.CustomXMLNodes parameters = componentNode.SelectNodes("child::ns0:parameters/ns0:parameter");
 
