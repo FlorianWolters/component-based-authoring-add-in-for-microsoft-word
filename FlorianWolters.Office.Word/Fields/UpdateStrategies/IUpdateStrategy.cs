@@ -11,6 +11,10 @@ namespace FlorianWolters.Office.Word.Fields.UpdateStrategies
 
     public interface IUpdateStrategy
     {
+        /// <summary>
+        /// Updates the specified <see cref="Word.Field"/>.
+        /// </summary>
+        /// <param name="field">The <see cref="Word.Field"/> to update.</param>
         void Update(Word.Field field);
     }
 }
