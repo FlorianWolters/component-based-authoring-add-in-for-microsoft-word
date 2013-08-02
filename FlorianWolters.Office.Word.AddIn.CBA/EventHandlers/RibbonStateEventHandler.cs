@@ -41,41 +41,46 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
         {
             if (this.application.HasOpenDocuments())
             {
-                this.ribbon.buttonCreateCustomDocumentProperty.Enabled = true;
-                this.ribbon.checkBoxHideInternal.Enabled = true;
-                this.ribbon.dropDownCustomDocumentProperties.Enabled = true;
-                this.ribbon.splitButtonFieldInsert.Enabled = true;
-                this.ribbon.splitButtonFieldFormat.Enabled = true;
-                this.customDocumentPropertiesDropDown.Update(this.ribbon.checkBoxHideInternal.Enabled);
-                this.UpdateDropDownFieldShading();
-                this.UpdateToggleButtonShowFieldCodes();
-                this.UpdateToggleButtonShowFieldShading();
-
                 bool isSaved = this.application.ActiveDocument.IsSaved();
-                this.ribbon.buttonCheckReferences.Enabled = isSaved;
+
                 this.ribbon.splitButtonInclude.Enabled = isSaved;
+                this.ribbon.buttonCheckReferences.Enabled = isSaved;
+
+                this.customDocumentPropertiesDropDown.Update(this.ribbon.checkBoxHideInternal.Enabled);
+                this.ribbon.dropDownCustomDocumentProperties.Enabled = true;
+                this.ribbon.checkBoxHideInternal.Enabled = true;
+                this.ribbon.buttonCreateCustomDocumentProperty.Enabled = true;
+                
+                this.ribbon.splitButtonFieldInsert.Enabled = true;
+                
+                this.UpdateDropDownFieldShading();
+                this.UpdateToggleButtonFormFieldShading();
+                this.UpdateToggleButtonFieldCodes();
             }
             else
             {
                 bool documentActive = false;
-                this.customDocumentPropertiesDropDown.Clear();
 
-                
-                this.ribbon.buttonBindCustomXMLPart.Enabled = documentActive;
-                this.ribbon.buttonCheckReferences.Enabled = documentActive;
-                this.ribbon.buttonOpenSourceFile.Enabled = documentActive;
-                this.ribbon.buttonCreateCustomDocumentProperty.Enabled = documentActive;
-                this.ribbon.buttonUpdateFromSource.Enabled = documentActive;
-                this.ribbon.buttonUpdateToSource.Enabled = documentActive;
-                this.ribbon.checkBoxHideInternal.Enabled = documentActive;
-                this.ribbon.dropDownCustomDocumentProperties.Enabled = documentActive;
-                this.ribbon.dropDownFieldShading.Enabled = documentActive;
-                this.ribbon.splitButtonFieldFormat.Enabled = documentActive;
                 this.ribbon.splitButtonInclude.Enabled = documentActive;
+                this.ribbon.buttonUpdateFromSource.Enabled = documentActive;
+                this.ribbon.buttonOpenSourceFile.Enabled = documentActive;
+                this.ribbon.buttonUpdateToSource.Enabled = documentActive;
+                this.ribbon.buttonCheckReferences.Enabled = documentActive;
+
+                this.ribbon.buttonBindCustomXMLPart.Enabled = documentActive;
+
                 this.ribbon.splitButtonFieldInsert.Enabled = documentActive;
-                this.ribbon.toggleButtonShowFieldCode.Enabled = documentActive;
-                this.ribbon.toggleButtonShowFieldCodes.Enabled = documentActive;
-                this.ribbon.toggleButtonShowFieldShading.Enabled = documentActive;
+                this.ribbon.menuFieldFormat.Enabled = documentActive;
+                this.ribbon.menuFieldAction.Enabled = documentActive;
+
+                this.customDocumentPropertiesDropDown.Clear();
+                this.ribbon.dropDownCustomDocumentProperties.Enabled = documentActive;
+                this.ribbon.checkBoxHideInternal.Enabled = documentActive;
+                this.ribbon.buttonCreateCustomDocumentProperty.Enabled = documentActive;
+
+                this.ribbon.dropDownFieldShading.Enabled = documentActive;
+                this.ribbon.toggleButtonFormFieldShading.Enabled = documentActive;
+                this.ribbon.toggleButtonFieldCodes.Enabled = documentActive;
             }
         }
 
@@ -87,30 +92,55 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
         public void OnWindowSelectionChange(Word.Selection selection)
         {
-            IEnumerable<Word.Field> selectedFields = selection.SelectedFields();
-            int selectedFieldsCount = selectedFields.Count();
-            bool singleFieldSelected = 1 == selectedFieldsCount;
-            bool fieldsSelected = 0 < selectedFieldsCount;
-            bool includeFieldsAreSelected = false;
+            this.UpdateSplitButtonInsertField(selection);
+            this.UpdateButtonBindCustomXMLPart(selection);
+
+            IEnumerable<Word.Field> selectedFields = selection.AllFields();
+            int selectedFieldCount = selectedFields.Count();
+
+            bool fieldsSelected = 0 < selectedFieldCount;
+            bool singleFieldSelected = 1 == selectedFieldCount;
             bool oneOrMoreFieldsLocked = false;
+            bool oneOrMoreIncludeFields = false;
+
+            this.ribbon.menuFieldAction.Enabled = fieldsSelected;
+            this.ribbon.menuFieldFormat.Enabled = fieldsSelected;
 
             if (fieldsSelected)
             {
-                oneOrMoreFieldsLocked = 0 < (from f in selectedFields
-                                                  where f.Locked == true
-                                                  select f).Count();
-                this.ribbon.buttonFieldUpdate.Enabled = !oneOrMoreFieldsLocked;
-                this.ribbon.toggleButtonFieldLock.Checked = oneOrMoreFieldsLocked;
+                int showCodesFieldCount = (from f in selectedFields
+                                        where f.ShowCodes == true
+                                        select f).Count();
+                bool oneOrMoreFieldsShowCodes = 0 < showCodesFieldCount;
 
-                IEnumerable<Word.Field> selectedIncludeFields = selection.SelectedIncludeTextFields();
-                includeFieldsAreSelected = 0 < selectedIncludeFields.Count();
+                int lockedFieldCount = (from f in selectedFields
+                                        where f.Locked == true
+                                        select f).Count();
+                oneOrMoreFieldsLocked = 0 < lockedFieldCount;
+
+                this.ribbon.buttonFieldUpdate.Enabled = !oneOrMoreFieldsLocked;
                 
+                this.ribbon.toggleButtonFieldLock.Checked = oneOrMoreFieldsLocked;
+                this.ribbon.toggleButtonFieldLock.Enabled = singleFieldSelected
+                    || lockedFieldCount == 0
+                    || lockedFieldCount == selectedFieldCount;
+                
+                this.ribbon.toggleButtonFieldShowCode.Checked = oneOrMoreFieldsShowCodes;
+                this.ribbon.toggleButtonFieldShowCode.Enabled = singleFieldSelected
+                    || showCodesFieldCount == 0
+                    || showCodesFieldCount == selectedFieldCount;
+
+                int includeFieldCount = (from f in selectedFields
+                                         where f.Type == Word.WdFieldType.wdFieldIncludeText
+                                            || f.Type == Word.WdFieldType.wdFieldIncludePicture
+                                            || f.Type == Word.WdFieldType.wdFieldInclude
+                                         select f).Count();
+                oneOrMoreIncludeFields = 0 < includeFieldCount;
+
                 if (singleFieldSelected)
                 {
                     Word.Field selectedField = selectedFields.ElementAt(0);
                     FieldFunctionCode fieldFunctionCode = new FieldFunctionCode(selectedField.Code.Text);
-
-                    this.ribbon.toggleButtonShowFieldCode.Checked = selectedField.ShowCodes;
 
                     this.ribbon.toggleButtonFieldFormatAlphabetic.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Alphabetic);
                     this.ribbon.toggleButtonFieldFormatArabic.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Arabic);
@@ -128,33 +158,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 }
             }
 
-            this.ribbon.splitButtonFieldAction.Enabled = fieldsSelected;
-            this.ribbon.splitButtonFieldFormatCapitalization.Enabled = singleFieldSelected;
-            this.ribbon.splitButtonFieldFormatNumber.Enabled = singleFieldSelected;
-
-            this.ribbon.buttonOpenSourceFile.Enabled = includeFieldsAreSelected;
-            this.ribbon.buttonUpdateFromSource.Enabled = includeFieldsAreSelected && !oneOrMoreFieldsLocked;
-            this.ribbon.buttonUpdateToSource.Enabled = includeFieldsAreSelected;
-
-            this.UpdateSplitButtonInsertField(selection);
-            this.UpdateButtonBindCustomXMLPart(selection);
+            this.ribbon.buttonUpdateFromSource.Enabled = oneOrMoreIncludeFields && !oneOrMoreFieldsLocked;
+            this.ribbon.buttonOpenSourceFile.Enabled = oneOrMoreIncludeFields;
+            this.ribbon.buttonUpdateToSource.Enabled = oneOrMoreIncludeFields;
         }
 
         private void UpdateSplitButtonInsertField(Word.Selection selection)
         {
             this.ribbon.splitButtonFieldInsert.Enabled = selection.Start == selection.End;
-        }
-
-        private void UpdateToggleButtonShowFieldShading()
-        {
-            this.ribbon.toggleButtonShowFieldShading.Checked = this.application.ActiveDocument.FormFields.Shaded;
-            this.ribbon.toggleButtonShowFieldShading.Enabled = true;
-        }
-
-        private void UpdateToggleButtonShowFieldCodes()
-        {
-            this.ribbon.toggleButtonShowFieldCodes.Checked = this.application.ActiveWindow.View.ShowFieldCodes;
-            this.ribbon.toggleButtonShowFieldCodes.Enabled = true;
         }
 
         private void UpdateDropDownFieldShading()
@@ -167,6 +178,18 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                                                              where items.Tag.Equals(wordFieldShadingAsString)
                                                              select items).First();
             this.ribbon.dropDownFieldShading.Enabled = true;
+        }
+
+        private void UpdateToggleButtonFormFieldShading()
+        {
+            this.ribbon.toggleButtonFormFieldShading.Checked = this.application.ActiveDocument.FormFields.Shaded;
+            this.ribbon.toggleButtonFormFieldShading.Enabled = true;
+        }
+
+        private void UpdateToggleButtonFieldCodes()
+        {
+            this.ribbon.toggleButtonFieldCodes.Checked = this.application.ActiveWindow.View.ShowFieldCodes;
+            this.ribbon.toggleButtonFieldCodes.Enabled = true;
         }
 
         private void UpdateButtonBindCustomXMLPart(Word.Selection selection)

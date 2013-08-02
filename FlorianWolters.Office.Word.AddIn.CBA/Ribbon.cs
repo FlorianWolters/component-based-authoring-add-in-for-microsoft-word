@@ -48,40 +48,45 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         private const string ReadMeFileName = "README.md";
 
         /// <summary>
-        /// The <see cref="Word.Application"/>, this <see cref="Ribbon"/> is
-        /// running in.
+        /// The <see cref="Word.Application"/> to interact with.
         /// </summary>
         private Word.Application application;
 
         /// <summary>
-        /// Gets or sets the windows of the <i>Microsoft Word</i> Application,
-        /// this <see cref="Ribbon"/> is running in.
+        /// Gets or sets the main window of the <see cref="Word.Application"/>.
         /// </summary>
         private IWin32Window ApplicationWindow { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="FieldFactory"/> which is used to create
+        /// <see cref="Word.Field"/>s.
+        /// </summary>
+        private FieldFactory FieldFactory { get; set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="AboutForm"/>.
         /// </summary>
-        private AboutForm AboutDialog { get; set; }
+        private AboutForm AboutForm { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="MarkdownForm"/>.
         /// </summary>
-        private MarkdownForm HelpDialog { get; set; }
+        private MarkdownForm HelpForm { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="ConfigurationForm"/>.
         /// </summary>
-        private ConfigurationForm ConfigurationDialog { get; set; }
+        private ConfigurationForm ConfigurationForm { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="CustomXMLPartsForm"/>.
         /// </summary>
-        private CustomXMLPartsForm CustomXMLPartsDialog { get; set; }
+        private CustomXMLPartsForm CustomXMLPartsForm { get; set; }
 
+        /// <summary>
+        /// Gets or sets the <see cref="CustomDocumentPropertiesDropDown"/>.
+        /// </summary>
         private CustomDocumentPropertiesDropDown CustomDocumentPropertiesDropDown { get; set; }
-
-        private FieldFactory FieldFactory { get; set; }
 
         /// <summary>
         /// Occurs when this <see cref="Ribbon"/> is loaded into the Microsoft
@@ -95,8 +100,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // Microsoft Word application object.
             // The global Add-In object is first available when the event
             // handler for the "Load" event of the "Ribbon" is invoked.
-            
-            // TODO Remove member variable if unused.
             this.application = Globals.ThisAddIn.Application;
 
             // TODO Validate configuration options.
@@ -118,25 +121,16 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        /// Occurs when this <see cref="Ribbon"/> instance is closing.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">An object that contains no event data.</param>
-        private void OnClose(object sender, EventArgs e)
-        {
-            // NOOP
-        }
-
-        /// <summary>
         /// Initializes the forms used by this <see cref="Ribbon"/>.
         /// </summary>
-        /// <param name="assemblyInfo"></param>
+        /// <param name="settings">The <see cref="Settings"/> of this application.</param>
+        /// <param name="assemblyInfo">The <see cref="AssemblyInfo"/> of this application.</param>
         private void InitializeForms(Settings settings, AssemblyInfo assemblyInfo)
         {
-            this.ConfigurationDialog = new ConfigurationForm(settings);
-            this.AboutDialog = new AboutForm(assemblyInfo, settings);
+            this.ConfigurationForm = new ConfigurationForm(settings);
+            this.AboutForm = new AboutForm(assemblyInfo, settings);
             this.InitializeHelpDialog(assemblyInfo);
-            this.CustomXMLPartsDialog = new CustomXMLPartsForm();
+            this.CustomXMLPartsForm = new CustomXMLPartsForm();
         }
 
         private void InitializeHelpDialog(AssemblyInfo assemblyInfo)
@@ -145,8 +139,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
             try
             {
-                this.HelpDialog = new MarkdownForm(readMeFilePath);
-                this.HelpDialog.ChangeTitle("Help");
+                this.HelpForm = new MarkdownForm(readMeFilePath);
+                this.HelpForm.ChangeTitle("Help");
             }
             catch (FileNotFoundException)
             {
@@ -155,11 +149,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
         }
 
-        // TODO How to configure this?
-
         /// <summary>
         /// Registers all <i>Event Handlers</i> for this <see cref="Ribbon"/>.
         /// </summary>
+        /// <param name="settings">The <see cref="Settings"/> of this application.</param>
         private void RegisterEventHandler(Settings settings)
         {
             IExceptionHandler eventExceptionHandler = new LoggerExceptionHandler(this.logger);
@@ -169,7 +162,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             ApplicationEventHandler applicationEventHandler = new ApplicationEventHandler(this.application);
 
             // TODO Improve registration of the event handlers in dependency of the settings.
-
             if (settings.ActivateUpdateStylesOnOpen)
             {
                 ActivateUpdateStylesOnOpenFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
@@ -183,14 +175,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             if (settings.UpdateAttachedTemplate)
             {
                 UpdateAttachedTemplateFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
-
             }
 
             if (settings.UpdateFields)
             {
                 UpdateFieldsFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
             }
-
 
             if (settings.WriteCustomDocumentProperties)
             {
@@ -216,6 +206,124 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.ApplicationWindow = ProcessUtils.MainWindowWin32HandleOfCurrentProcess();
         }
 
+        #region Event handler methods for the group "References"
+
+        private void OnClick_ButtonIncludeText(object sender, RibbonControlEventArgs e)
+        {
+            new InsertFileDialog(
+                this.application,
+                this.FieldFactory,
+                Settings.Default.DocPropertyNameForLastDirectoryPath).Show();
+        }
+
+        private void OnClick_ButtonIncludePicture(object sender, RibbonControlEventArgs e)
+        {
+            // TODO It does not seem to be possible to specify a default path for a built-in dialog.
+            // A possible solution would be, to replace the built-in dialog with a custom Windows form.
+            // http://answers.microsoft.com//office/forum/office_2007-word/ms-word-defaults-to-a-set-folder-under-the/d604a81e-aa68-44e9-b7e0-ca9ad8f17e33
+            new InsertPictureDialog(
+                this.application,
+                this.FieldFactory,
+                Settings.Default.DocPropertyNameForLastDirectoryPath).Show();
+        }
+
+        // TODO Remove if not working with relative paths.
+        private void OnClick_ButtonIncludeObject(object sender, RibbonControlEventArgs e)
+        {
+            new InsertObjectDialog(this.application).Show();
+        }
+
+        private void OnClick_ButtonUpdateFromSource(object sender, RibbonControlEventArgs e)
+        {
+            IEnumerable<Word.Field> fields = this.application.Selection.AllIncludeFields();
+            int fieldCount = fields.Count();
+
+            if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentFromSource(fieldCount))
+            {
+                new FieldUpdater(fields, new UpdateTarget()).Update();
+            }
+        }
+
+        private void OnClick_ButtonOpenSourceFile(object sender, RibbonControlEventArgs e)
+        {
+            // Open each referenced file (e.g. a Microsoft Word document) in the current selection.
+            foreach (Word.Field field in this.application.Selection.AllIncludeTextFields())
+            {
+                Process.Start(new IncludeField(field).FilePath);
+            }
+        }
+
+        private void OnClick_ButtonUpdateToSource(object sender, RibbonControlEventArgs e)
+        {
+            IEnumerable<Word.Field> fields = this.application.Selection.AllIncludeTextFields();
+            int fieldCount = fields.Count();
+            string filePath = new IncludeField(fields.ElementAt(0)).FilePath;
+
+            if (new FileInfo(filePath).IsReadOnly)
+            {
+                MessageBoxes.ShowMessageBoxFileIsReadOnly(filePath);
+            }
+            else if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentInSource(fieldCount))
+            {
+                new FieldUpdater(fields, new UpdateSource()).Update();
+            }
+        }
+
+        private void OnClick_ButtonCheckReferences(object sender, RibbonControlEventArgs e)
+        {
+            string filePath;
+            string lastModifiedActual;
+            string lastModifiedExpected;
+
+            // http://pmueller.de/blog/word2007grafik.html
+            // Word Bug: http://stackoverflow.com/questions/17109200/ms-word-includepicture-field-code
+            IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
+
+            foreach (Word.Field field in fields)
+            {
+                filePath = new IncludeField(field).FilePath;
+                lastModifiedExpected = File.GetLastWriteTimeUtc(filePath).ToString("u");
+
+                if (null == field.Next || null == field.Next.Next || !field.Next.Next.Type.Equals(Word.WdFieldType.wdFieldEmpty))
+                {
+                    MessageBox.Show(
+                        "An error occured while parsing the field code. Ensure that the field has been created via " + Settings.Default.ApplicationName + ".",
+                        "Warning",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    continue;
+                }
+
+                lastModifiedActual = field.Next.Next.Code.Text.Trim();
+
+                if (lastModifiedExpected != lastModifiedActual)
+                {
+                    MessageBox.Show(
+                        "The referenced source file " + filePath + " has been modified since it has been included in this target document.",
+                        "Question",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    // TODO How can we solve a possible merge conflict?
+                }
+            }
+
+            MessageBox.Show(
+                "No problems have been found by " + Settings.Default.ApplicationName + " in the current selection of this document.",
+                "Information",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        #endregion
+
+        #region Event handler methods for the group "Tools".
+
+        private void OnClick_ButtonCompareDocuments(object sender, RibbonControlEventArgs e)
+        {
+            new CompareDocumentsDialog(this.application).Show();
+        }
+
         // TODO This is completely static, therefore we do need a custom provider for each XML dtd.
         // Other possibility: Simple Key value XML?
         // OR: Let the user specifiy the XPath, e.g. /*/subsystems/subsystem[1]/components/component[1]/parameters would return all parameters for the first component of the first subsystem. But then we do need to specify the XPath for each column of the table, eg. child:://propertyName for parameters.
@@ -225,15 +333,15 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             CustomXMLPartRepository repository = new CustomXMLPartRepository(
                 document.CustomXMLParts);
 
-            this.CustomXMLPartsDialog.PopulateCustomXMLPartsListView(repository.FindNotBuiltIn());
-            this.CustomXMLPartsDialog.ShowDialog(this.ApplicationWindow);
+            this.CustomXMLPartsForm.PopulateCustomXMLPartsListView(repository.FindNotBuiltIn());
+            this.CustomXMLPartsForm.ShowDialog(this.ApplicationWindow);
 
-            if (DialogResult.Cancel.Equals(this.CustomXMLPartsDialog.DialogResult))
+            if (DialogResult.Cancel.Equals(this.CustomXMLPartsForm.DialogResult))
             {
                 return;
             }
 
-            string customXMLPartID = this.CustomXMLPartsDialog.LastSelectedCustomXMLPartID;
+            string customXMLPartID = this.CustomXMLPartsForm.LastSelectedCustomXMLPartID;
             Office.CustomXMLPart customXMLPart = repository.FindByID(customXMLPartID);
 
             Word.ContentControl contentControl = this.application.Selection.Range.ContentControls[1];
@@ -276,7 +384,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
                         Office.CustomXMLNode keyNode = parameterNode.SelectSingleNode("child::ns0:propertyName");
                         table.Cell(table.Rows.Count, table.Columns.Count - 1).Range.Select();
-                        
+
                         // TODO Name?! WTF how to automate that?!
                         Microsoft.Office.Tools.Word.PlainTextContentControl plainTextControl = extendedDocument.Controls.AddPlainTextContentControl(keyNode.XPath);
                         plainTextControl.XMLMapping.SetMappingByNode(keyNode);
@@ -301,110 +409,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.application.ScreenUpdating = true;
         }
 
-        private void OnClick_ToggleButtonShowFieldCodes(object sender, RibbonControlEventArgs e)
-        {
-            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
-            this.application.ActiveWindow.View.ShowFieldCodes = toggleButton.Checked;
-        }
-
-        // TODO The button state isn't in sync if the option is set via another method.
-        private void OnClick_ToggleButtonShowFieldShading(object sender, RibbonControlEventArgs e)
-        {
-            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
-            this.application.ActiveDocument.FormFields.Shaded = toggleButton.Checked;
-        }
-
-        // TODO The button state isn't in sync if the option is set via another method.
-        private void OnSelectionChanged_DropDownFieldShading(object sender, RibbonControlEventArgs e)
-        {
-            RibbonDropDown dropDown = (RibbonDropDown)sender;
-            RibbonDropDownItem dropDownItem = dropDown.SelectedItem;
-            Type enumType = typeof(Word.WdFieldShading);
-            string enumValue = dropDownItem.Tag.ToString();
-
-            Word.WdFieldShading fieldShading = (Word.WdFieldShading)Enum.Parse(enumType, enumValue);
-            this.application.ActiveWindow.View.FieldShading = fieldShading;
-        }
-
-        private void OnClick_CheckBoxHideInternal(object sender, RibbonControlEventArgs e)
-        {
-            RibbonCheckBox checkBox = (RibbonCheckBox)sender;
-            this.CustomDocumentPropertiesDropDown.Update(checkBox.Checked);
-        }
-
-        private void OnClick_ButtonIncludeText(object sender, RibbonControlEventArgs e)
-        {
-            new InsertFileDialog(
-                this.application,
-                this.FieldFactory,
-                Settings.Default.DocPropertyNameForLastDirectoryPath).Show();
-        }
-
-        private void OnClick_ButtonIncludePicture(object sender, RibbonControlEventArgs e)
-        {
-            // TODO It does not seem to be possible to specify a default path for a built-in dialog.
-            // A possible solution would be, to replace the built-in dialog with a custom Windows form.
-            // http://answers.microsoft.com//office/forum/office_2007-word/ms-word-defaults-to-a-set-folder-under-the/d604a81e-aa68-44e9-b7e0-ca9ad8f17e33
-            new InsertPictureDialog(
-                this.application,
-                this.FieldFactory,
-                Settings.Default.DocPropertyNameForLastDirectoryPath).Show();
-        }
-
-        private void OnClick_ButtonIncludeObject(object sender, RibbonControlEventArgs e)
-        {
-            new InsertObjectDialog(this.application).Show();
-        }
-
-        private void OnClick_ButtonCompareDocuments(object sender, RibbonControlEventArgs e)
-        {
-            new CompareDocumentsDialog(this.application).Show();
-        }
-
-        #region Event handler to show forms.
-
-        private void OnClick_ButtonShowAboutForm(object sender, RibbonControlEventArgs e)
-        {
-            this.AboutDialog.ShowDialog(this.ApplicationWindow);
-        }
-
-        private void OnClick_ButtonShowConfigurationForm(object sender, RibbonControlEventArgs e)
-        {
-            this.ConfigurationDialog.ShowDialog(this.ApplicationWindow);
-        }
-
-        private void OnClick_ButtonShowHelpForm(object sender, RibbonControlEventArgs e)
-        {
-            this.HelpDialog.ShowDialog(this.ApplicationWindow);
-        }
-
-        private void OnClick_ToggleButtonShowMessagesForm(object sender, RibbonControlEventArgs e)
-        {
-            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
-
-            if (toggleButton.Checked)
-            {
-                this.messagesForm.Show(this.ApplicationWindow);
-            }
-            else
-            {
-                this.messagesForm.Visible = toggleButton.Checked;
-            }
-        }
-
         #endregion
 
-        private void OnSelectionChanged_DropDownCustomDocumentProperties(object sender, RibbonControlEventArgs e)
-        {
-            RibbonDropDown dropDown = (RibbonDropDown)sender;
+        #region Event handler methods for the group "Fields".
 
-            string propertyName = dropDown.SelectedItem.Label;
-            bool mergeFormat = this.toggleButtonFieldFormatMergeFormat.Checked;
-
-            this.FieldFactory.InsertDocProperty(propertyName, mergeFormat);
-
-            dropDown.SelectedItemIndex = 0;
-        }
+        #region Event handler methods for the menu "Field Insert".
 
         /// <summary>
         /// Handles the <i>Click</i> event for the split button <i>Insert
@@ -474,6 +483,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.FieldFactory.InsertPage(this.toggleButtonFieldFormatMergeFormat.Checked);
         }
 
+        #endregion
+
+        #region Event handler methods for the menu "Field Format".
+
         /// <summary>
         /// Handles the <i>Click</i> event for all toggle buttons related to
         /// field code formatting.
@@ -491,7 +504,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             string switchName = e.Control.Id.Replace("toggleButtonFieldFormat", string.Empty);
 
             FieldFormatSwitch fieldSwitch = new FieldFormatSwitch(switchName);
-            Word.Field selectedField = this.application.Selection.SelectedFields().ElementAt(0);
+            IEnumerable<Word.Field> selectedFields = this.application.Selection.AllFields();
+            Word.Field selectedField = selectedFields.ElementAt(0);
 
             if (checkBox.Checked)
             {
@@ -510,31 +524,63 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.application.ScreenUpdating = fieldCodeVisible;
         }
 
-        private void OnClick_ButtonUpdateFromSource(object sender, RibbonControlEventArgs e)
-        {
-            IEnumerable<Word.Field> fields = this.application.Selection.SelectedIncludeTextFields();
-            int fieldCount = fields.Count();
+        #endregion
 
-            if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentFromSource(fieldCount))
+        #region Event handler methods for the menu "Field Action".
+
+        private void OnClick_ButtonFieldUpdate(object sender, RibbonControlEventArgs e)
+        {
+            // Update each field in the current selection.
+            new FieldUpdater(
+                this.application.Selection.AllFields(),
+                new UpdateTarget()).Update();
+        }
+
+        private void OnClick_ToggleButtonFieldLock(object sender, RibbonControlEventArgs e)
+        {
+            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
+
+            foreach (Word.Field field in this.application.Selection.AllFields())
             {
-                new FieldUpdater(fields, new UpdateTarget()).Update();
+                field.Locked = toggleButton.Checked;
+
+                this.buttonUpdateFromSource.Enabled = !field.Locked;
+                this.buttonFieldUpdate.Enabled = !field.Locked;
             }
         }
 
-        private void OnClick_ButtonUpdateToSource(object sender, RibbonControlEventArgs e)
+        private void OnClick_ToggleButtonFieldShowCode(object sender, RibbonControlEventArgs e)
         {
-            IEnumerable<Word.Field> fields = this.application.Selection.SelectedIncludeTextFields();
-            int fieldCount = fields.Count();
-            string filePath = new IncludeField(fields.ElementAt(0)).FilePath;
+            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
 
-            if (new FileInfo(filePath).IsReadOnly)
+            foreach (Word.Field field in this.application.Selection.AllFields())
             {
-                MessageBoxes.ShowMessageBoxFileIsReadOnly(filePath);
+                field.ShowCodes = toggleButton.Checked;
             }
-            else if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentInSource(fieldCount))
-            {
-                new FieldUpdater(fields, new UpdateSource()).Update();
-            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Event handler methods for the group "Document Properties"
+
+        private void OnSelectionChanged_DropDownCustomDocumentProperties(object sender, RibbonControlEventArgs e)
+        {
+            RibbonDropDown dropDown = (RibbonDropDown)sender;
+
+            string propertyName = dropDown.SelectedItem.Label;
+            bool mergeFormat = this.toggleButtonFieldFormatMergeFormat.Checked;
+
+            this.FieldFactory.InsertDocProperty(propertyName, mergeFormat);
+
+            dropDown.SelectedItemIndex = 0;
+        }
+
+        private void OnClick_CheckBoxHideInternal(object sender, RibbonControlEventArgs e)
+        {
+            RibbonCheckBox checkBox = (RibbonCheckBox)sender;
+            this.CustomDocumentPropertiesDropDown.Update(checkBox.Checked);
         }
 
         private void OnClick_ButtonCreateCustomDocumentProperty(object sender, RibbonControlEventArgs e)
@@ -581,90 +627,72 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             MessageBoxes.ShowMessageBoxSetCustomDocumentPropertySuccess(propertyName, propertyValue);
         }
 
-        private void OnClick_ButtonOpenSourceFile(object sender, RibbonControlEventArgs e)
+        #endregion
+
+        #region Event handler methods for the group "View".
+
+        private void OnSelectionChanged_DropDownFieldShading(object sender, RibbonControlEventArgs e)
         {
-            // Open each referenced file (e.g. a Microsoft Word document) in the current selection.
-            foreach (Word.Field field in this.application.Selection.SelectedIncludeTextFields())
-            {
-                Process.Start(new IncludeField(field).FilePath);
-            }
+            RibbonDropDown dropDown = (RibbonDropDown)sender;
+            RibbonDropDownItem dropDownItem = dropDown.SelectedItem;
+            Type enumType = typeof(Word.WdFieldShading);
+            string enumValue = dropDownItem.Tag.ToString();
+
+            Word.WdFieldShading fieldShading = (Word.WdFieldShading)Enum.Parse(enumType, enumValue);
+
+            // TODO The button state isn't in sync if the option is set via another method.
+            this.application.ActiveWindow.View.FieldShading = fieldShading;
         }
 
-        private void OnClick_ButtonCheckReferences(object sender, RibbonControlEventArgs e)
-        {
-            string filePath;
-            string lastModifiedActual;
-            string lastModifiedExpected;
-
-            // http://pmueller.de/blog/word2007grafik.html
-            // Word Bug: http://stackoverflow.com/questions/17109200/ms-word-includepicture-field-code
-            IList<Word.Field> fields = this.application.Selection.IncludeFields().ToList();
-
-            foreach (Word.Field field in fields)
-            {
-                filePath = new IncludeField(field).FilePath;
-                lastModifiedExpected = File.GetLastWriteTimeUtc(filePath).ToString("u");
-
-                if (null == field.Next || null == field.Next.Next || !field.Next.Next.Type.Equals(Word.WdFieldType.wdFieldEmpty))
-                {
-                    MessageBox.Show(
-                        "An error occured while parsing the field code. Ensure that the field has been created via " + Settings.Default.ApplicationName + ".",
-                        "Warning",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                    continue;
-                }
-
-                lastModifiedActual = field.Next.Next.Code.Text.Trim();
-
-                if (lastModifiedExpected != lastModifiedActual)
-                {
-                    MessageBox.Show(
-                        "The referenced source file " + filePath + " has been modified since it has been included in this target document.",
-                        "Question",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-
-                    // TODO How can we solve a possible merge conflict?
-                }
-            }
-
-            MessageBox.Show(
-                "No problems have been found by " + Settings.Default.ApplicationName + " in the current selection of this document.",
-                "Information",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-        }
-
-        private void OnClick_ButtonFieldUpdate(object sender, RibbonControlEventArgs e)
-        {
-            // Update each field in the current selection.
-            new FieldUpdater(
-                this.application.Selection.SelectedFields(),
-                new UpdateTarget()).Update();
-        }
-
-        private void OnClick_ToggleButtonFieldLock(object sender, RibbonControlEventArgs e)
-        {
-            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
-            bool lockField = false;
-
-            foreach (Word.Field field in this.application.Selection.SelectedFields())
-            {
-                lockField = toggleButton.Checked;
-                field.Locked = lockField;
-                this.buttonFieldUpdate.Enabled = !lockField;
-            }
-        }
-
-        private void OnClick_ToggleButtonShowFieldCode(object sender, RibbonControlEventArgs e)
+        private void OnClick_ToggleButtonFormFieldShading(object sender, RibbonControlEventArgs e)
         {
             RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
 
-            foreach (Word.Field field in this.application.Selection.SelectedFields())
+            // TODO The button state isn't in sync if the option is set via another method.
+            this.application.ActiveDocument.FormFields.Shaded = toggleButton.Checked;
+        }
+
+        private void OnClick_ToggleButtonFieldCodes(object sender, RibbonControlEventArgs e)
+        {
+            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
+
+            // TODO The button state isn't in sync if the option is set via another method.
+            this.application.ActiveWindow.View.ShowFieldCodes = toggleButton.Checked;
+        }
+
+        #endregion
+
+        #region Event handler methods for the group "Miscellaneous".
+
+        private void OnClick_ToggleButtonShowMessagesForm(object sender, RibbonControlEventArgs e)
+        {
+            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
+
+            if (toggleButton.Checked)
             {
-                field.ShowCodes = toggleButton.Checked;
+                this.messagesForm.Show(this.ApplicationWindow);
+            }
+            else
+            {
+                this.messagesForm.Visible = toggleButton.Checked;
             }
         }
+
+        private void OnClick_ButtonShowAboutForm(object sender, RibbonControlEventArgs e)
+        {
+            this.AboutForm.ShowDialog(this.ApplicationWindow);
+        }
+
+        private void OnClick_ButtonShowHelpForm(object sender, RibbonControlEventArgs e)
+        {
+            this.HelpForm.ShowDialog(this.ApplicationWindow);
+        }
+
+        private void OnClick_ButtonShowConfigurationForm(object sender, RibbonControlEventArgs e)
+        {
+            this.ConfigurationForm.ShowDialog(this.ApplicationWindow);
+        }
+
+        #endregion
     }
 }

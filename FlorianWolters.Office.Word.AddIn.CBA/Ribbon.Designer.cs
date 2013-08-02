@@ -87,42 +87,25 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// </summary>
         private void InitializeComponent()
         {
+            Microsoft.Office.Tools.Ribbon.RibbonMenu menuFieldFormatCapitalization;
+            Microsoft.Office.Tools.Ribbon.RibbonMenu menuFieldFormatNumber;
+            Microsoft.Office.Tools.Ribbon.RibbonSeparator separatorFieldFormat;
+            Microsoft.Office.Tools.Ribbon.RibbonGroup groupReferences;
+            Microsoft.Office.Tools.Ribbon.RibbonSeparator separatorFirst;
+            Microsoft.Office.Tools.Ribbon.RibbonSeparator separatorSecond;
+            Microsoft.Office.Tools.Ribbon.RibbonGroup groupTools;
+            Microsoft.Office.Tools.Ribbon.RibbonGroup groupFields;
+            Microsoft.Office.Tools.Ribbon.RibbonGroup groupDocumentProperties;
+            Microsoft.Office.Tools.Ribbon.RibbonGroup groupView;
             Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItemImpl1 = this.Factory.CreateRibbonDropDownItem();
             Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItemImpl2 = this.Factory.CreateRibbonDropDownItem();
             Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItemImpl3 = this.Factory.CreateRibbonDropDownItem();
-            this.tabComponentBasedAuthoring = this.Factory.CreateRibbonTab();
-            this.groupReferences = this.Factory.CreateRibbonGroup();
-            this.splitButtonInclude = this.Factory.CreateRibbonSplitButton();
-            this.buttonIncludeText = this.Factory.CreateRibbonButton();
-            this.buttonIncludePicture = this.Factory.CreateRibbonButton();
-            this.buttonIncludeObject = this.Factory.CreateRibbonButton();
-            this.separatorFirst = this.Factory.CreateRibbonSeparator();
-            this.buttonUpdateFromSource = this.Factory.CreateRibbonButton();
-            this.buttonOpenSourceFile = this.Factory.CreateRibbonButton();
-            this.buttonUpdateToSource = this.Factory.CreateRibbonButton();
-            this.separatorSecond = this.Factory.CreateRibbonSeparator();
-            this.buttonCheckReferences = this.Factory.CreateRibbonButton();
-            this.groupTools = this.Factory.CreateRibbonGroup();
-            this.buttonCompareDocuments = this.Factory.CreateRibbonButton();
-            this.toggleButtonShowMessagesForm = this.Factory.CreateRibbonToggleButton();
-            this.groupFields = this.Factory.CreateRibbonGroup();
-            this.splitButtonFieldInsert = this.Factory.CreateRibbonSplitButton();
-            this.buttonInsertEmptyField = this.Factory.CreateRibbonButton();
-            this.buttonInsertDateField = this.Factory.CreateRibbonButton();
-            this.buttonInsertTimeField = this.Factory.CreateRibbonButton();
-            this.buttonInsertListNumField = this.Factory.CreateRibbonButton();
-            this.buttonInsertPageField = this.Factory.CreateRibbonButton();
-            this.splitButtonFieldAction = this.Factory.CreateRibbonSplitButton();
-            this.buttonFieldUpdate = this.Factory.CreateRibbonButton();
-            this.toggleButtonFieldLock = this.Factory.CreateRibbonToggleButton();
-            this.toggleButtonShowFieldCode = this.Factory.CreateRibbonToggleButton();
-            this.splitButtonFieldFormat = this.Factory.CreateRibbonSplitButton();
-            this.splitButtonFieldFormatCapitalization = this.Factory.CreateRibbonSplitButton();
+            Microsoft.Office.Tools.Ribbon.RibbonGroup groupMiscellaneous;
+            Microsoft.Office.Tools.Ribbon.RibbonSeparator separatorThird;
             this.toggleButtonFieldFormatCaps = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonFieldFormatFirstCap = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonFieldFormatUpper = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonFieldFormatLower = this.Factory.CreateRibbonToggleButton();
-            this.splitButtonFieldFormatNumber = this.Factory.CreateRibbonSplitButton();
             this.toggleButtonFieldFormatAlphabetic = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonFieldFormatArabic = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonFieldFormatCardText = this.Factory.CreateRibbonToggleButton();
@@ -131,271 +114,70 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.toggleButtonFieldFormatOrdText = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonFieldFormatOrdinal = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonFieldFormatRoman = this.Factory.CreateRibbonToggleButton();
+            this.tabComponentBasedAuthoring = this.Factory.CreateRibbonTab();
+            this.splitButtonInclude = this.Factory.CreateRibbonSplitButton();
+            this.buttonIncludeText = this.Factory.CreateRibbonButton();
+            this.buttonIncludePicture = this.Factory.CreateRibbonButton();
+            this.buttonIncludeObject = this.Factory.CreateRibbonButton();
+            this.buttonUpdateFromSource = this.Factory.CreateRibbonButton();
+            this.buttonOpenSourceFile = this.Factory.CreateRibbonButton();
+            this.buttonUpdateToSource = this.Factory.CreateRibbonButton();
+            this.buttonCheckReferences = this.Factory.CreateRibbonButton();
+            this.buttonCompareDocuments = this.Factory.CreateRibbonButton();
+            this.buttonBindCustomXMLPart = this.Factory.CreateRibbonButton();
+            this.splitButtonFieldInsert = this.Factory.CreateRibbonSplitButton();
+            this.buttonInsertEmptyField = this.Factory.CreateRibbonButton();
+            this.buttonInsertDateField = this.Factory.CreateRibbonButton();
+            this.buttonInsertTimeField = this.Factory.CreateRibbonButton();
+            this.buttonInsertListNumField = this.Factory.CreateRibbonButton();
+            this.buttonInsertPageField = this.Factory.CreateRibbonButton();
+            this.menuFieldFormat = this.Factory.CreateRibbonMenu();
             this.toggleButtonFieldFormatMergeFormat = this.Factory.CreateRibbonToggleButton();
-            this.groupDocumentProperties = this.Factory.CreateRibbonGroup();
+            this.menuFieldAction = this.Factory.CreateRibbonMenu();
+            this.buttonFieldUpdate = this.Factory.CreateRibbonButton();
+            this.toggleButtonFieldLock = this.Factory.CreateRibbonToggleButton();
+            this.toggleButtonFieldShowCode = this.Factory.CreateRibbonToggleButton();
             this.box = this.Factory.CreateRibbonBox();
             this.dropDownCustomDocumentProperties = this.Factory.CreateRibbonDropDown();
             this.checkBoxHideInternal = this.Factory.CreateRibbonCheckBox();
             this.buttonCreateCustomDocumentProperty = this.Factory.CreateRibbonButton();
-            this.buttonBindCustomXMLPart = this.Factory.CreateRibbonButton();
-            this.groupView = this.Factory.CreateRibbonGroup();
             this.dropDownFieldShading = this.Factory.CreateRibbonDropDown();
-            this.toggleButtonShowFieldShading = this.Factory.CreateRibbonToggleButton();
-            this.toggleButtonShowFieldCodes = this.Factory.CreateRibbonToggleButton();
-            this.groupMiscellaneous = this.Factory.CreateRibbonGroup();
+            this.toggleButtonFormFieldShading = this.Factory.CreateRibbonToggleButton();
+            this.toggleButtonFieldCodes = this.Factory.CreateRibbonToggleButton();
+            this.toggleButtonShowMessagesForm = this.Factory.CreateRibbonToggleButton();
             this.buttonShowAboutForm = this.Factory.CreateRibbonButton();
             this.buttonShowHelpForm = this.Factory.CreateRibbonButton();
             this.buttonShowConfigurationForm = this.Factory.CreateRibbonButton();
+            menuFieldFormatCapitalization = this.Factory.CreateRibbonMenu();
+            menuFieldFormatNumber = this.Factory.CreateRibbonMenu();
+            separatorFieldFormat = this.Factory.CreateRibbonSeparator();
+            groupReferences = this.Factory.CreateRibbonGroup();
+            separatorFirst = this.Factory.CreateRibbonSeparator();
+            separatorSecond = this.Factory.CreateRibbonSeparator();
+            groupTools = this.Factory.CreateRibbonGroup();
+            groupFields = this.Factory.CreateRibbonGroup();
+            groupDocumentProperties = this.Factory.CreateRibbonGroup();
+            groupView = this.Factory.CreateRibbonGroup();
+            groupMiscellaneous = this.Factory.CreateRibbonGroup();
+            separatorThird = this.Factory.CreateRibbonSeparator();
             this.tabComponentBasedAuthoring.SuspendLayout();
-            this.groupReferences.SuspendLayout();
-            this.groupTools.SuspendLayout();
-            this.groupFields.SuspendLayout();
-            this.groupDocumentProperties.SuspendLayout();
+            groupReferences.SuspendLayout();
+            groupTools.SuspendLayout();
+            groupFields.SuspendLayout();
+            groupDocumentProperties.SuspendLayout();
             this.box.SuspendLayout();
-            this.groupView.SuspendLayout();
-            this.groupMiscellaneous.SuspendLayout();
+            groupView.SuspendLayout();
+            groupMiscellaneous.SuspendLayout();
             // 
-            // tabComponentBasedAuthoring
+            // menuFieldFormatCapitalization
             // 
-            this.tabComponentBasedAuthoring.Groups.Add(this.groupReferences);
-            this.tabComponentBasedAuthoring.Groups.Add(this.groupTools);
-            this.tabComponentBasedAuthoring.Groups.Add(this.groupFields);
-            this.tabComponentBasedAuthoring.Groups.Add(this.groupDocumentProperties);
-            this.tabComponentBasedAuthoring.Groups.Add(this.groupView);
-            this.tabComponentBasedAuthoring.Groups.Add(this.groupMiscellaneous);
-            this.tabComponentBasedAuthoring.Label = "Component-Based Authoring";
-            this.tabComponentBasedAuthoring.Name = "tabComponentBasedAuthoring";
-            // 
-            // groupReferences
-            // 
-            this.groupReferences.Items.Add(this.splitButtonInclude);
-            this.groupReferences.Items.Add(this.separatorFirst);
-            this.groupReferences.Items.Add(this.buttonUpdateFromSource);
-            this.groupReferences.Items.Add(this.buttonOpenSourceFile);
-            this.groupReferences.Items.Add(this.buttonUpdateToSource);
-            this.groupReferences.Items.Add(this.separatorSecond);
-            this.groupReferences.Items.Add(this.buttonCheckReferences);
-            this.groupReferences.Label = "References";
-            this.groupReferences.Name = "groupReferences";
-            // 
-            // splitButtonInclude
-            // 
-            this.splitButtonInclude.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.splitButtonInclude.Enabled = false;
-            this.splitButtonInclude.Items.Add(this.buttonIncludeText);
-            this.splitButtonInclude.Items.Add(this.buttonIncludePicture);
-            this.splitButtonInclude.Items.Add(this.buttonIncludeObject);
-            this.splitButtonInclude.Label = "Include";
-            this.splitButtonInclude.Name = "splitButtonInclude";
-            this.splitButtonInclude.OfficeImageId = "QuickPartsInsertGallery";
-            this.splitButtonInclude.ScreenTip = "Include a reference to another file";
-            this.splitButtonInclude.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeText);
-            // 
-            // buttonIncludeText
-            // 
-            this.buttonIncludeText.Label = "Include Text";
-            this.buttonIncludeText.Name = "buttonIncludeText";
-            this.buttonIncludeText.OfficeImageId = "TextFromFileInsert";
-            this.buttonIncludeText.ShowImage = true;
-            this.buttonIncludeText.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeText);
-            // 
-            // buttonIncludePicture
-            // 
-            this.buttonIncludePicture.Label = "Include Picture";
-            this.buttonIncludePicture.Name = "buttonIncludePicture";
-            this.buttonIncludePicture.OfficeImageId = "PictureFromFileInsert";
-            this.buttonIncludePicture.ShowImage = true;
-            this.buttonIncludePicture.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludePicture);
-            // 
-            // buttonIncludeObject
-            // 
-            this.buttonIncludeObject.Label = "Include Object";
-            this.buttonIncludeObject.Name = "buttonIncludeObject";
-            this.buttonIncludeObject.OfficeImageId = "OleObjectctInsert";
-            this.buttonIncludeObject.ShowImage = true;
-            this.buttonIncludeObject.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeObject);
-            // 
-            // separatorFirst
-            // 
-            this.separatorFirst.Name = "separatorFirst";
-            // 
-            // buttonUpdateFromSource
-            // 
-            this.buttonUpdateFromSource.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonUpdateFromSource.Description = "Updated the fields in the current selection.";
-            this.buttonUpdateFromSource.Enabled = false;
-            this.buttonUpdateFromSource.Label = "Update From Source";
-            this.buttonUpdateFromSource.Name = "buttonUpdateFromSource";
-            this.buttonUpdateFromSource.OfficeImageId = "Undo";
-            this.buttonUpdateFromSource.ShowImage = true;
-            this.buttonUpdateFromSource.SuperTip = "Updates the selected reference(s) in this document with the content of the refere" +
-    "nced file(s).";
-            this.buttonUpdateFromSource.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonUpdateFromSource);
-            // 
-            // buttonOpenSourceFile
-            // 
-            this.buttonOpenSourceFile.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonOpenSourceFile.Enabled = false;
-            this.buttonOpenSourceFile.Label = "Open Source File";
-            this.buttonOpenSourceFile.Name = "buttonOpenSourceFile";
-            this.buttonOpenSourceFile.OfficeImageId = "MasterDocumentShow";
-            this.buttonOpenSourceFile.ScreenTip = "Open Source File";
-            this.buttonOpenSourceFile.ShowImage = true;
-            this.buttonOpenSourceFile.SuperTip = "Opens the source file of the selected reference.";
-            this.buttonOpenSourceFile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonOpenSourceFile);
-            // 
-            // buttonUpdateToSource
-            // 
-            this.buttonUpdateToSource.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonUpdateToSource.Enabled = false;
-            this.buttonUpdateToSource.Label = "Update To Source";
-            this.buttonUpdateToSource.Name = "buttonUpdateToSource";
-            this.buttonUpdateToSource.OfficeImageId = "Redo";
-            this.buttonUpdateToSource.ShowImage = true;
-            this.buttonUpdateToSource.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonUpdateToSource);
-            // 
-            // separatorSecond
-            // 
-            this.separatorSecond.Name = "separatorSecond";
-            // 
-            // buttonCheckReferences
-            // 
-            this.buttonCheckReferences.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonCheckReferences.Label = "Check";
-            this.buttonCheckReferences.Name = "buttonCheckReferences";
-            this.buttonCheckReferences.OfficeImageId = "FileDocumentInspect";
-            this.buttonCheckReferences.ShowImage = true;
-            this.buttonCheckReferences.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCheckReferences);
-            // 
-            // groupTools
-            // 
-            this.groupTools.Items.Add(this.buttonCompareDocuments);
-            this.groupTools.Items.Add(this.buttonBindCustomXMLPart);
-            this.groupTools.Label = "Tools";
-            this.groupTools.Name = "groupTools";
-            // 
-            // buttonCompareDocuments
-            // 
-            this.buttonCompareDocuments.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonCompareDocuments.Label = "Compare Documents";
-            this.buttonCompareDocuments.Name = "buttonCompareDocuments";
-            this.buttonCompareDocuments.OfficeImageId = "ReviewCompareMenu";
-            this.buttonCompareDocuments.ShowImage = true;
-            this.buttonCompareDocuments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCompareDocuments);
-            // 
-            // toggleButtonShowMessagesForm
-            // 
-            this.toggleButtonShowMessagesForm.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.toggleButtonShowMessagesForm.Label = "Show Messages";
-            this.toggleButtonShowMessagesForm.Name = "toggleButtonShowMessagesForm";
-            this.toggleButtonShowMessagesForm.OfficeImageId = "CreateReportBlankReport";
-            this.toggleButtonShowMessagesForm.ShowImage = true;
-            this.toggleButtonShowMessagesForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonShowMessagesForm);
-            // 
-            // groupFields
-            // 
-            this.groupFields.Items.Add(this.splitButtonFieldInsert);
-            this.groupFields.Items.Add(this.splitButtonFieldAction);
-            this.groupFields.Items.Add(this.splitButtonFieldFormat);
-            this.groupFields.Label = "Fields";
-            this.groupFields.Name = "groupFields";
-            // 
-            // splitButtonFieldInsert
-            // 
-            this.splitButtonFieldInsert.Items.Add(this.buttonInsertEmptyField);
-            this.splitButtonFieldInsert.Items.Add(this.buttonInsertDateField);
-            this.splitButtonFieldInsert.Items.Add(this.buttonInsertTimeField);
-            this.splitButtonFieldInsert.Items.Add(this.buttonInsertListNumField);
-            this.splitButtonFieldInsert.Items.Add(this.buttonInsertPageField);
-            this.splitButtonFieldInsert.Label = "Insert Field";
-            this.splitButtonFieldInsert.Name = "splitButtonFieldInsert";
-            this.splitButtonFieldInsert.OfficeImageId = "FieldInsert";
-            this.splitButtonFieldInsert.ScreenTip = "Insert Field";
-            this.splitButtonFieldInsert.SuperTip = "Inserts a field function at the current selection.";
-            this.splitButtonFieldInsert.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_SplitButtonInsertField);
-            // 
-            // buttonInsertEmptyField
-            // 
-            this.buttonInsertEmptyField.Label = "Insert empty field";
-            this.buttonInsertEmptyField.Name = "buttonInsertEmptyField";
-            this.buttonInsertEmptyField.ShowImage = true;
-            this.buttonInsertEmptyField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertEmptyField);
-            // 
-            // buttonInsertDateField
-            // 
-            this.buttonInsertDateField.Label = "Insert \"Date\" field";
-            this.buttonInsertDateField.Name = "buttonInsertDateField";
-            this.buttonInsertDateField.ShowImage = true;
-            this.buttonInsertDateField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertDateField);
-            // 
-            // buttonInsertTimeField
-            // 
-            this.buttonInsertTimeField.Label = "Insert \"Time\" field";
-            this.buttonInsertTimeField.Name = "buttonInsertTimeField";
-            this.buttonInsertTimeField.ShowImage = true;
-            this.buttonInsertTimeField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertTimeField);
-            // 
-            // buttonInsertListNumField
-            // 
-            this.buttonInsertListNumField.Label = "Insert \"ListNum\" field";
-            this.buttonInsertListNumField.Name = "buttonInsertListNumField";
-            this.buttonInsertListNumField.ShowImage = true;
-            this.buttonInsertListNumField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertListNumField);
-            // 
-            // buttonInsertPageField
-            // 
-            this.buttonInsertPageField.Label = "Insert \"Page\" Field";
-            this.buttonInsertPageField.Name = "buttonInsertPageField";
-            this.buttonInsertPageField.ShowImage = true;
-            this.buttonInsertPageField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertPageField);
-            // 
-            // splitButtonFieldAction
-            // 
-            this.splitButtonFieldAction.Enabled = false;
-            this.splitButtonFieldAction.Items.Add(this.buttonFieldUpdate);
-            this.splitButtonFieldAction.Items.Add(this.toggleButtonFieldLock);
-            this.splitButtonFieldAction.Items.Add(this.toggleButtonShowFieldCode);
-            this.splitButtonFieldAction.Label = "Field Action";
-            this.splitButtonFieldAction.Name = "splitButtonFieldAction";
-            // 
-            // buttonFieldUpdate
-            // 
-            this.buttonFieldUpdate.Label = "Update Field";
-            this.buttonFieldUpdate.Name = "buttonFieldUpdate";
-            this.buttonFieldUpdate.ShowImage = true;
-            this.buttonFieldUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonFieldUpdate);
-            // 
-            // toggleButtonFieldLock
-            // 
-            this.toggleButtonFieldLock.Label = "Lock Field";
-            this.toggleButtonFieldLock.Name = "toggleButtonFieldLock";
-            this.toggleButtonFieldLock.ShowImage = true;
-            this.toggleButtonFieldLock.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldLock);
-            // 
-            // toggleButtonShowFieldCode
-            // 
-            this.toggleButtonShowFieldCode.Label = "Show Field Code";
-            this.toggleButtonShowFieldCode.Name = "toggleButtonShowFieldCode";
-            this.toggleButtonShowFieldCode.ShowImage = true;
-            this.toggleButtonShowFieldCode.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonShowFieldCode);
-            // 
-            // splitButtonFieldFormat
-            // 
-            this.splitButtonFieldFormat.Items.Add(this.splitButtonFieldFormatCapitalization);
-            this.splitButtonFieldFormat.Items.Add(this.splitButtonFieldFormatNumber);
-            this.splitButtonFieldFormat.Items.Add(this.toggleButtonFieldFormatMergeFormat);
-            this.splitButtonFieldFormat.Label = "Field Format";
-            this.splitButtonFieldFormat.Name = "splitButtonFieldFormat";
-            // 
-            // splitButtonFieldFormatCapitalization
-            // 
-            this.splitButtonFieldFormatCapitalization.Enabled = false;
-            this.splitButtonFieldFormatCapitalization.Items.Add(this.toggleButtonFieldFormatCaps);
-            this.splitButtonFieldFormatCapitalization.Items.Add(this.toggleButtonFieldFormatFirstCap);
-            this.splitButtonFieldFormatCapitalization.Items.Add(this.toggleButtonFieldFormatUpper);
-            this.splitButtonFieldFormatCapitalization.Items.Add(this.toggleButtonFieldFormatLower);
-            this.splitButtonFieldFormatCapitalization.Label = "Capitalization";
-            this.splitButtonFieldFormatCapitalization.Name = "splitButtonFieldFormatCapitalization";
+            menuFieldFormatCapitalization.Items.Add(this.toggleButtonFieldFormatCaps);
+            menuFieldFormatCapitalization.Items.Add(this.toggleButtonFieldFormatFirstCap);
+            menuFieldFormatCapitalization.Items.Add(this.toggleButtonFieldFormatUpper);
+            menuFieldFormatCapitalization.Items.Add(this.toggleButtonFieldFormatLower);
+            menuFieldFormatCapitalization.Label = "Capitalization";
+            menuFieldFormatCapitalization.Name = "menuFieldFormatCapitalization";
+            menuFieldFormatCapitalization.ShowImage = true;
             // 
             // toggleButtonFieldFormatCaps
             // 
@@ -425,19 +207,19 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.toggleButtonFieldFormatLower.ShowImage = true;
             this.toggleButtonFieldFormatLower.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
-            // splitButtonFieldFormatNumber
+            // menuFieldFormatNumber
             // 
-            this.splitButtonFieldFormatNumber.Enabled = false;
-            this.splitButtonFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatAlphabetic);
-            this.splitButtonFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatArabic);
-            this.splitButtonFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatCardText);
-            this.splitButtonFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatDollarText);
-            this.splitButtonFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatHex);
-            this.splitButtonFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatOrdText);
-            this.splitButtonFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatOrdinal);
-            this.splitButtonFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatRoman);
-            this.splitButtonFieldFormatNumber.Label = "Number";
-            this.splitButtonFieldFormatNumber.Name = "splitButtonFieldFormatNumber";
+            menuFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatAlphabetic);
+            menuFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatArabic);
+            menuFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatCardText);
+            menuFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatDollarText);
+            menuFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatHex);
+            menuFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatOrdText);
+            menuFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatOrdinal);
+            menuFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatRoman);
+            menuFieldFormatNumber.Label = "Number";
+            menuFieldFormatNumber.Name = "menuFieldFormatNumber";
+            menuFieldFormatNumber.ShowImage = true;
             // 
             // toggleButtonFieldFormatAlphabetic
             // 
@@ -495,46 +277,137 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.toggleButtonFieldFormatRoman.ShowImage = true;
             this.toggleButtonFieldFormatRoman.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
-            // toggleButtonFieldFormatMergeFormat
+            // separatorFieldFormat
             // 
-            this.toggleButtonFieldFormatMergeFormat.Label = "Preserve Formatting";
-            this.toggleButtonFieldFormatMergeFormat.Name = "toggleButtonFieldFormatMergeFormat";
-            this.toggleButtonFieldFormatMergeFormat.ShowImage = true;
-            this.toggleButtonFieldFormatMergeFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
+            separatorFieldFormat.Name = "separatorFieldFormat";
             // 
-            // groupDocumentProperties
+            // tabComponentBasedAuthoring
             // 
-            this.groupDocumentProperties.Items.Add(this.box);
-            this.groupDocumentProperties.Items.Add(this.checkBoxHideInternal);
-            this.groupDocumentProperties.Items.Add(this.buttonCreateCustomDocumentProperty);
-            this.groupDocumentProperties.Label = "Document Properties";
-            this.groupDocumentProperties.Name = "groupDocumentProperties";
+            this.tabComponentBasedAuthoring.Groups.Add(groupReferences);
+            this.tabComponentBasedAuthoring.Groups.Add(groupTools);
+            this.tabComponentBasedAuthoring.Groups.Add(groupFields);
+            this.tabComponentBasedAuthoring.Groups.Add(groupDocumentProperties);
+            this.tabComponentBasedAuthoring.Groups.Add(groupView);
+            this.tabComponentBasedAuthoring.Groups.Add(groupMiscellaneous);
+            this.tabComponentBasedAuthoring.Label = "Component-Based Authoring";
+            this.tabComponentBasedAuthoring.Name = "tabComponentBasedAuthoring";
             // 
-            // box
+            // groupReferences
             // 
-            this.box.Items.Add(this.dropDownCustomDocumentProperties);
-            this.box.Name = "box";
+            groupReferences.Items.Add(this.splitButtonInclude);
+            groupReferences.Items.Add(separatorFirst);
+            groupReferences.Items.Add(this.buttonUpdateFromSource);
+            groupReferences.Items.Add(this.buttonOpenSourceFile);
+            groupReferences.Items.Add(this.buttonUpdateToSource);
+            groupReferences.Items.Add(separatorSecond);
+            groupReferences.Items.Add(this.buttonCheckReferences);
+            groupReferences.Label = "References";
+            groupReferences.Name = "groupReferences";
             // 
-            // dropDownCustomDocumentProperties
+            // splitButtonInclude
             // 
-            this.dropDownCustomDocumentProperties.Label = "Custom Properties";
-            this.dropDownCustomDocumentProperties.Name = "dropDownCustomDocumentProperties";
-            this.dropDownCustomDocumentProperties.SelectionChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnSelectionChanged_DropDownCustomDocumentProperties);
+            this.splitButtonInclude.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.splitButtonInclude.Enabled = false;
+            this.splitButtonInclude.Items.Add(this.buttonIncludeText);
+            this.splitButtonInclude.Items.Add(this.buttonIncludePicture);
+            this.splitButtonInclude.Items.Add(this.buttonIncludeObject);
+            this.splitButtonInclude.Label = "Include";
+            this.splitButtonInclude.Name = "splitButtonInclude";
+            this.splitButtonInclude.OfficeImageId = "QuickPartsInsertGallery";
+            this.splitButtonInclude.ScreenTip = "Include a reference to another file";
+            this.splitButtonInclude.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeText);
             // 
-            // checkBoxHideInternal
+            // buttonIncludeText
             // 
-            this.checkBoxHideInternal.Checked = true;
-            this.checkBoxHideInternal.Label = "Hide \"Internal\"";
-            this.checkBoxHideInternal.Name = "checkBoxHideInternal";
-            this.checkBoxHideInternal.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_CheckBoxHideInternal);
+            this.buttonIncludeText.Label = "Include Text";
+            this.buttonIncludeText.Name = "buttonIncludeText";
+            this.buttonIncludeText.OfficeImageId = "TextFromFileInsert";
+            this.buttonIncludeText.ShowImage = true;
+            this.buttonIncludeText.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeText);
             // 
-            // buttonCreateCustomDocumentProperty
+            // buttonIncludePicture
             // 
-            this.buttonCreateCustomDocumentProperty.Label = "Create Custom Document Property";
-            this.buttonCreateCustomDocumentProperty.Name = "buttonCreateCustomDocumentProperty";
-            this.buttonCreateCustomDocumentProperty.OfficeImageId = "PropertyInsert";
-            this.buttonCreateCustomDocumentProperty.ShowImage = true;
-            this.buttonCreateCustomDocumentProperty.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCreateCustomDocumentProperty);
+            this.buttonIncludePicture.Label = "Include Picture";
+            this.buttonIncludePicture.Name = "buttonIncludePicture";
+            this.buttonIncludePicture.OfficeImageId = "PictureFromFileInsert";
+            this.buttonIncludePicture.ShowImage = true;
+            this.buttonIncludePicture.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludePicture);
+            // 
+            // buttonIncludeObject
+            // 
+            this.buttonIncludeObject.Label = "Include Object";
+            this.buttonIncludeObject.Name = "buttonIncludeObject";
+            this.buttonIncludeObject.OfficeImageId = "OleObjectctInsert";
+            this.buttonIncludeObject.ShowImage = true;
+            this.buttonIncludeObject.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeObject);
+            // 
+            // separatorFirst
+            // 
+            separatorFirst.Name = "separatorFirst";
+            // 
+            // buttonUpdateFromSource
+            // 
+            this.buttonUpdateFromSource.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonUpdateFromSource.Description = "Updated the fields in the current selection.";
+            this.buttonUpdateFromSource.Enabled = false;
+            this.buttonUpdateFromSource.Label = "Update From Source";
+            this.buttonUpdateFromSource.Name = "buttonUpdateFromSource";
+            this.buttonUpdateFromSource.OfficeImageId = "Undo";
+            this.buttonUpdateFromSource.ShowImage = true;
+            this.buttonUpdateFromSource.SuperTip = "Updates the selected reference(s) in this document with the content of the refere" +
+    "nced file(s).";
+            this.buttonUpdateFromSource.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonUpdateFromSource);
+            // 
+            // buttonOpenSourceFile
+            // 
+            this.buttonOpenSourceFile.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonOpenSourceFile.Enabled = false;
+            this.buttonOpenSourceFile.Label = "Open Source File";
+            this.buttonOpenSourceFile.Name = "buttonOpenSourceFile";
+            this.buttonOpenSourceFile.OfficeImageId = "MasterDocumentShow";
+            this.buttonOpenSourceFile.ScreenTip = "Open Source File";
+            this.buttonOpenSourceFile.ShowImage = true;
+            this.buttonOpenSourceFile.SuperTip = "Opens the source file of the selected reference.";
+            this.buttonOpenSourceFile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonOpenSourceFile);
+            // 
+            // buttonUpdateToSource
+            // 
+            this.buttonUpdateToSource.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonUpdateToSource.Enabled = false;
+            this.buttonUpdateToSource.Label = "Update To Source";
+            this.buttonUpdateToSource.Name = "buttonUpdateToSource";
+            this.buttonUpdateToSource.OfficeImageId = "Redo";
+            this.buttonUpdateToSource.ShowImage = true;
+            this.buttonUpdateToSource.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonUpdateToSource);
+            // 
+            // separatorSecond
+            // 
+            separatorSecond.Name = "separatorSecond";
+            // 
+            // buttonCheckReferences
+            // 
+            this.buttonCheckReferences.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonCheckReferences.Label = "Check";
+            this.buttonCheckReferences.Name = "buttonCheckReferences";
+            this.buttonCheckReferences.OfficeImageId = "FileDocumentInspect";
+            this.buttonCheckReferences.ShowImage = true;
+            this.buttonCheckReferences.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCheckReferences);
+            // 
+            // groupTools
+            // 
+            groupTools.Items.Add(this.buttonCompareDocuments);
+            groupTools.Items.Add(this.buttonBindCustomXMLPart);
+            groupTools.Label = "Tools";
+            groupTools.Name = "groupTools";
+            // 
+            // buttonCompareDocuments
+            // 
+            this.buttonCompareDocuments.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonCompareDocuments.Label = "Compare Documents";
+            this.buttonCompareDocuments.Name = "buttonCompareDocuments";
+            this.buttonCompareDocuments.OfficeImageId = "ReviewCompareMenu";
+            this.buttonCompareDocuments.ShowImage = true;
+            this.buttonCompareDocuments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCompareDocuments);
             // 
             // buttonBindCustomXMLPart
             // 
@@ -544,13 +417,154 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonBindCustomXMLPart.ShowImage = true;
             this.buttonBindCustomXMLPart.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonBindCustomXMLPart);
             // 
+            // groupFields
+            // 
+            groupFields.Items.Add(this.splitButtonFieldInsert);
+            groupFields.Items.Add(this.menuFieldFormat);
+            groupFields.Items.Add(this.menuFieldAction);
+            groupFields.Label = "Fields";
+            groupFields.Name = "groupFields";
+            // 
+            // splitButtonFieldInsert
+            // 
+            this.splitButtonFieldInsert.Items.Add(this.buttonInsertEmptyField);
+            this.splitButtonFieldInsert.Items.Add(this.buttonInsertDateField);
+            this.splitButtonFieldInsert.Items.Add(this.buttonInsertTimeField);
+            this.splitButtonFieldInsert.Items.Add(this.buttonInsertListNumField);
+            this.splitButtonFieldInsert.Items.Add(this.buttonInsertPageField);
+            this.splitButtonFieldInsert.Label = "Insert Field";
+            this.splitButtonFieldInsert.Name = "splitButtonFieldInsert";
+            this.splitButtonFieldInsert.OfficeImageId = "FieldInsert";
+            this.splitButtonFieldInsert.ScreenTip = "Insert Field";
+            this.splitButtonFieldInsert.SuperTip = "Inserts a field function at the current selection.";
+            this.splitButtonFieldInsert.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_SplitButtonInsertField);
+            // 
+            // buttonInsertEmptyField
+            // 
+            this.buttonInsertEmptyField.Label = "Insert empty field";
+            this.buttonInsertEmptyField.Name = "buttonInsertEmptyField";
+            this.buttonInsertEmptyField.ShowImage = true;
+            this.buttonInsertEmptyField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertEmptyField);
+            // 
+            // buttonInsertDateField
+            // 
+            this.buttonInsertDateField.Label = "Insert \"Date\" field";
+            this.buttonInsertDateField.Name = "buttonInsertDateField";
+            this.buttonInsertDateField.ShowImage = true;
+            this.buttonInsertDateField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertDateField);
+            // 
+            // buttonInsertTimeField
+            // 
+            this.buttonInsertTimeField.Label = "Insert \"Time\" field";
+            this.buttonInsertTimeField.Name = "buttonInsertTimeField";
+            this.buttonInsertTimeField.ShowImage = true;
+            this.buttonInsertTimeField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertTimeField);
+            // 
+            // buttonInsertListNumField
+            // 
+            this.buttonInsertListNumField.Label = "Insert \"ListNum\" field";
+            this.buttonInsertListNumField.Name = "buttonInsertListNumField";
+            this.buttonInsertListNumField.ShowImage = true;
+            this.buttonInsertListNumField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertListNumField);
+            // 
+            // buttonInsertPageField
+            // 
+            this.buttonInsertPageField.Label = "Insert \"Page\" Field";
+            this.buttonInsertPageField.Name = "buttonInsertPageField";
+            this.buttonInsertPageField.ShowImage = true;
+            this.buttonInsertPageField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertPageField);
+            // 
+            // menuFieldFormat
+            // 
+            this.menuFieldFormat.Enabled = false;
+            this.menuFieldFormat.Items.Add(menuFieldFormatCapitalization);
+            this.menuFieldFormat.Items.Add(menuFieldFormatNumber);
+            this.menuFieldFormat.Items.Add(separatorFieldFormat);
+            this.menuFieldFormat.Items.Add(this.toggleButtonFieldFormatMergeFormat);
+            this.menuFieldFormat.Label = "Field Format";
+            this.menuFieldFormat.Name = "menuFieldFormat";
+            // 
+            // toggleButtonFieldFormatMergeFormat
+            // 
+            this.toggleButtonFieldFormatMergeFormat.Label = "Preserve Formatting";
+            this.toggleButtonFieldFormatMergeFormat.Name = "toggleButtonFieldFormatMergeFormat";
+            this.toggleButtonFieldFormatMergeFormat.ShowImage = true;
+            this.toggleButtonFieldFormatMergeFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
+            // 
+            // menuFieldAction
+            // 
+            this.menuFieldAction.Enabled = false;
+            this.menuFieldAction.Items.Add(this.buttonFieldUpdate);
+            this.menuFieldAction.Items.Add(this.toggleButtonFieldLock);
+            this.menuFieldAction.Items.Add(this.toggleButtonFieldShowCode);
+            this.menuFieldAction.Label = "Field Action";
+            this.menuFieldAction.Name = "menuFieldAction";
+            // 
+            // buttonFieldUpdate
+            // 
+            this.buttonFieldUpdate.Label = "Update Field";
+            this.buttonFieldUpdate.Name = "buttonFieldUpdate";
+            this.buttonFieldUpdate.ShowImage = true;
+            this.buttonFieldUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonFieldUpdate);
+            // 
+            // toggleButtonFieldLock
+            // 
+            this.toggleButtonFieldLock.Label = "Lock Field";
+            this.toggleButtonFieldLock.Name = "toggleButtonFieldLock";
+            this.toggleButtonFieldLock.ShowImage = true;
+            this.toggleButtonFieldLock.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldLock);
+            // 
+            // toggleButtonFieldShowCode
+            // 
+            this.toggleButtonFieldShowCode.Label = "Show Field Code";
+            this.toggleButtonFieldShowCode.Name = "toggleButtonFieldShowCode";
+            this.toggleButtonFieldShowCode.ShowImage = true;
+            this.toggleButtonFieldShowCode.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldShowCode);
+            // 
+            // groupDocumentProperties
+            // 
+            groupDocumentProperties.Items.Add(this.box);
+            groupDocumentProperties.Items.Add(this.checkBoxHideInternal);
+            groupDocumentProperties.Items.Add(this.buttonCreateCustomDocumentProperty);
+            groupDocumentProperties.Label = "Document Properties";
+            groupDocumentProperties.Name = "groupDocumentProperties";
+            // 
+            // box
+            // 
+            this.box.Items.Add(this.dropDownCustomDocumentProperties);
+            this.box.Name = "box";
+            // 
+            // dropDownCustomDocumentProperties
+            // 
+            this.dropDownCustomDocumentProperties.Enabled = false;
+            this.dropDownCustomDocumentProperties.Label = "Custom Properties";
+            this.dropDownCustomDocumentProperties.Name = "dropDownCustomDocumentProperties";
+            this.dropDownCustomDocumentProperties.SelectionChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnSelectionChanged_DropDownCustomDocumentProperties);
+            // 
+            // checkBoxHideInternal
+            // 
+            this.checkBoxHideInternal.Checked = true;
+            this.checkBoxHideInternal.Enabled = false;
+            this.checkBoxHideInternal.Label = "Hide \"Internal\"";
+            this.checkBoxHideInternal.Name = "checkBoxHideInternal";
+            this.checkBoxHideInternal.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_CheckBoxHideInternal);
+            // 
+            // buttonCreateCustomDocumentProperty
+            // 
+            this.buttonCreateCustomDocumentProperty.Enabled = false;
+            this.buttonCreateCustomDocumentProperty.Label = "Create Custom Document Property";
+            this.buttonCreateCustomDocumentProperty.Name = "buttonCreateCustomDocumentProperty";
+            this.buttonCreateCustomDocumentProperty.OfficeImageId = "PropertyInsert";
+            this.buttonCreateCustomDocumentProperty.ShowImage = true;
+            this.buttonCreateCustomDocumentProperty.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCreateCustomDocumentProperty);
+            // 
             // groupView
             // 
-            this.groupView.Items.Add(this.dropDownFieldShading);
-            this.groupView.Items.Add(this.toggleButtonShowFieldShading);
-            this.groupView.Items.Add(this.toggleButtonShowFieldCodes);
-            this.groupView.Label = "View";
-            this.groupView.Name = "groupView";
+            groupView.Items.Add(this.dropDownFieldShading);
+            groupView.Items.Add(this.toggleButtonFormFieldShading);
+            groupView.Items.Add(this.toggleButtonFieldCodes);
+            groupView.Label = "View";
+            groupView.Name = "groupView";
             // 
             // dropDownFieldShading
             // 
@@ -570,34 +584,44 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.dropDownFieldShading.ShowItemImage = false;
             this.dropDownFieldShading.SelectionChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnSelectionChanged_DropDownFieldShading);
             // 
-            // toggleButtonShowFieldShading
+            // toggleButtonFormFieldShading
             // 
-            this.toggleButtonShowFieldShading.Label = "Form Field Shading";
-            this.toggleButtonShowFieldShading.Name = "toggleButtonShowFieldShading";
-            this.toggleButtonShowFieldShading.OfficeImageId = "FieldShading";
-            this.toggleButtonShowFieldShading.ScreenTip = "Show Form Field Shading";
-            this.toggleButtonShowFieldShading.ShowImage = true;
-            this.toggleButtonShowFieldShading.SuperTip = "Show Form Field Shading";
-            this.toggleButtonShowFieldShading.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonShowFieldShading);
+            this.toggleButtonFormFieldShading.Label = "Form Field Shading";
+            this.toggleButtonFormFieldShading.Name = "toggleButtonFormFieldShading";
+            this.toggleButtonFormFieldShading.OfficeImageId = "FieldShading";
+            this.toggleButtonFormFieldShading.ScreenTip = "Show Form Field Shading";
+            this.toggleButtonFormFieldShading.ShowImage = true;
+            this.toggleButtonFormFieldShading.SuperTip = "Show Form Field Shading";
+            this.toggleButtonFormFieldShading.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFormFieldShading);
             // 
-            // toggleButtonShowFieldCodes
+            // toggleButtonFieldCodes
             // 
-            this.toggleButtonShowFieldCodes.Label = "Field Codes";
-            this.toggleButtonShowFieldCodes.Name = "toggleButtonShowFieldCodes";
-            this.toggleButtonShowFieldCodes.OfficeImageId = "FieldCodes";
-            this.toggleButtonShowFieldCodes.ScreenTip = "Show Field Codes";
-            this.toggleButtonShowFieldCodes.ShowImage = true;
-            this.toggleButtonShowFieldCodes.SuperTip = "Show Field Codes";
-            this.toggleButtonShowFieldCodes.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonShowFieldCodes);
+            this.toggleButtonFieldCodes.Label = "Field Codes";
+            this.toggleButtonFieldCodes.Name = "toggleButtonFieldCodes";
+            this.toggleButtonFieldCodes.OfficeImageId = "FieldCodes";
+            this.toggleButtonFieldCodes.ScreenTip = "Show Field Codes";
+            this.toggleButtonFieldCodes.ShowImage = true;
+            this.toggleButtonFieldCodes.SuperTip = "Show Field Codes";
+            this.toggleButtonFieldCodes.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldCodes);
             // 
             // groupMiscellaneous
             // 
-            this.groupMiscellaneous.Items.Add(this.toggleButtonShowMessagesForm);
-            this.groupMiscellaneous.Items.Add(this.buttonShowAboutForm);
-            this.groupMiscellaneous.Items.Add(this.buttonShowHelpForm);
-            this.groupMiscellaneous.Items.Add(this.buttonShowConfigurationForm);
-            this.groupMiscellaneous.Label = "Miscellaneous";
-            this.groupMiscellaneous.Name = "groupMiscellaneous";
+            groupMiscellaneous.Items.Add(this.toggleButtonShowMessagesForm);
+            groupMiscellaneous.Items.Add(separatorThird);
+            groupMiscellaneous.Items.Add(this.buttonShowAboutForm);
+            groupMiscellaneous.Items.Add(this.buttonShowHelpForm);
+            groupMiscellaneous.Items.Add(this.buttonShowConfigurationForm);
+            groupMiscellaneous.Label = "Miscellaneous";
+            groupMiscellaneous.Name = "groupMiscellaneous";
+            // 
+            // toggleButtonShowMessagesForm
+            // 
+            this.toggleButtonShowMessagesForm.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.toggleButtonShowMessagesForm.Label = "Show Messages";
+            this.toggleButtonShowMessagesForm.Name = "toggleButtonShowMessagesForm";
+            this.toggleButtonShowMessagesForm.OfficeImageId = "CreateReportBlankReport";
+            this.toggleButtonShowMessagesForm.ShowImage = true;
+            this.toggleButtonShowMessagesForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonShowMessagesForm);
             // 
             // buttonShowAboutForm
             // 
@@ -623,6 +647,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonShowConfigurationForm.ShowImage = true;
             this.buttonShowConfigurationForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowConfigurationForm);
             // 
+            // separatorThird
+            // 
+            separatorThird.Name = "separatorThird";
+            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -631,31 +659,29 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.OnLoad);
             this.tabComponentBasedAuthoring.ResumeLayout(false);
             this.tabComponentBasedAuthoring.PerformLayout();
-            this.groupReferences.ResumeLayout(false);
-            this.groupReferences.PerformLayout();
-            this.groupTools.ResumeLayout(false);
-            this.groupTools.PerformLayout();
-            this.groupFields.ResumeLayout(false);
-            this.groupFields.PerformLayout();
-            this.groupDocumentProperties.ResumeLayout(false);
-            this.groupDocumentProperties.PerformLayout();
+            groupReferences.ResumeLayout(false);
+            groupReferences.PerformLayout();
+            groupTools.ResumeLayout(false);
+            groupTools.PerformLayout();
+            groupFields.ResumeLayout(false);
+            groupFields.PerformLayout();
+            groupDocumentProperties.ResumeLayout(false);
+            groupDocumentProperties.PerformLayout();
             this.box.ResumeLayout(false);
             this.box.PerformLayout();
-            this.groupView.ResumeLayout(false);
-            this.groupView.PerformLayout();
-            this.groupMiscellaneous.ResumeLayout(false);
-            this.groupMiscellaneous.PerformLayout();
+            groupView.ResumeLayout(false);
+            groupView.PerformLayout();
+            groupMiscellaneous.ResumeLayout(false);
+            groupMiscellaneous.PerformLayout();
 
         }
 
         #endregion
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabComponentBasedAuthoring;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupReferences;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonCreateCustomDocumentProperty;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonUpdateFromSource;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonUpdateToSource;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupDocumentProperties;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDownCustomDocumentProperties;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBoxHideInternal;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonInclude;
@@ -664,36 +690,27 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonIncludeObject;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonOpenSourceFile;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupFields;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonFieldInsert;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertEmptyField;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertDateField;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertTimeField;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertListNumField;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertPageField;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupMiscellaneous;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonShowAboutForm;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonShowHelpForm;
-        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowFieldCodes;
-        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowFieldShading;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonFieldCodes;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonFormFieldShading;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDownFieldShading;
-        internal RibbonSeparator separatorFirst;
-        internal RibbonSeparator separatorSecond;
         internal RibbonButton buttonCheckReferences;
-        internal RibbonSplitButton splitButtonFieldAction;
-        internal RibbonButton buttonFieldUpdate;
-        internal RibbonToggleButton toggleButtonFieldLock;
-        internal RibbonToggleButton toggleButtonShowFieldCode;
-        internal RibbonSplitButton splitButtonFieldFormat;
-        internal RibbonSplitButton splitButtonFieldFormatCapitalization;
+        internal RibbonButton buttonShowConfigurationForm;
+        internal RibbonButton buttonBindCustomXMLPart;
+        internal RibbonButton buttonCompareDocuments;
+        internal RibbonToggleButton toggleButtonShowMessagesForm;
+        internal RibbonMenu menuFieldFormat;
         internal RibbonToggleButton toggleButtonFieldFormatCaps;
         internal RibbonToggleButton toggleButtonFieldFormatFirstCap;
         internal RibbonToggleButton toggleButtonFieldFormatUpper;
         internal RibbonToggleButton toggleButtonFieldFormatLower;
-        internal RibbonButton buttonShowConfigurationForm;
-        internal RibbonButton buttonBindCustomXMLPart;
-        internal RibbonGroup groupView;
-        internal RibbonSplitButton splitButtonFieldFormatNumber;
         internal RibbonToggleButton toggleButtonFieldFormatAlphabetic;
         internal RibbonToggleButton toggleButtonFieldFormatArabic;
         internal RibbonToggleButton toggleButtonFieldFormatCardText;
@@ -703,9 +720,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         internal RibbonToggleButton toggleButtonFieldFormatOrdinal;
         internal RibbonToggleButton toggleButtonFieldFormatRoman;
         internal RibbonToggleButton toggleButtonFieldFormatMergeFormat;
-        internal RibbonButton buttonCompareDocuments;
-        internal RibbonGroup groupTools;
-        internal RibbonToggleButton toggleButtonShowMessagesForm;
+        internal RibbonMenu menuFieldAction;
+        internal RibbonButton buttonFieldUpdate;
+        internal RibbonToggleButton toggleButtonFieldLock;
+        internal RibbonToggleButton toggleButtonFieldShowCode;
     }
 
     /// <summary>
