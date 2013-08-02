@@ -55,5 +55,29 @@ namespace FlorianWolters.Office.Word.Fields
                 return new FieldFilePathTranslator().Decode(match.Groups[1].Value);
             }
         }
+
+        public string LastModified
+        {
+            get
+            {
+                Word.Field emptyDateTimeField = null;
+
+                try
+                {
+                    emptyDateTimeField = this.field.Next.Next;
+                }
+                catch (ArgumentNullException)
+                {
+                    throw new FormatException("The date time is missing.");
+                }
+
+                if (!emptyDateTimeField.Type.Equals(Word.WdFieldType.wdFieldEmpty))
+                {
+                    throw new FormatException("The date time is invalid.");
+                }
+
+                return emptyDateTimeField.Code.Text.Trim();
+            }
+        }
     }
 }
