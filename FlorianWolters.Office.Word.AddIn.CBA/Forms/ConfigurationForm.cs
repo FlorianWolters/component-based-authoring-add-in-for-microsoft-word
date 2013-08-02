@@ -68,28 +68,27 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         {
             if (this.DialogResult.Equals(DialogResult.OK))
             {
-                // TODO Refactpr validation of configuration settings (move to other class).
-
+                // TODO Refactor validation of configuration settings (move to other class).
                 string graphicsDirectoryName = this.textBoxGraphicsDirectoryName.Text.ToString();
                 string xmlDirectoryName = this.textBoxXMLDirectoryName.Text.ToString();
                 string templateName = this.textBoxWordTemplateFilePrefix.Text.ToString();
                 
                 // Taken from http://regexlib.com/REDetails.aspx?regexp_id=85
-                const string pattern = "^(?!^(PRN|AUX|CLOCK\\$|NUL|CON|COM\\d|LPT\\d|\\..*)(\\..+)?$)[^\\x00-\\x1f\\\\?*:\\\";|/]+$";
+                const string Pattern = "^(?!^(PRN|AUX|CLOCK\\$|NUL|CON|COM\\d|LPT\\d|\\..*)(\\..+)?$)[^\\x00-\\x1f\\\\?*:\\\";|/]+$";
                 
-                if (!Regex.IsMatch(graphicsDirectoryName, pattern, RegexOptions.IgnoreCase))
+                if (!Regex.IsMatch(graphicsDirectoryName, Pattern, RegexOptions.IgnoreCase))
                 {
                     MessageBox.Show("Invalid directory name for the graphic files.", "Notice");
                     e.Cancel = true;
                 }
 
-                if (!Regex.IsMatch(xmlDirectoryName, pattern))
+                if (!Regex.IsMatch(xmlDirectoryName, Pattern))
                 {
                     MessageBox.Show("Invalid directory name for the XML files.", "Notice");
                     e.Cancel = true;
                 }
 
-                if (!Regex.IsMatch(templateName, pattern))
+                if (!Regex.IsMatch(templateName, Pattern))
                 {
                     MessageBox.Show("Invalid directory name for the template file.", "Notice");
                     e.Cancel = true;
