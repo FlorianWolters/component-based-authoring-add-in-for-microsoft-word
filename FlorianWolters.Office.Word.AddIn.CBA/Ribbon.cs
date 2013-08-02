@@ -235,12 +235,20 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         private void OnClick_ButtonUpdateFromSource(object sender, RibbonControlEventArgs e)
         {
-            IEnumerable<Word.Field> fields = this.application.Selection.AllIncludeFields();
+            IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
             int fieldCount = fields.Count();
 
             if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentFromSource(fieldCount))
             {
                 new FieldUpdater(fields, new UpdateTarget()).Update();
+
+                foreach (Word.Field field in fields)
+                {
+                    this.logger.Info(
+                        "Updated content from \"" + new IncludeField(field).FilePath + "\" in \"" + this.application.ActiveDocument.FullName + "\".");
+                }
+
+                this.logger.Info("Updated " + fieldCount + " source reference(s) in " + this.application.ActiveDocument.FullName + ".");
             }
         }
 
@@ -255,17 +263,32 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         private void OnClick_ButtonUpdateToSource(object sender, RibbonControlEventArgs e)
         {
-            IEnumerable<Word.Field> fields = this.application.Selection.AllIncludeTextFields();
-            int fieldCount = fields.Count();
-            string filePath = new IncludeField(fields.ElementAt(0)).FilePath;
+            IList<Word.Field> fields = this.application.Selection.AllIncludeTextFields().ToList();
+            int fieldCount = fields.Count;
+            string filePath = string.Empty;
 
-            if (new FileInfo(filePath).IsReadOnly)
+            foreach (Word.Field field in fields)
             {
-                MessageBoxes.ShowMessageBoxFileIsReadOnly(filePath);
+                filePath = new IncludeField(field).FilePath;
+
+                if (new FileInfo(filePath).IsReadOnly)
+                {
+                    MessageBoxes.ShowMessageBoxFileIsReadOnly(filePath);
+                    return;
+                }
             }
-            else if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentInSource(fieldCount))
+
+            if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentInSource(fieldCount))
             {
                 new FieldUpdater(fields, new UpdateSource()).Update();
+
+                foreach (Word.Field field in fields)
+                {
+                    this.logger.Info(
+                        "Updated content in \"" + new IncludeField(field).FilePath + "\" from \"" + this.application.ActiveDocument.FullName + "\".");
+                }
+
+                this.logger.Info("Updated " + fieldCount + " source file(s) from " + this.application.ActiveDocument.FullName + ".");
             }
         }
 
@@ -281,10 +304,15 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
             foreach (Word.Field field in fields)
             {
-                filePath = new IncludeField(field).FilePath;
+                IncludeField includeField = new IncludeField(field);
+                filePath = includeField.FilePath;
                 lastModifiedExpected = File.GetLastWriteTimeUtc(filePath).ToString("u");
 
-                if (null == field.Next || null == field.Next.Next || !field.Next.Next.Type.Equals(Word.WdFieldType.wdFieldEmpty))
+                try
+                {
+                    lastModifiedActual = includeField.LastModified;
+                }
+                catch (FormatException)
                 {
                     MessageBox.Show(
                         "An error occured while parsing the field code. Ensure that the field has been created via " + Settings.Default.ApplicationName + ".",
@@ -293,8 +321,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                         MessageBoxIcon.Warning);
                     continue;
                 }
-
-                lastModifiedActual = field.Next.Next.Code.Text.Trim();
 
                 if (lastModifiedExpected != lastModifiedActual)
                 {
