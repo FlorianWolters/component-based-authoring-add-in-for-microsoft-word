@@ -13,6 +13,11 @@ namespace FlorianWolters.Office.Word.Extensions
     {
         public static bool CanUpdate(this Word.Field field)
         {
+            return field.Locked = false;
+        }
+
+        public static bool IsTypeInclude(this Word.Field field)
+        {
             return field.Type == Word.WdFieldType.wdFieldIncludeText
                 || field.Type == Word.WdFieldType.wdFieldInclude
                 || field.Type == Word.WdFieldType.wdFieldIncludePicture;

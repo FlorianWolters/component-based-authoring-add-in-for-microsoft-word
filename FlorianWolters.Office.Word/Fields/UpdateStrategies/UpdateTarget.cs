@@ -7,22 +7,22 @@
 
 namespace FlorianWolters.Office.Word.Fields.UpdateStrategies
 {
-    using System;
-    using FlorianWolters.Office.Word.Extensions;
     using Word = Microsoft.Office.Interop.Word;
 
     public class UpdateTarget : IUpdateStrategy
     {
+        /// <summary>
+        /// Updates the specified <see cref="Word.Field"/>.
+        /// </summary>
+        /// <param name="field">The <see cref="Word.Field"/> to update.</param>
         public void Update(Word.Field field)
         {
-            if (field.CanUpdate())
-            {
-                field.Update();
-            }
-            else
-            {
-                throw new ArgumentException("Invalid field type.");
-            }
+            // If a field is updated if its field codes are visible, the field
+            // codes are replaced by the field result. Therefore we do have to
+            // manually keep track of the UI state.
+            bool showCodes = field.ShowCodes;
+            field.Update();
+            field.ShowCodes = showCodes;
         }
     }
 }

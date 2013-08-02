@@ -23,7 +23,7 @@ namespace FlorianWolters.Office.Word.Fields
                 throw new ArgumentNullException("field");
             }
 
-            if (!field.CanUpdate())
+            if (!field.IsTypeInclude())
             {
                 throw new ArgumentException("field");
             }
