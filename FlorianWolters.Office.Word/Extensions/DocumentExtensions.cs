@@ -7,6 +7,7 @@
 
 namespace FlorianWolters.Office.Word.Extensions
 {
+    using System;
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
@@ -27,8 +28,13 @@ namespace FlorianWolters.Office.Word.Extensions
         /// <c>true</c> if the <see cref="Word.Document"/> is saved,
         /// <c>false</c> otherwise.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// If the <c>document</c> argument is <c>null</c>.
+        /// </exception>
         public static bool IsSaved(this Word.Document document)
         {
+            ThrowArgumentNullExceptionIfDocumentIsNull(document);
+
             return string.Empty != document.Path;
         }
 
@@ -39,8 +45,13 @@ namespace FlorianWolters.Office.Word.Extensions
         /// <param name="document">
         /// The <see cref="Word.Document"/> to modify.
         /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the <c>document</c> argument is <c>null</c>.
+        /// </exception>
         public static void UpdateAllTableOfContents(this Word.Document document)
         {
+            ThrowArgumentNullExceptionIfDocumentIsNull(document);
+
             if (document.TablesOfContents.Count > 0)
             {
                 foreach (Word.TableOfContents table in document.TablesOfContents)
@@ -58,11 +69,37 @@ namespace FlorianWolters.Office.Word.Extensions
         /// The <see cref="Word.Document"/> to modify.
         /// </param>
         /// <param name="index">The index of the ToC to update.</param>
-        public static void UpdateTableOfContents(this Word.Document document, int index = 1)
+        /// <exception cref="ArgumentNullException">
+        /// If the <c>document</c> argument is <c>null</c>.
+        /// </exception>
+        public static void UpdateTableOfContents(
+            this Word.Document document,
+            int index = 1)
         {
+            ThrowArgumentNullExceptionIfDocumentIsNull(document);
+
             if (document.TablesOfContents.Count > (index - 1))
             {
                 document.TablesOfContents[index].Update();
+            }
+        }
+
+        /// <summary>
+        /// Throws a new <see cref="ArgumentNullException"/> if the specified
+        /// <see cref="Word.Document"/> is <c>null</c>.
+        /// </summary>
+        /// <param name="document">
+        /// The <see cref="Word.Document"/> to check.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the <c>document</c> argument is <c>null</c>.
+        /// </exception>
+        private static void ThrowArgumentNullExceptionIfDocumentIsNull(
+            Word.Document document)
+        {
+            if (null == document)
+            {
+                throw new ArgumentNullException("document");
             }
         }
     }
