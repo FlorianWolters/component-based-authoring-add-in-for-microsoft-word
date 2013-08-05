@@ -10,6 +10,10 @@ namespace FlorianWolters.Office.Word.Dialogs
     using FlorianWolters.Office.Word.Fields;
     using Word = Microsoft.Office.Interop.Word;
 
+    /// <summary>
+    /// The class <see cref="InsertPictureDialog"/> allows to interact with the
+    /// built-in Microsoft Word dialog box "Insert picture".
+    /// </summary>
     public class InsertPictureDialog : InsertReferenceDialog
     {
         /// <summary>
@@ -39,6 +43,10 @@ namespace FlorianWolters.Office.Word.Dialogs
         {
         }
 
+        /// <summary>
+        /// Inserts a <see cref="Word.Field"/> into the current <see
+        /// cref="Word.Selection"/> of the active <see cref="Word.Document"/>.
+        /// </summary>
         protected override void CreateField()
         {
             this.FieldFactory.InsertIncludePictureWithNestedDocProperty(
@@ -46,6 +54,13 @@ namespace FlorianWolters.Office.Word.Dialogs
                 this.CustomDocumentPropertyNameWithDocumentPath);
         }
 
+        /// <summary>
+        /// Determines whether the user has chosen to create a reference or not.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the user has chosen to create a reference or
+        /// <c>false</c> if not.
+        /// </returns>
         protected override bool HasUserChosenLinkToFile()
         {
             return LinkToFileEnabled == int.Parse(this.WordDialog.LinkToFile);

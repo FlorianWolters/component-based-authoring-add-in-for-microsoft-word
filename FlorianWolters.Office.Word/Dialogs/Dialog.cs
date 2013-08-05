@@ -11,6 +11,10 @@ namespace FlorianWolters.Office.Word.Dialogs
     using System.Windows.Forms;
     using Word = Microsoft.Office.Interop.Word;
 
+    /// <summary>
+    /// The abstract class <see cref="Dialog"/> allows to interact with a
+    /// built-in Microsoft Word dialog box.
+    /// </summary>
     public abstract class Dialog
     {
         /// <summary>
@@ -49,7 +53,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         /// An identifier of the enumeration <see cref="DialogResults"/>,
         /// indicating the return value of this <see cref="Dialog"/>.
         /// </returns>
-        public DialogResults Show()
+        public virtual DialogResults Show()
         {
             return this.HandleResult(this.Display());
         }

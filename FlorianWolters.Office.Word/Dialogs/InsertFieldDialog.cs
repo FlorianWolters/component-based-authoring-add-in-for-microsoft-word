@@ -10,6 +10,10 @@ namespace FlorianWolters.Office.Word.Dialogs
     using System.Windows.Forms;
     using Word = Microsoft.Office.Interop.Word;
 
+    /// <summary>
+    /// The class <see cref="InsertFieldDialog"/> allows to interact with the
+    /// built-in Microsoft Word dialog box "Insert field...".
+    /// </summary>
     public class InsertFieldDialog : Dialog
     {
         /// <summary>
@@ -22,6 +26,22 @@ namespace FlorianWolters.Office.Word.Dialogs
         {
         }
 
+        /// <summary>
+        /// Handles the result of this <see cref="Dialog"/>.
+        /// <para>
+        /// By default, the current settings of the Microsoft Word dialog box
+        /// are applied. This method can be overwritten to change that behavior.
+        /// </para>
+        /// </summary>
+        /// <param name="result">
+        /// An identifier of the enumeration <see cref="DialogResults"/>,
+        /// indicating the return value of the built-in Microsoft Word dialog
+        /// box.
+        /// </param>
+        /// <returns>
+        /// An identifier of the enumeration <see cref="DialogResults"/>,
+        /// indicating the return value of this <see cref="Dialog"/>.
+        /// </returns>
         protected override DialogResults HandleResult(DialogResults result)
         {
             if (this.ResultIsOk(result))
@@ -30,7 +50,14 @@ namespace FlorianWolters.Office.Word.Dialogs
                 // but since we do deal with built-in Microsoft Word dialogs
                 // that isn't so bad. Further developments should abstract this
                 // further.
-                switch (this.ShowQuestion())
+                DialogResult dialogResult = MessageBox.Show(
+                    "Do you really want to insert the field \""
+                    + this.WordDialog.Field + "\" at the current position in the document?",
+                    "Question",
+                    MessageBoxButtons.YesNoCancel,
+                    MessageBoxIcon.Question);
+
+                switch (dialogResult)
                 {
                     case DialogResult.Yes:
                         base.HandleResult(result);
@@ -45,16 +72,6 @@ namespace FlorianWolters.Office.Word.Dialogs
             }
 
             return result;
-        }
-
-        private DialogResult ShowQuestion()
-        {
-            return MessageBox.Show(
-                "Do you really want to insert the field \""
-                + this.WordDialog.Field + "\" at the current position in the document?",
-                "Question",
-                MessageBoxButtons.YesNoCancel,
-                MessageBoxIcon.Question);
         }
     }
 }
