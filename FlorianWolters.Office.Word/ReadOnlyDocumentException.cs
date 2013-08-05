@@ -20,7 +20,7 @@ namespace FlorianWolters.Office.Word
         /// cref="ReadOnlyDocumentException"/> class with the specified error
         /// message.
         /// </summary>
-        /// <param name="message">The message that describes the error. </param>
+        /// <param name="message">The message that describes the error.</param>
         public ReadOnlyDocumentException(string message) : base(message)
         {
         }

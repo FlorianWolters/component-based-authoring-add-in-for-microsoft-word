@@ -20,9 +20,8 @@ namespace FlorianWolters.Office.Word
         /// cref="TemplateNotFoundException"/> class with the specified error
         /// message.
         /// </summary>
-        /// <param name="message">The message that describes the error. </param>
-        public TemplateNotFoundException(string message)
-            : base(message)
+        /// <param name="message">The message that describes the error.</param>
+        public TemplateNotFoundException(string message) : base(message)
         {
         }
     }
