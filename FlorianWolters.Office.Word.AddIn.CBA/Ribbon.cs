@@ -233,12 +233,23 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             new InsertObjectDialog(this.application).Show();
         }
 
+        private IEnumerable<string> RetrieveFileNames(IEnumerable<Word.Field> fields)
+        {
+            IList<string> result = new List<string>();
+
+            foreach (Word.Field field in fields)
+            {
+                 result.Add(new IncludeField(field).FilePath);
+            }
+
+            return result;
+        }
+
         private void OnClick_ButtonUpdateFromSource(object sender, RibbonControlEventArgs e)
         {
             IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
-            int fieldCount = fields.Count();
 
-            if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentFromSource(fieldCount))
+            if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentFromSource(this.RetrieveFileNames(fields).ToList()))
             {
                 new FieldUpdater(fields, new UpdateTarget()).Update();
 
@@ -248,7 +259,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                         "Updated content from \"" + new IncludeField(field).FilePath + "\" in \"" + this.application.ActiveDocument.FullName + "\".");
                 }
 
-                this.logger.Info("Updated " + fieldCount + " source reference(s) in " + this.application.ActiveDocument.FullName + ".");
+                this.logger.Info("Updated " + fields.Count + " source reference(s) in " + this.application.ActiveDocument.FullName + ".");
             }
         }
 
@@ -261,11 +272,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
         }
 
-        private void OnClick_ButtonUpdateToSource(object sender, RibbonControlEventArgs e)
+        private IEnumerable<string> RetrieveReadOnlyFiles(IEnumerable<Word.Field> fields)
         {
-            IList<Word.Field> fields = this.application.Selection.AllIncludeTextFields().ToList();
-            int fieldCount = fields.Count;
-            string filePath = string.Empty;
+            IList<string> result = new List<string>();
+            string filePath;
 
             foreach (Word.Field field in fields)
             {
@@ -273,12 +283,30 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
                 if (new FileInfo(filePath).IsReadOnly)
                 {
-                    MessageBoxes.ShowMessageBoxFileIsReadOnly(filePath);
-                    return;
+                    result.Add(filePath);
                 }
             }
 
-            if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentInSource(fieldCount))
+            return result;
+        }
+
+        private void OnClick_ButtonUpdateToSource(object sender, RibbonControlEventArgs e)
+        {
+            IList<Word.Field> fields = this.application.Selection.AllIncludeTextFields().ToList();
+
+            IList<string> readOnlyFiles = this.RetrieveReadOnlyFiles(fields).ToList();
+            
+            if (readOnlyFiles.Count > 0)
+            { 
+                foreach (string filePath in readOnlyFiles)
+                {
+                    this.logger.Warn(
+                        "The source file \"" + filePath + "\" is read-only.");
+                }
+
+                MessageBoxes.ShowMessageBoxFileIsReadOnly(readOnlyFiles);
+            }
+            else if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentInSource(this.RetrieveFileNames(fields).ToList()))
             {
                 new FieldUpdater(fields, new UpdateSource()).Update();
 
@@ -288,18 +316,16 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                         "Updated content in \"" + new IncludeField(field).FilePath + "\" from \"" + this.application.ActiveDocument.FullName + "\".");
                 }
 
-                this.logger.Info("Updated " + fieldCount + " source file(s) from " + this.application.ActiveDocument.FullName + ".");
+                this.logger.Info("Updated " + fields.Count + " source file(s) from " + this.application.ActiveDocument.FullName + ".");
             }
         }
 
         private void OnClick_ButtonCheckReferences(object sender, RibbonControlEventArgs e)
         {
-            string filePath;
-            string lastModifiedActual;
-            string lastModifiedExpected;
-
-            // http://pmueller.de/blog/word2007grafik.html
-            // Word Bug: http://stackoverflow.com/questions/17109200/ms-word-includepicture-field-code
+            bool problemDetected = false;
+            string filePath = string.Empty;
+            string lastModifiedActual = string.Empty;
+            string lastModifiedExpected = string.Empty;
             IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
 
             foreach (Word.Field field in fields)
@@ -314,6 +340,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 }
                 catch (FormatException)
                 {
+                    problemDetected = true;
+
                     MessageBox.Show(
                         "An error occured while parsing the field code. Ensure that the field has been created via " + Settings.Default.ApplicationName + ".",
                         "Warning",
@@ -324,21 +352,59 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
                 if (lastModifiedExpected != lastModifiedActual)
                 {
+                    problemDetected = true;
+
                     MessageBox.Show(
                         "The referenced source file " + filePath + " has been modified since it has been included in this target document.",
                         "Question",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
 
-                    // TODO How can we solve a possible merge conflict?
+                    // The source document is assumed to be the revised document by convention.
+                    Word.Document revisedDocument = this.application.Documents.Open(
+                        FileName: filePath,
+                        ReadOnly: true,
+                        AddToRecentFiles: false,
+                        Visible: false);
+
+                    // Retrieve the template of the current document and attach it to the temporary document.
+                    Word.Template template = (Word.Template)this.application.ActiveDocument.get_AttachedTemplate();
+
+                    // The result from the INCLUDE field is assumed to be the original (temporary) document by convention.
+                    Word.Document originalDocument = this.application.Documents.Add(
+                        Template: template.FullName,
+                        DocumentType: Word.WdNewDocumentType.wdNewBlankDocument,
+                        Visible: false);
+                    originalDocument.Application.ActiveWindow.Caption = "Temporary Document";
+
+                    // Copy the result of the field to the original (temporary document).
+                    Word.Range fieldRange = field.Result;
+                    fieldRange.TextRetrievalMode.IncludeFieldCodes = false;
+                    fieldRange.TextRetrievalMode.IncludeHiddenText = true;
+                    originalDocument.Range().Text = fieldRange.Text;
+
+                    Word.Document diffDocument = this.application.CompareDocuments(
+                        originalDocument,
+                        revisedDocument);
+
+                    // Close the original and the revised documents.
+                    ((Word._Document)originalDocument).Close(SaveChanges: false);
+                    ((Word._Document)revisedDocument).Close(SaveChanges: false);
+
+                    // Modify the UI for the "diff" document.
+                    diffDocument.ActiveWindow.View.SplitSpecial = Word.WdSpecialPane.wdPaneRevisionsVert;
+                    diffDocument.ActiveWindow.ShowSourceDocuments = Word.WdShowSourceDocuments.wdShowSourceDocumentsBoth;
                 }
             }
 
-            MessageBox.Show(
-                "No problems have been found by " + Settings.Default.ApplicationName + " in the current selection of this document.",
-                "Information",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            if (!problemDetected)
+            {
+                MessageBox.Show(
+                    "No problems have been found by " + Settings.Default.ApplicationName + " in the current selection of this document.",
+                    "Information",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
         }
 
         #endregion

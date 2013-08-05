@@ -9,6 +9,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.InteropServices;
     using FlorianWolters.Office.Word.Event.EventHandlers;
     using FlorianWolters.Office.Word.Extensions;
     using FlorianWolters.Office.Word.Fields;
@@ -41,10 +42,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
         {
             if (this.application.HasOpenDocuments())
             {
-                bool isSaved = this.application.ActiveDocument.IsSaved();
+                bool activeDocumentSaved = this.application.ActiveDocument.IsSaved();
 
-                this.ribbon.splitButtonInclude.Enabled = isSaved;
-                this.ribbon.buttonCheckReferences.Enabled = isSaved;
+                this.ribbon.splitButtonInclude.Enabled = activeDocumentSaved;
+                this.ribbon.buttonCheckReferences.Enabled = activeDocumentSaved;
 
                 this.customDocumentPropertiesDropDown.Update(this.ribbon.checkBoxHideInternal.Enabled);
                 this.ribbon.dropDownCustomDocumentProperties.Enabled = true;
@@ -52,10 +53,25 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 this.ribbon.buttonCreateCustomDocumentProperty.Enabled = true;
                 
                 this.ribbon.splitButtonFieldInsert.Enabled = true;
-                
-                this.UpdateDropDownFieldShading();
-                this.UpdateToggleButtonFormFieldShading();
-                this.UpdateToggleButtonFieldCodes();
+
+                this.ribbon.toggleButtonFormFieldShading.Enabled = true;
+                this.ribbon.toggleButtonFieldCodes.Enabled = true;
+                this.ribbon.toggleButtonFieldCodes.Checked = this.application.ActiveWindow.View.ShowFieldCodes;
+
+                try
+                {
+                    // TODO Find a way to avoid the throwing of the exception,
+                    // e.g. by implementing a detection of the comparison view.
+                    this.ribbon.toggleButtonFormFieldShading.Checked = this.application.ActiveDocument.FormFields.Shaded;
+                    this.UpdateDropDownFieldShading();
+                }
+                catch (COMException)
+                {
+                    // We simply "swallow" a possible COMException (required if
+                    // two Word documents are compared).
+                    this.ribbon.toggleButtonFormFieldShading.Enabled = false;
+                    this.ribbon.dropDownFieldShading.Enabled = false;
+                }
             }
             else
             {
@@ -92,8 +108,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
         public void OnWindowSelectionChange(Word.Selection selection)
         {
-            this.UpdateSplitButtonInsertField(selection);
-            this.UpdateButtonBindCustomXMLPart(selection);
+            this.ribbon.splitButtonFieldInsert.Enabled = selection.Start == selection.End;
+            this.ribbon.buttonBindCustomXMLPart.Enabled = 1 == selection.Range.ContentControls.Count;
 
             IEnumerable<Word.Field> selectedFields = selection.AllFields();
             int selectedFieldCount = selectedFields.Count();
@@ -163,11 +179,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             this.ribbon.buttonUpdateToSource.Enabled = oneOrMoreIncludeFields;
         }
 
-        private void UpdateSplitButtonInsertField(Word.Selection selection)
-        {
-            this.ribbon.splitButtonFieldInsert.Enabled = selection.Start == selection.End;
-        }
-
         private void UpdateDropDownFieldShading()
         {
             Word.WdFieldShading wordFieldShading = this.application.ActiveWindow.View.FieldShading;
@@ -178,28 +189,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                                                              where items.Tag.Equals(wordFieldShadingAsString)
                                                              select items).First();
             this.ribbon.dropDownFieldShading.Enabled = true;
-        }
-
-        private void UpdateToggleButtonFormFieldShading()
-        {
-            this.ribbon.toggleButtonFormFieldShading.Checked = this.application.ActiveDocument.FormFields.Shaded;
-            this.ribbon.toggleButtonFormFieldShading.Enabled = true;
-        }
-
-        private void UpdateToggleButtonFieldCodes()
-        {
-            this.ribbon.toggleButtonFieldCodes.Checked = this.application.ActiveWindow.View.ShowFieldCodes;
-            this.ribbon.toggleButtonFieldCodes.Enabled = true;
-        }
-
-        private void UpdateButtonBindCustomXMLPart(Word.Selection selection)
-        {
-            this.ribbon.buttonBindCustomXMLPart.Enabled = this.IsSingleContentControlSelected(selection);
-        }
-
-        private bool IsSingleContentControlSelected(Word.Selection selection)
-        {
-            return 1 == selection.Range.ContentControls.Count;
         }
     }
 }
