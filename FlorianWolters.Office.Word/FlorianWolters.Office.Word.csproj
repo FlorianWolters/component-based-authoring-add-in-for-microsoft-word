@@ -61,7 +61,6 @@
     <Compile Include="Dialogs\InsertFieldDialog.cs" />
     <Compile Include="Dialogs\InsertPictureDialog.cs" />
     <Compile Include="Dialogs\InsertFileDialog.cs" />
-    <Compile Include="Dialogs\InsertObjectDialog.cs" />
     <Compile Include="Dialogs\CompareDocumentsDialog.cs" />
     <Compile Include="DocumentProperties\CustomDocumentPropertyWriter.cs" />
     <Compile Include="DocumentProperties\CustomDocumentPropertyReader.cs" />

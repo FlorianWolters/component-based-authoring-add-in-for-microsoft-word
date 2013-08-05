@@ -227,12 +227,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 Settings.Default.DocPropertyNameForLastDirectoryPath).Show();
         }
 
-        // TODO Remove if not working with relative paths.
-        private void OnClick_ButtonIncludeObject(object sender, RibbonControlEventArgs e)
-        {
-            new InsertObjectDialog(this.application).Show();
-        }
-
         private IEnumerable<string> RetrieveFileNames(IEnumerable<Word.Field> fields)
         {
             IList<string> result = new List<string>();
