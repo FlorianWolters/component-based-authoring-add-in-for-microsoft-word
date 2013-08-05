@@ -45,7 +45,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 bool activeDocumentSaved = this.application.ActiveDocument.IsSaved();
 
                 this.ribbon.splitButtonInclude.Enabled = activeDocumentSaved;
-                this.ribbon.buttonCheckReferences.Enabled = activeDocumentSaved;
+                this.ribbon.buttonCompare.Enabled = activeDocumentSaved;
 
                 this.customDocumentPropertiesDropDown.Update(this.ribbon.checkBoxHideInternal.Enabled);
                 this.ribbon.dropDownCustomDocumentProperties.Enabled = true;
@@ -81,7 +81,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 this.ribbon.buttonUpdateFromSource.Enabled = documentActive;
                 this.ribbon.buttonOpenSourceFile.Enabled = documentActive;
                 this.ribbon.buttonUpdateToSource.Enabled = documentActive;
-                this.ribbon.buttonCheckReferences.Enabled = documentActive;
+                this.ribbon.buttonCompare.Enabled = documentActive;
 
                 this.ribbon.buttonBindCustomXMLPart.Enabled = documentActive;
 
@@ -102,7 +102,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
         public void OnDocumentBeforeSave(Word.Document document, ref bool saveAsUI, ref bool cancel)
         {
-            this.ribbon.buttonCheckReferences.Enabled = true;
+            this.ribbon.buttonCompare.Enabled = true;
             this.ribbon.splitButtonInclude.Enabled = true;
         }
 
@@ -177,6 +177,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             this.ribbon.buttonUpdateFromSource.Enabled = oneOrMoreIncludeFields && !oneOrMoreFieldsLocked;
             this.ribbon.buttonOpenSourceFile.Enabled = oneOrMoreIncludeFields;
             this.ribbon.buttonUpdateToSource.Enabled = oneOrMoreIncludeFields;
+            this.ribbon.buttonCompare.Enabled = oneOrMoreIncludeFields;
         }
 
         private void UpdateDropDownFieldShading()

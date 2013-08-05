@@ -114,15 +114,13 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.toggleButtonFieldFormatOrdText = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonFieldFormatOrdinal = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonFieldFormatRoman = this.Factory.CreateRibbonToggleButton();
-            this.tabComponentBasedAuthoring = this.Factory.CreateRibbonTab();
             this.splitButtonInclude = this.Factory.CreateRibbonSplitButton();
             this.buttonIncludeText = this.Factory.CreateRibbonButton();
             this.buttonIncludePicture = this.Factory.CreateRibbonButton();
-            this.buttonIncludeObject = this.Factory.CreateRibbonButton();
             this.buttonUpdateFromSource = this.Factory.CreateRibbonButton();
             this.buttonOpenSourceFile = this.Factory.CreateRibbonButton();
             this.buttonUpdateToSource = this.Factory.CreateRibbonButton();
-            this.buttonCheckReferences = this.Factory.CreateRibbonButton();
+            this.buttonCompare = this.Factory.CreateRibbonButton();
             this.buttonCompareDocuments = this.Factory.CreateRibbonButton();
             this.buttonBindCustomXMLPart = this.Factory.CreateRibbonButton();
             this.splitButtonFieldInsert = this.Factory.CreateRibbonSplitButton();
@@ -148,6 +146,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonShowAboutForm = this.Factory.CreateRibbonButton();
             this.buttonShowHelpForm = this.Factory.CreateRibbonButton();
             this.buttonShowConfigurationForm = this.Factory.CreateRibbonButton();
+            this.tabComponentBasedAuthoring = this.Factory.CreateRibbonTab();
             menuFieldFormatCapitalization = this.Factory.CreateRibbonMenu();
             menuFieldFormatNumber = this.Factory.CreateRibbonMenu();
             separatorFieldFormat = this.Factory.CreateRibbonSeparator();
@@ -160,7 +159,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             groupView = this.Factory.CreateRibbonGroup();
             groupMiscellaneous = this.Factory.CreateRibbonGroup();
             separatorThird = this.Factory.CreateRibbonSeparator();
-            this.tabComponentBasedAuthoring.SuspendLayout();
             groupReferences.SuspendLayout();
             groupTools.SuspendLayout();
             groupFields.SuspendLayout();
@@ -168,6 +166,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.box.SuspendLayout();
             groupView.SuspendLayout();
             groupMiscellaneous.SuspendLayout();
+            this.tabComponentBasedAuthoring.SuspendLayout();
             // 
             // menuFieldFormatCapitalization
             // 
@@ -281,17 +280,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             separatorFieldFormat.Name = "separatorFieldFormat";
             // 
-            // tabComponentBasedAuthoring
-            // 
-            this.tabComponentBasedAuthoring.Groups.Add(groupReferences);
-            this.tabComponentBasedAuthoring.Groups.Add(groupTools);
-            this.tabComponentBasedAuthoring.Groups.Add(groupFields);
-            this.tabComponentBasedAuthoring.Groups.Add(groupDocumentProperties);
-            this.tabComponentBasedAuthoring.Groups.Add(groupView);
-            this.tabComponentBasedAuthoring.Groups.Add(groupMiscellaneous);
-            this.tabComponentBasedAuthoring.Label = "Component-Based Authoring";
-            this.tabComponentBasedAuthoring.Name = "tabComponentBasedAuthoring";
-            // 
             // groupReferences
             // 
             groupReferences.Items.Add(this.splitButtonInclude);
@@ -300,7 +288,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             groupReferences.Items.Add(this.buttonOpenSourceFile);
             groupReferences.Items.Add(this.buttonUpdateToSource);
             groupReferences.Items.Add(separatorSecond);
-            groupReferences.Items.Add(this.buttonCheckReferences);
+            groupReferences.Items.Add(this.buttonCompare);
             groupReferences.Label = "References";
             groupReferences.Name = "groupReferences";
             // 
@@ -310,11 +298,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.splitButtonInclude.Enabled = false;
             this.splitButtonInclude.Items.Add(this.buttonIncludeText);
             this.splitButtonInclude.Items.Add(this.buttonIncludePicture);
-            this.splitButtonInclude.Items.Add(this.buttonIncludeObject);
             this.splitButtonInclude.Label = "Include";
             this.splitButtonInclude.Name = "splitButtonInclude";
             this.splitButtonInclude.OfficeImageId = "QuickPartsInsertGallery";
-            this.splitButtonInclude.ScreenTip = "Include a reference to another file";
+            this.splitButtonInclude.ScreenTip = "Insert a reference to an external document.";
+            this.splitButtonInclude.SuperTip = "The referenced file is not stored in this document.";
             this.splitButtonInclude.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeText);
             // 
             // buttonIncludeText
@@ -322,7 +310,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonIncludeText.Label = "Include Text";
             this.buttonIncludeText.Name = "buttonIncludeText";
             this.buttonIncludeText.OfficeImageId = "TextFromFileInsert";
+            this.buttonIncludeText.ScreenTip = "Insert a reference to an external document.";
             this.buttonIncludeText.ShowImage = true;
+            this.buttonIncludeText.SuperTip = "The referenced file is not stored in this document.";
             this.buttonIncludeText.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeText);
             // 
             // buttonIncludePicture
@@ -330,16 +320,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonIncludePicture.Label = "Include Picture";
             this.buttonIncludePicture.Name = "buttonIncludePicture";
             this.buttonIncludePicture.OfficeImageId = "PictureFromFileInsert";
+            this.buttonIncludePicture.ScreenTip = "Insert a reference to a graphics file.";
             this.buttonIncludePicture.ShowImage = true;
+            this.buttonIncludePicture.SuperTip = "The referenced file is not stored in this document.";
             this.buttonIncludePicture.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludePicture);
-            // 
-            // buttonIncludeObject
-            // 
-            this.buttonIncludeObject.Label = "Include Object";
-            this.buttonIncludeObject.Name = "buttonIncludeObject";
-            this.buttonIncludeObject.OfficeImageId = "OleObjectctInsert";
-            this.buttonIncludeObject.ShowImage = true;
-            this.buttonIncludeObject.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeObject);
             // 
             // separatorFirst
             // 
@@ -384,14 +368,16 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             separatorSecond.Name = "separatorSecond";
             // 
-            // buttonCheckReferences
+            // buttonCompare
             // 
-            this.buttonCheckReferences.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonCheckReferences.Label = "Check";
-            this.buttonCheckReferences.Name = "buttonCheckReferences";
-            this.buttonCheckReferences.OfficeImageId = "FileDocumentInspect";
-            this.buttonCheckReferences.ShowImage = true;
-            this.buttonCheckReferences.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCheckReferences);
+            this.buttonCompare.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonCompare.Enabled = false;
+            this.buttonCompare.Label = "Compare";
+            this.buttonCompare.Name = "buttonCompare";
+            this.buttonCompare.OfficeImageId = "FileDocumentInspect";
+            this.buttonCompare.ScreenTip = "Compares the content of the selected references.";
+            this.buttonCompare.ShowImage = true;
+            this.buttonCompare.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCheckReferences);
             // 
             // groupTools
             // 
@@ -412,8 +398,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // buttonBindCustomXMLPart
             // 
             this.buttonBindCustomXMLPart.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonBindCustomXMLPart.Enabled = false;
             this.buttonBindCustomXMLPart.Label = "Bind XML";
             this.buttonBindCustomXMLPart.Name = "buttonBindCustomXMLPart";
+            this.buttonBindCustomXMLPart.OfficeImageId = "XmlStructure";
+            this.buttonBindCustomXMLPart.ScreenTip = "Binds content from a custom XML part to a content control.";
             this.buttonBindCustomXMLPart.ShowImage = true;
             this.buttonBindCustomXMLPart.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonBindCustomXMLPart);
             // 
@@ -623,6 +612,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.toggleButtonShowMessagesForm.ShowImage = true;
             this.toggleButtonShowMessagesForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonShowMessagesForm);
             // 
+            // separatorThird
+            // 
+            separatorThird.Name = "separatorThird";
+            // 
             // buttonShowAboutForm
             // 
             this.buttonShowAboutForm.Label = "About";
@@ -647,9 +640,16 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonShowConfigurationForm.ShowImage = true;
             this.buttonShowConfigurationForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowConfigurationForm);
             // 
-            // separatorThird
+            // tabComponentBasedAuthoring
             // 
-            separatorThird.Name = "separatorThird";
+            this.tabComponentBasedAuthoring.Groups.Add(groupReferences);
+            this.tabComponentBasedAuthoring.Groups.Add(groupTools);
+            this.tabComponentBasedAuthoring.Groups.Add(groupFields);
+            this.tabComponentBasedAuthoring.Groups.Add(groupDocumentProperties);
+            this.tabComponentBasedAuthoring.Groups.Add(groupView);
+            this.tabComponentBasedAuthoring.Groups.Add(groupMiscellaneous);
+            this.tabComponentBasedAuthoring.Label = "Component-Based Authoring";
+            this.tabComponentBasedAuthoring.Name = "tabComponentBasedAuthoring";
             // 
             // Ribbon
             // 
@@ -657,8 +657,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.RibbonType = "Microsoft.Word.Document";
             this.Tabs.Add(this.tabComponentBasedAuthoring);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.OnLoad);
-            this.tabComponentBasedAuthoring.ResumeLayout(false);
-            this.tabComponentBasedAuthoring.PerformLayout();
             groupReferences.ResumeLayout(false);
             groupReferences.PerformLayout();
             groupTools.ResumeLayout(false);
@@ -673,6 +671,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             groupView.PerformLayout();
             groupMiscellaneous.ResumeLayout(false);
             groupMiscellaneous.PerformLayout();
+            this.tabComponentBasedAuthoring.ResumeLayout(false);
+            this.tabComponentBasedAuthoring.PerformLayout();
 
         }
 
@@ -687,7 +687,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonInclude;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonIncludeText;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonIncludePicture;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonIncludeObject;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonOpenSourceFile;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonFieldInsert;
@@ -701,7 +700,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonFieldCodes;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonFormFieldShading;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDownFieldShading;
-        internal RibbonButton buttonCheckReferences;
+        internal RibbonButton buttonCompare;
         internal RibbonButton buttonShowConfigurationForm;
         internal RibbonButton buttonBindCustomXMLPart;
         internal RibbonButton buttonCompareDocuments;
