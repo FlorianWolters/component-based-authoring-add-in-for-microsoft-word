@@ -11,6 +11,10 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
     using FlorianWolters.Office.Word.Commands;
     using FlorianWolters.Office.Word.Event.ExceptionHandlers;
 
+    /// <summary>
+    /// The abstract class <see cref="CommandEventHandler"/> can be extended to
+    /// implement a concrete <i>Event Handler</i> for a <i>Command</i>.
+    /// </summary>
     public abstract class CommandEventHandler : IEventHandler
     {
         /// <summary>

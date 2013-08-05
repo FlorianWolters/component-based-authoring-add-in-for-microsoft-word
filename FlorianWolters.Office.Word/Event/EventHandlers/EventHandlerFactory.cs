@@ -11,6 +11,10 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
     using FlorianWolters.Office.Word.Event.ExceptionHandlers;
     using Microsoft.Office.Interop.Word;
 
+    /// <summary>
+    /// The abstract class <see cref="EventHandlerFactory"/> allows to create
+    /// <i>Event Handler</i> instances.
+    /// </summary>
     public abstract class EventHandlerFactory : IEventHandlerFactory
     {
         /// <summary>
