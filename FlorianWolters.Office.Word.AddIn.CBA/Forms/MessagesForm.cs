@@ -39,7 +39,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         /// <param name="e">A <see cref="FormClosingEventArgs"/> that contains the event data.</param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = (e.CloseReason == CloseReason.UserClosing);
+            e.Cancel = e.CloseReason == CloseReason.UserClosing;
         }
     }
 }
