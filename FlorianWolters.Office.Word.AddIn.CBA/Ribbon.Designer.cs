@@ -398,7 +398,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // buttonBindCustomXMLPart
             // 
             this.buttonBindCustomXMLPart.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonBindCustomXMLPart.Enabled = false;
             this.buttonBindCustomXMLPart.Label = "Bind XML";
             this.buttonBindCustomXMLPart.Name = "buttonBindCustomXMLPart";
             this.buttonBindCustomXMLPart.OfficeImageId = "XmlStructure";

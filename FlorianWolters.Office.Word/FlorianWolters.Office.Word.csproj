@@ -36,6 +36,14 @@
     <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Office.Tools.Word, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.1.2\lib\net40\NLog.dll</HintPath>
     </Reference>
@@ -55,6 +63,13 @@
     <Compile Include="Commands\ApplicationCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\DocumentCommand.cs" />
+    <Compile Include="ContentControls\ContentControlFactory.cs" />
+    <Compile Include="ContentControls\ContentControlMappingException.cs" />
+    <Compile Include="ContentControls\ContentControlCreationException.cs" />
+    <Compile Include="ContentControls\MappingStrategies\IMappingStrategy.cs" />
+    <Compile Include="ContentControls\MappingStrategies\ListMappingStrategy.cs" />
+    <Compile Include="ContentControls\MappingStrategies\CustomXMLNodeMappingStrategy.cs" />
+    <Compile Include="ContentControls\MappingStrategies\OneToOneMappingStrategy.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogResults.cs" />
     <Compile Include="Dialogs\InsertReferenceDialog.cs" />
@@ -91,6 +106,7 @@
     <Compile Include="Event\EventHandlers\IWindowSizeEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IXMLSelectionChangeEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IXMLValidationErrorEventHandler.cs" />
+    <Compile Include="Extensions\CustomXMLNodeExtensions.cs" />
     <Compile Include="Extensions\FieldExtensions.cs" />
     <Compile Include="Extensions\SelectionExtensions.cs" />
     <Compile Include="Extensions\ApplicationExtensions.cs" />

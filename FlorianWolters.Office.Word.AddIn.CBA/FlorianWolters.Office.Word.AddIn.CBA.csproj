@@ -211,12 +211,6 @@
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CustomXMLPartsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\CustomXMLPartsForm.designer.cs">
-      <DependentUpon>CustomXMLPartsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\ConfigurationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -258,9 +252,6 @@
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CustomXMLPartsForm.resx">
-      <DependentUpon>CustomXMLPartsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConfigurationForm.resx">
       <DependentUpon>ConfigurationForm.cs</DependentUpon>
@@ -326,11 +317,16 @@
       <Project>{2fef12b0-09d7-45d3-8cad-4e8377ff0b41}</Project>
       <Name>FlorianWolters.Reflection</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FlorianWolters.Windows.Forms.XMLTreeView\FlorianWolters.Windows.Forms.XML.csproj">
+      <Project>{b44f18f3-fd1f-4255-ad38-84e251c5bd81}</Project>
+      <Name>FlorianWolters.Windows.Forms.XML</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FlorianWolters.Windows.Forms\FlorianWolters.Windows.Forms.csproj">
       <Project>{b7ec839b-2038-4605-9550-e6e832341a92}</Project>
       <Name>FlorianWolters.Windows.Forms</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

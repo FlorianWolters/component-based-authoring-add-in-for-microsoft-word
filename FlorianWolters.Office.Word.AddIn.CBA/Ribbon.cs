@@ -14,11 +14,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using System.Linq;
     using System.Reflection;
     using System.Windows.Forms;
+    using System.Xml;
     using FlorianWolters.Office.Word.AddIn.CBA.CustomXML;
     using FlorianWolters.Office.Word.AddIn.CBA.EventHandlers;
     using FlorianWolters.Office.Word.AddIn.CBA.Factories;
     using FlorianWolters.Office.Word.AddIn.CBA.Forms;
     using FlorianWolters.Office.Word.AddIn.CBA.Properties;
+    using FlorianWolters.Office.Word.ContentControls;
+    using FlorianWolters.Office.Word.ContentControls.MappingStrategies;
     using FlorianWolters.Office.Word.Dialogs;
     using FlorianWolters.Office.Word.DocumentProperties;
     using FlorianWolters.Office.Word.Event;
@@ -30,6 +33,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using FlorianWolters.Office.Word.Fields.UpdateStrategies;
     using FlorianWolters.Reflection;
     using FlorianWolters.Windows.Forms;
+    using FlorianWolters.Windows.Forms.XML.Forms;
     using Microsoft.Office.Tools.Ribbon;
     using Office = Microsoft.Office.Core;
     using VB = Microsoft.VisualBasic;
@@ -79,11 +83,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         private ConfigurationForm ConfigurationForm { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="CustomXMLPartsForm"/>.
-        /// </summary>
-        private CustomXMLPartsForm CustomXMLPartsForm { get; set; }
-
-        /// <summary>
         /// Gets or sets the <see cref="CustomDocumentPropertiesDropDown"/>.
         /// </summary>
         private CustomDocumentPropertiesDropDown CustomDocumentPropertiesDropDown { get; set; }
@@ -130,7 +129,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.ConfigurationForm = new ConfigurationForm(settings);
             this.AboutForm = new AboutForm(assemblyInfo, settings);
             this.InitializeHelpDialog(assemblyInfo);
-            this.CustomXMLPartsForm = new CustomXMLPartsForm();
         }
 
         private void InitializeHelpDialog(AssemblyInfo assemblyInfo)
@@ -410,89 +408,90 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             new CompareDocumentsDialog(this.application).Show();
         }
 
-        // TODO This is completely static, therefore we do need a custom provider for each XML dtd.
-        // Other possibility: Simple Key value XML?
-        // OR: Let the user specifiy the XPath, e.g. /*/subsystems/subsystem[1]/components/component[1]/parameters would return all parameters for the first component of the first subsystem. But then we do need to specify the XPath for each column of the table, eg. child:://propertyName for parameters.
         private void OnClick_ButtonBindCustomXMLPart(object sender, RibbonControlEventArgs e)
         {
             Word.Document document = this.application.ActiveDocument;
-            CustomXMLPartRepository repository = new CustomXMLPartRepository(
-                document.CustomXMLParts);
+            XMLBrowserForm xmlBrowserForm = new XMLBrowserForm();
+            CustomXMLPartRepository repository = new CustomXMLPartRepository(document.CustomXMLParts);
 
-            this.CustomXMLPartsForm.PopulateCustomXMLPartsListView(repository.FindNotBuiltIn());
-            this.CustomXMLPartsForm.ShowDialog(this.ApplicationWindow);
-
-            if (DialogResult.Cancel.Equals(this.CustomXMLPartsForm.DialogResult))
+            foreach (Office.CustomXMLPart item in repository.FindNotBuiltIn())
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.LoadXml(item.XML);
+                
+                xmlBrowserForm.AddXmlDocument(xmlDocument);
+            }
+ 
+            // TODO Let the browser stay open to allow the inserting of multiple bindings.
+            if (DialogResult.OK != xmlBrowserForm.ShowDialog(this.ApplicationWindow))
             {
                 return;
             }
 
-            string customXMLPartID = this.CustomXMLPartsForm.LastSelectedCustomXMLPartID;
-            Office.CustomXMLPart customXMLPart = repository.FindByID(customXMLPartID);
+            Office.CustomXMLNode customXmlNode = null;
 
-            Word.ContentControl contentControl = this.application.Selection.Range.ContentControls[1];
-            Word.Range range = contentControl.Range;
-            Word.Table table = range.Tables[1];
+            try
+            {
+                customXmlNode = this.RetrieveCustomXMLNode(xmlBrowserForm, repository);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this.ApplicationWindow, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            Office.CustomXMLNodes subsystems = customXMLPart.SelectNodes("/ns0:defaultsystemparameters/ns0:subsystems/ns0:subsystem");
-
-            // The bridge to OOXML.
-            Microsoft.Office.Tools.Word.Document extendedDocument = Globals.Factory.GetVstoObject(document);
-
-            this.application.ScreenUpdating = false;
+            // TODO Implement a Background Worker, since the form is blocked. 
             ProgressForm progressForm = new ProgressForm();
             progressForm.ChangeLabelText("Processing current document. Please wait and do not close Microsoft Word...");
             progressForm.Show(this.ApplicationWindow);
 
-            foreach (Office.CustomXMLNode subsystemNode in subsystems)
+            ContentControlFactory contentControlFactory = new ContentControlFactory(document);
+            IMappingStrategy mappingStrategy = null;
+            Word.Range range = this.application.Selection.Range;
+
+            if (customXmlNode.IsAttribute() || customXmlNode.IsLeafElement())
             {
-                string systemName = subsystemNode.SelectSingleNode("child::ns0:propertyName").Text;
+                mappingStrategy = new OneToOneMappingStrategy(customXmlNode, contentControlFactory);
+            }
+            else
+            {
+                Word.ListGallery listGallery = this.application.ListGalleries[Word.WdListGalleryType.wdBulletGallery];
+                mappingStrategy = new ListMappingStrategy(customXmlNode, contentControlFactory, listGallery);
 
-                Office.CustomXMLNodes components = subsystemNode.SelectNodes("child::ns0:components/ns0:component");
+                // TODO ListMappingStrategy currently works only if the range is set to the main document story.
+                // I haven't found a solution yet, to solve this with any valid range.
+                // Also see: http://stackoverflow.com/questions/18125808/creating-a-multi-level-bullet-list-with-word-interop
+                range = document.Content;
+            }
 
-                foreach (Office.CustomXMLNode componentNode in components)
-                {
-                    string componentName = componentNode.SelectSingleNode("child::ns0:propertyName").Text;
-
-                    Office.CustomXMLNodes parameters = componentNode.SelectNodes("child::ns0:parameters/ns0:parameter");
-
-                    foreach (Office.CustomXMLNode parameterNode in parameters)
-                    {
-                        table.Rows.Add();
-
-                        Office.CustomXMLNode attributeNode = parameterNode.Attributes[1];
-
-                        table.Cell(table.Rows.Count, table.Columns.Count - 2).Range.Select();
-                        Microsoft.Office.Tools.Word.ContentControl checkBoxControl = extendedDocument.Controls.AddContentControl(attributeNode.XPath, Word.WdContentControlType.wdContentControlCheckBox);
-                        checkBoxControl.Checked = Convert.ToBoolean(attributeNode.Text);
-                        checkBoxControl.LockContentControl = true;
-                        checkBoxControl.LockContents = true;
-
-                        Office.CustomXMLNode keyNode = parameterNode.SelectSingleNode("child::ns0:propertyName");
-                        table.Cell(table.Rows.Count, table.Columns.Count - 1).Range.Select();
-
-                        // TODO Name?! WTF how to automate that?!
-                        Microsoft.Office.Tools.Word.PlainTextContentControl plainTextControl = extendedDocument.Controls.AddPlainTextContentControl(keyNode.XPath);
-                        plainTextControl.XMLMapping.SetMappingByNode(keyNode);
-                        plainTextControl.LockContentControl = true;
-
-                        // TODO Causes SystemAccessViolation. Why?
-                        // plainTextControl.LockContents = true;
-                        Office.CustomXMLNode valueNode = parameterNode.SelectSingleNode("child::ns0:value");
-                        if (null != valueNode)
-                        {
-                            table.Cell(table.Rows.Count, table.Columns.Count).Range.Select();
-                            Microsoft.Office.Tools.Word.PlainTextContentControl plainTextControlValue = extendedDocument.Controls.AddPlainTextContentControl(valueNode.XPath);
-                            plainTextControlValue.XMLMapping.SetMappingByNode(valueNode);
-                            plainTextControlValue.LockContentControl = true;
-                            plainTextControlValue.LockContents = true;
-                        }
-                    }
-                }
+            try
+            {
+                mappingStrategy.MapToCustomControlsIn(range).Select();
+            }
+            catch (ContentControlCreationException ex)
+            {
+                MessageBox.Show(this.ApplicationWindow, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             progressForm.Close();
-            this.application.ScreenUpdating = true;
+        }
+
+        private Office.CustomXMLNode RetrieveCustomXMLNode(XMLBrowserForm form, CustomXMLPartRepository repository)
+        {
+            // Retrieve the selected CustomXMLPart via its (unique) default namespace.
+            string defaultNamespace = form.ResultXmlDocument.DocumentElement.NamespaceURI;
+            Office.CustomXMLPart customXmlPart = repository.FindByDefaultNamespace(defaultNamespace);
+
+            // The XMLBrowserForm always returns a XPath expression for a single node.
+            string xpath = form.ResultXPath.XPathExpression;
+            Office.CustomXMLNode customXmlNode = customXmlPart.SelectSingleNode(xpath);
+
+            if (null == customXmlNode)
+            {
+                throw new Exception("Unable to select a node with the XPath expression \"" + xpath + "\".");
+            }
+
+            return customXmlNode;
         }
 
         #endregion
