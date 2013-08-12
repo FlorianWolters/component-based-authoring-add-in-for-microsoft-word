@@ -113,7 +113,7 @@ namespace FlorianWolters.Office.Word.DocumentProperties
         /// </typeparam>
         /// <param name="propertyName">The name of the property to read.</param>
         /// <returns>The value of the property with the specified name.</returns>
-        public T Get<T>(string propertyName) where T : struct
+        public T Get<T>(string propertyName)
         {
             return (T)this.Get(propertyName);
         }
