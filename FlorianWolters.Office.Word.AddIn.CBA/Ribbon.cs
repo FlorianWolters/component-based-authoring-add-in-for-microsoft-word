@@ -160,6 +160,17 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             ApplicationEventHandler applicationEventHandler = new ApplicationEventHandler(this.application);
 
             // TODO Improve registration of the event handlers in dependency of the settings.
+            if (settings.WriteCustomDocumentProperties)
+            {
+                WriteCustomDocumentPropertiesFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+            }
+
+            if (settings.UpdateAttachedTemplate)
+            {
+                UpdateAttachedTemplateFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+            }
+
+            // It is important to update the styles after the template has been updated.
             if (settings.ActivateUpdateStylesOnOpen)
             {
                 ActivateUpdateStylesOnOpenFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
@@ -170,20 +181,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 RefreshCustomXMLPartsFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
             }
 
-            if (settings.UpdateAttachedTemplate)
-            {
-                UpdateAttachedTemplateFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
-            }
-
             if (settings.UpdateFields)
             {
                 UpdateFieldsFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
             }
 
-            if (settings.WriteCustomDocumentProperties)
-            {
-                WriteCustomDocumentPropertiesFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
-            }
+
 
             // The RibbonStateEventHandler ensures that the state of the UI of this Ribbon is correctly set.
             // TODO Refactor.
