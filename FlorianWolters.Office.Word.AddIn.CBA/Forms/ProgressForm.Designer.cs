@@ -14,6 +14,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        /// <summary>
+        /// The <see cref="System.Windows.Forms.Label"/> of this <see cref="ProgressForm"/>.
+        /// </summary>
         private System.Windows.Forms.Label label;
 
         /// <summary>
@@ -42,26 +45,20 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
             this.label = new System.Windows.Forms.Label();
             progressBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
-            // 
-            // progressBar
-            // 
+
             progressBar.Location = new System.Drawing.Point(12, 51);
             progressBar.Name = "progressBar";
             progressBar.Size = new System.Drawing.Size(260, 23);
             progressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             progressBar.TabIndex = 0;
-            // 
-            // label
-            // 
+
             this.label.Location = new System.Drawing.Point(12, 9);
             this.label.Name = "label";
             this.label.Size = new System.Drawing.Size(260, 26);
             this.label.TabIndex = 1;
             this.label.Text = "Processing...";
             this.label.UseMnemonic = false;
-            // 
-            // ProgressForm
-            // 
+
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(284, 86);
             this.ControlBox = false;
@@ -78,7 +75,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.ResumeLayout(false);
-
         }
 
         #endregion

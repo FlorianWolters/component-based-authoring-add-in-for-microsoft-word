@@ -11,8 +11,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
     using FlorianWolters.Windows.Forms;
 
     /// <summary>
-    /// The class <see cref="ProgressForm"/> implements a simple dialog with a
-    /// label and a marque progress bar.
+    /// The class <see cref="ProgressForm"/> implements a simple progress form with a label and a marque progress bar.
     /// </summary>
     internal partial class ProgressForm : Form
     {
@@ -34,17 +33,26 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         }
 
         /// <summary>
-        /// Handles the <see cref="FormClosing"/> event.
+        /// Closes this <see cref="ProgressForm"/>.
         /// <para>
-        /// Prevents closing of this <see cref="ProgressForm"/> by the user.
+        /// This method removes the <c>FormClosing</c> event handler <c>OnFormClosing</c> before closing the form.
         /// </para>
         /// </summary>
+        public new void Close()
+        {
+            this.FormClosing -= this.OnFormClosing;
+            base.Close();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="FormClosing"/> event of this <see cref="ProgressForm"/>.
+        /// <para>Prevents the closing of the by the user.</para>
+        /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">A <see cref="FormClosingEventArgs"/> that contains
-        /// the event data.</param>
+        /// <param name="e">A <see cref="FormClosingEventArgs"/> that contains the event data.</param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            new FormClosingAction(e).Cancel();
+            e.Cancel = (e.CloseReason == CloseReason.UserClosing);
         }
     }
 }

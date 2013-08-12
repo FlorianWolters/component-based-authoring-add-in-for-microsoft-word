@@ -14,18 +14,22 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        /// <summary>
+        /// The <see cref="System.Windows.Forms.RichTextBox"/> of this <see cref="MessagesForm"/>.
+        /// </summary>
         private System.Windows.Forms.RichTextBox richTextBoxMessages;
 
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing"><c>true</c> if managed resources should be disposed; otherwise, <c>false</c>.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (this.components != null))
             {
-                components.Dispose();
+                this.components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -39,9 +43,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         {
             this.richTextBoxMessages = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
-            // 
-            // richTextBoxMessages
-            // 
+
             this.richTextBoxMessages.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBoxMessages.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBoxMessages.Location = new System.Drawing.Point(0, 0);
@@ -51,9 +53,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
             this.richTextBoxMessages.TabIndex = 0;
             this.richTextBoxMessages.Text = "";
             this.richTextBoxMessages.WordWrap = false;
-            // 
-            // MessagesForm
-            // 
+
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 441);
@@ -63,12 +63,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
             this.MinimumSize = new System.Drawing.Size(320, 240);
             this.Name = "MessagesForm";
             this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Messages";
-            this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.ResumeLayout(false);
-
         }
 
         #endregion
