@@ -13,24 +13,34 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
     using FlorianWolters.Office.Word.DocumentProperties;
     using FlorianWolters.Office.Word.Extensions;
     using FlorianWolters.Office.Word.Fields;
+    using NLog;
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The class <see cref="WriteCustomDocumentPropertiesCommand"/> implements
-    /// a <i>Command</i> which sets custom document properties in the active
-    /// Microsoft Word document.
+    /// The class <see cref="WriteCustomDocumentPropertiesCommand"/> implements a <i>Command</i> which sets custom
+    /// document properties in the active Microsoft Word document.
     /// </summary>
     internal class WriteCustomDocumentPropertiesCommand : ApplicationCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see
-        /// cref="WriteCustomDocumentPropertiesCommand"/> class with the
+        /// The <see cref="Logger"/> of this class.
+        /// </summary>
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// The name of the custom document property which is used to store the directory path of the active document.
+        /// </summary>
+        private readonly string propertyNameForLastDirectoryPath;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WriteCustomDocumentPropertiesCommand"/> class with the
         /// specified <i>Receiver</i>.
         /// </summary>
         /// <param name="application">The <i>Receiver</i> of the <i>Command</i>.</param>
-        public WriteCustomDocumentPropertiesCommand(Word.Application application)
-            : base(application)
+        public WriteCustomDocumentPropertiesCommand(Word.Application application) : base(application)
         {
+            // TODO Fix violation of IoC
+            this.propertyNameForLastDirectoryPath = Settings.Default.DocPropertyNameForLastDirectoryPath;
         }
 
         /// <summary>
@@ -43,15 +53,23 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
             if (!this.Application.ActiveDocument.IsSaved())
             {
                 throw new Exception(
-                    "The document must be saved, to determine its directory path.");
+                    "The document \"" + document.FullName + "\" must be saved, to determine its directory path.");
             }
 
             // TODO Fix violation of IoC
-            string propertyName = Settings.Default.DocPropertyNameForLastDirectoryPath;
-            string propertyValue = new FieldFilePathTranslator()
+            string expectedPropertyValue = new FieldFilePathTranslator()
                 .Encode(document.Path);
-            new CustomDocumentPropertyWriter(document)
-                .Set(propertyName, propertyValue);
+            string actualPropertyValue = new CustomDocumentPropertyReader(document)
+                .Get<string>(this.propertyNameForLastDirectoryPath);
+
+            if (expectedPropertyValue != actualPropertyValue)
+            {
+                new CustomDocumentPropertyWriter(document)
+                    .Set(this.propertyNameForLastDirectoryPath, expectedPropertyValue);
+                this.logger.Info(
+                    "Set the custom document property with the name \"" + this.propertyNameForLastDirectoryPath
+                    + "\" to the value \"" + expectedPropertyValue + "\" in the document \"" + document.FullName + "\".");
+            }
         }
     }
 }

@@ -8,23 +8,26 @@
 namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
 {
     using FlorianWolters.Office.Word.Commands;
+    using NLog;
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The class <see cref="UpdateFieldsCommand"/> implements a <i>Command</i>
-    /// which updates all <see cref="Word.Fields"/> of the active Microsoft Word
-    /// document.
+    /// The class <see cref="UpdateFieldsCommand"/> implements a <i>Command</i> which updates all <see
+    /// cref="Word.Fields"/> of the active Microsoft Word document.
     /// </summary>
     internal class UpdateFieldsCommand : ApplicationCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see
-        /// cref="UpdateFieldsCommand"/> class with the specified
+        /// The <see cref="Logger"/> of this class.
+        /// </summary>
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateFieldsCommand"/> class with the specified
         /// <i>Receiver</i>.
         /// </summary>
         /// <param name="application">The <i>Receiver</i> of the <i>Command</i>.</param>
-        public UpdateFieldsCommand(Word.Application application)
-            : base(application)
+        public UpdateFieldsCommand(Word.Application application) : base(application)
         {
         }
 
@@ -36,6 +39,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
             Word.Document document = this.Application.ActiveDocument;
 
             document.Fields.Update();
+            this.logger.Info("Updated the result of all fields in the document \"" + document.FullName + "\".");
         }
     }
 }
