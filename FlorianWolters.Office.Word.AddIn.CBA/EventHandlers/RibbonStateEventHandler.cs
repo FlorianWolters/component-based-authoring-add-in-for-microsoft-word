@@ -109,7 +109,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
         public void OnWindowSelectionChange(Word.Selection selection)
         {
             this.ribbon.splitButtonFieldInsert.Enabled = selection.Start == selection.End;
-            this.ribbon.buttonBindCustomXMLPart.Enabled = 1 == selection.Range.ContentControls.Count;
+            this.ribbon.buttonBindCustomXMLPart.Enabled = 0 == selection.Range.ContentControls.Count;
 
             IEnumerable<Word.Field> selectedFields = selection.AllFields();
             int selectedFieldCount = selectedFields.Count();
