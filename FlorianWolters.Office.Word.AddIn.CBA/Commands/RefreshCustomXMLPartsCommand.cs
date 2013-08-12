@@ -47,14 +47,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
 
             if (null != document)
             {
-                CustomXMLPartRepository customXMLPartRepository = new CustomXMLPartRepository(document.CustomXMLParts);
-
-                // The approach is very simple:
-                // 1. Delete all custom XML parts which are user defined.
-                // 2. Add all XML files in the specified subdirectory as new custom XML parts.
-                customXMLPartRepository.DeleteAllNotBuiltIn();
                 string directoryPath = this.DirectoryPathForXMLFiles(document);
-                customXMLPartRepository.AddFromDirectory(directoryPath);
+
+                // TODO Fix violation of IoC.
+                CustomXMLPartRepository customXMLPartRepository = new CustomXMLPartRepository(document.CustomXMLParts);
+                customXMLPartRepository.SynchronizeWithDirectory(directoryPath);
             }
         }
 
