@@ -46,6 +46,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
                 this.ribbon.splitButtonInclude.Enabled = activeDocumentSaved;
                 this.ribbon.buttonCompare.Enabled = activeDocumentSaved;
+                this.ribbon.buttonBindCustomXMLPart.Enabled = activeDocumentSaved;
 
                 this.customDocumentPropertiesDropDown.Update(this.ribbon.checkBoxHideInternal.Checked);
                 this.ribbon.dropDownCustomDocumentProperties.Enabled = true;
@@ -117,10 +118,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             bool fieldsSelected = 0 < selectedFieldCount;
             bool singleFieldSelected = 1 == selectedFieldCount;
             bool oneOrMoreFieldsLocked = false;
+            bool oneOrMoreIncludeTextFields = false;
+            bool oneOrMoreIncludePictureFields = false;
             bool oneOrMoreIncludeFields = false;
-
-            this.ribbon.menuFieldAction.Enabled = fieldsSelected;
-            this.ribbon.menuFieldFormat.Enabled = fieldsSelected;
 
             if (fieldsSelected)
             {
@@ -146,12 +146,17 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                     || showCodesFieldCount == 0
                     || showCodesFieldCount == selectedFieldCount;
 
-                int includeFieldCount = (from f in selectedFields
+                // Word.WdFieldType.wdFieldIncludePicture is not included in the selection, since it causes a lot of
+                // problems (related to the MERGEFORMAT switch). Thefore we do not allow to modify INCLUDEPICTURE fields via the Add-in.
+                int includeTextFieldCount = (from f in selectedFields
                                          where f.Type == Word.WdFieldType.wdFieldIncludeText
-                                            || f.Type == Word.WdFieldType.wdFieldIncludePicture
-                                            || f.Type == Word.WdFieldType.wdFieldInclude
                                          select f).Count();
-                oneOrMoreIncludeFields = 0 < includeFieldCount;
+                int includePictureFieldCount = (from f in selectedFields
+                                         where f.Type == Word.WdFieldType.wdFieldIncludePicture
+                                         select f).Count();
+                oneOrMoreIncludeTextFields = 0 < includeTextFieldCount;
+                oneOrMoreIncludePictureFields = 0 < includePictureFieldCount;
+                oneOrMoreIncludeFields = oneOrMoreIncludeTextFields || oneOrMoreIncludePictureFields;
 
                 if (singleFieldSelected)
                 {
@@ -174,10 +179,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 }
             }
 
+            this.ribbon.menuFieldAction.Enabled = fieldsSelected && !oneOrMoreIncludeFields;
+            this.ribbon.menuFieldFormat.Enabled = fieldsSelected && !oneOrMoreIncludeFields;
             this.ribbon.buttonUpdateFromSource.Enabled = oneOrMoreIncludeFields && !oneOrMoreFieldsLocked;
             this.ribbon.buttonOpenSourceFile.Enabled = oneOrMoreIncludeFields;
-            this.ribbon.buttonUpdateToSource.Enabled = oneOrMoreIncludeFields;
-            this.ribbon.buttonCompare.Enabled = oneOrMoreIncludeFields;
+            this.ribbon.buttonUpdateToSource.Enabled = oneOrMoreIncludeTextFields;
+            this.ribbon.buttonCompare.Enabled = oneOrMoreIncludeTextFields;
         }
 
         private void UpdateDropDownFieldShading()
