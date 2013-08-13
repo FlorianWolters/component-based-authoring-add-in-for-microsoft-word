@@ -56,11 +56,16 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
                     "The document \"" + document.FullName + "\" must be saved, to determine its directory path.");
             }
 
+            string actualPropertyValue = string.Empty;
+
             // TODO Fix violation of IoC
-            string expectedPropertyValue = new FieldFilePathTranslator()
-                .Encode(document.Path);
-            string actualPropertyValue = new CustomDocumentPropertyReader(document)
-                .Get<string>(this.propertyNameForLastDirectoryPath);
+            string expectedPropertyValue = new FieldFilePathTranslator().Encode(document.Path);
+            CustomDocumentPropertyReader customDocumentPropertyReader = new CustomDocumentPropertyReader(document);
+
+            if (customDocumentPropertyReader.Exists(propertyNameForLastDirectoryPath))
+            {
+                actualPropertyValue = customDocumentPropertyReader.Get<string>(this.propertyNameForLastDirectoryPath);
+            }
 
             if (expectedPropertyValue != actualPropertyValue)
             {
