@@ -186,8 +186,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 UpdateFieldsFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
             }
 
-
-
             // The RibbonStateEventHandler ensures that the state of the UI of this Ribbon is correctly set.
             // TODO Refactor.
             IEventHandler eventHandler = new RibbonStateEventHandler(
@@ -261,7 +259,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         private void OnClick_ButtonOpenSourceFile(object sender, RibbonControlEventArgs e)
         {
             // Open each referenced file (e.g. a Microsoft Word document) in the current selection.
-            foreach (Word.Field field in this.application.Selection.AllIncludeTextFields())
+            foreach (Word.Field field in this.application.Selection.AllIncludeFields())
             {
                 Process.Start(new IncludeField(field).FilePath);
             }
