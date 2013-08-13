@@ -47,7 +47,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 this.ribbon.splitButtonInclude.Enabled = activeDocumentSaved;
                 this.ribbon.buttonCompare.Enabled = activeDocumentSaved;
 
-                this.customDocumentPropertiesDropDown.Update(this.ribbon.checkBoxHideInternal.Enabled);
+                this.customDocumentPropertiesDropDown.Update(this.ribbon.checkBoxHideInternal.Checked);
                 this.ribbon.dropDownCustomDocumentProperties.Enabled = true;
                 this.ribbon.checkBoxHideInternal.Enabled = true;
                 this.ribbon.buttonCreateCustomDocumentProperty.Enabled = true;

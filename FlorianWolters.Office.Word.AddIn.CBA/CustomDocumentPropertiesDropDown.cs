@@ -48,7 +48,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.customDocumentPropertyReader.Load(this.application.ActiveDocument);
             IEnumerable<Office.DocumentProperty> customDocumentProperties = hideInternal
                 ? this.customDocumentPropertyReader.FindAllExceptInternal()
-                : customDocumentProperties = this.customDocumentPropertyReader.GetAll();
+                : this.customDocumentPropertyReader.GetAll();
 
             this.Clear();
             this.AddItemToCustomPropertiesDropDownList("Select a property to insert");
