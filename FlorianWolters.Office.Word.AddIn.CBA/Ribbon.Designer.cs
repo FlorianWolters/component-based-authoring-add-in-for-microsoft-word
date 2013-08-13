@@ -15,9 +15,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using NLog;
 
     /// <content>
-    /// Contains both auto-generated source code by the Microsoft Visual Studio
-    /// Designer and essential user source code to initialize the <see
-    /// cref="Ribbon"/>.
+    /// Contains both auto-generated source code by the Microsoft Visual Studio Designer and essential user source code
+    /// to initialize the <see cref="Ribbon"/>.
     /// </content>
     internal partial class Ribbon : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
@@ -32,8 +31,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         private readonly Logger logger;
 
         /// <summary>
-        /// The <see cref="Form"/> whose <see cref="RichTextBox"/> is utilized
-        /// as a target by <see cref="NLog"/>.
+        /// The <see cref="Form"/> whose <see cref="RichTextBox"/> is utilized as a target by <see cref="NLog"/>.
         /// </summary>
         private readonly Form messagesForm;
 
@@ -44,16 +42,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         {
             this.InitializeComponent();
 
-            // ATTENTION: The first NLog logger MUST created AFTER the Form with
-            // the RichTextBox that should be utilized for logging. In addition,
-            // the Form has to be displayed for the first time BEFORE the first
-            // NLog logger is created. Sadly, there doesn't exist a Form event
-            // for that use case. The "earliest" event is "Form.Load", which
-            // occurs before a form is displayed for the first time.
-
-            // Therefore we do have to workaround the problem:
-            // 1. Make the Form invisible.
-            // 2. Toogle the visibility of the Form (to initialize its controls).
+            // The first NLog Logger must be created after the Form with the RichTextBox that should be utilized for
+            // logging. In addition, the Form has to be displayed for the first time before the first NLog Logger is
+            // created. There doesn't exist a Form event for that use case. The "earliest" event is Form.Load, which
+            // occurs before a fFrm is displayed for the first time. Therefore we do have to workaround the problem:
+            // 1. Make the Form invisible by setting its opacity to 0.
+            // 2. Toogle the visibility of the Form (to raise its Form.Load event).
             // 3. Restore the default opacity of the Form.
             this.messagesForm = new MessagesForm();
             double defaultOpacity = this.messagesForm.Opacity;
@@ -142,10 +136,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.dropDownFieldShading = this.Factory.CreateRibbonDropDown();
             this.toggleButtonFormFieldShading = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonFieldCodes = this.Factory.CreateRibbonToggleButton();
-            this.toggleButtonShowMessagesForm = this.Factory.CreateRibbonToggleButton();
-            this.buttonShowAboutForm = this.Factory.CreateRibbonButton();
-            this.buttonShowHelpForm = this.Factory.CreateRibbonButton();
-            this.buttonShowConfigurationForm = this.Factory.CreateRibbonButton();
+            this.toggleButtonShowMessages = this.Factory.CreateRibbonToggleButton();
+            this.buttonShowAbout = this.Factory.CreateRibbonButton();
+            this.buttonShowHelp = this.Factory.CreateRibbonButton();
+            this.buttonShowConfiguration = this.Factory.CreateRibbonButton();
             this.tabComponentBasedAuthoring = this.Factory.CreateRibbonTab();
             menuFieldFormatCapitalization = this.Factory.CreateRibbonMenu();
             menuFieldFormatNumber = this.Factory.CreateRibbonMenu();
@@ -176,12 +170,15 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             menuFieldFormatCapitalization.Items.Add(this.toggleButtonFieldFormatLower);
             menuFieldFormatCapitalization.Label = "Capitalization";
             menuFieldFormatCapitalization.Name = "menuFieldFormatCapitalization";
+            menuFieldFormatCapitalization.OfficeImageId = "ChangeCaseGallery";
             menuFieldFormatCapitalization.ShowImage = true;
             // 
             // toggleButtonFieldFormatCaps
             // 
             this.toggleButtonFieldFormatCaps.Label = "Uppercase Words";
             this.toggleButtonFieldFormatCaps.Name = "toggleButtonFieldFormatCaps";
+            this.toggleButtonFieldFormatCaps.OfficeImageId = "ChangeCaseGallery";
+            this.toggleButtonFieldFormatCaps.ScreenTip = "Capitalizes the first letter of each word";
             this.toggleButtonFieldFormatCaps.ShowImage = true;
             this.toggleButtonFieldFormatCaps.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
@@ -189,6 +186,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.toggleButtonFieldFormatFirstCap.Label = "Uppercase First";
             this.toggleButtonFieldFormatFirstCap.Name = "toggleButtonFieldFormatFirstCap";
+            this.toggleButtonFieldFormatFirstCap.OfficeImageId = "ChangeCaseGallery";
+            this.toggleButtonFieldFormatFirstCap.ScreenTip = "Capitalizes the first letter of the first word";
             this.toggleButtonFieldFormatFirstCap.ShowImage = true;
             this.toggleButtonFieldFormatFirstCap.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
@@ -196,14 +195,20 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.toggleButtonFieldFormatUpper.Label = "Uppercase All";
             this.toggleButtonFieldFormatUpper.Name = "toggleButtonFieldFormatUpper";
+            this.toggleButtonFieldFormatUpper.OfficeImageId = "ChangeCaseGallery";
+            this.toggleButtonFieldFormatUpper.ScreenTip = "Capitalizes all letters";
             this.toggleButtonFieldFormatUpper.ShowImage = true;
+            this.toggleButtonFieldFormatUpper.SuperTip = "Has no effect if the entire field is formatted as uppercase letters.";
             this.toggleButtonFieldFormatUpper.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
             // toggleButtonFieldFormatLower
             // 
             this.toggleButtonFieldFormatLower.Label = "Lowercase All";
             this.toggleButtonFieldFormatLower.Name = "toggleButtonFieldFormatLower";
+            this.toggleButtonFieldFormatLower.OfficeImageId = "ChangeCaseGallery";
+            this.toggleButtonFieldFormatLower.ScreenTip = "Uncapitalizes all letters";
             this.toggleButtonFieldFormatLower.ShowImage = true;
+            this.toggleButtonFieldFormatLower.SuperTip = "Has no effect if the entire field is formatted as lowercase letters.";
             this.toggleButtonFieldFormatLower.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
             // menuFieldFormatNumber
@@ -218,12 +223,15 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             menuFieldFormatNumber.Items.Add(this.toggleButtonFieldFormatRoman);
             menuFieldFormatNumber.Label = "Number";
             menuFieldFormatNumber.Name = "menuFieldFormatNumber";
+            menuFieldFormatNumber.OfficeImageId = "InsertNumberAlternate";
             menuFieldFormatNumber.ShowImage = true;
             // 
             // toggleButtonFieldFormatAlphabetic
             // 
-            this.toggleButtonFieldFormatAlphabetic.Label = "Alphabetic Characters";
+            this.toggleButtonFieldFormatAlphabetic.Label = "Uppercase Alphabetic Characters";
             this.toggleButtonFieldFormatAlphabetic.Name = "toggleButtonFieldFormatAlphabetic";
+            this.toggleButtonFieldFormatAlphabetic.OfficeImageId = "InsertNumberAlternate";
+            this.toggleButtonFieldFormatAlphabetic.ScreenTip = "Displays results as uppercase alphabetic characters, e.g. \"b\"";
             this.toggleButtonFieldFormatAlphabetic.ShowImage = true;
             this.toggleButtonFieldFormatAlphabetic.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
@@ -231,6 +239,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.toggleButtonFieldFormatArabic.Label = "Arabic Cardinal Numbers";
             this.toggleButtonFieldFormatArabic.Name = "toggleButtonFieldFormatArabic";
+            this.toggleButtonFieldFormatArabic.OfficeImageId = "InsertNumberAlternate";
+            this.toggleButtonFieldFormatArabic.ScreenTip = "Displays results as Arabic cardinal numbers, e.g. \"31\"";
             this.toggleButtonFieldFormatArabic.ShowImage = true;
             this.toggleButtonFieldFormatArabic.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
@@ -238,6 +248,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.toggleButtonFieldFormatCardText.Label = "Cardinal Text";
             this.toggleButtonFieldFormatCardText.Name = "toggleButtonFieldFormatCardText";
+            this.toggleButtonFieldFormatCardText.OfficeImageId = "InsertNumberAlternate";
+            this.toggleButtonFieldFormatCardText.ScreenTip = "Displays results as cardinal text, e.g. \"seven hundred ninety\"";
             this.toggleButtonFieldFormatCardText.ShowImage = true;
             this.toggleButtonFieldFormatCardText.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
@@ -245,6 +257,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.toggleButtonFieldFormatDollarText.Label = "Cardinal Text (with fraction)";
             this.toggleButtonFieldFormatDollarText.Name = "toggleButtonFieldFormatDollarText";
+            this.toggleButtonFieldFormatDollarText.OfficeImageId = "InsertNumberAlternate";
+            this.toggleButtonFieldFormatDollarText.ScreenTip = "Displays results as cardinal text, e.g. \"Fourteen and 55/100\"";
             this.toggleButtonFieldFormatDollarText.ShowImage = true;
             this.toggleButtonFieldFormatDollarText.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
@@ -252,6 +266,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.toggleButtonFieldFormatHex.Label = "Hexadecimal Numbers";
             this.toggleButtonFieldFormatHex.Name = "toggleButtonFieldFormatHex";
+            this.toggleButtonFieldFormatHex.OfficeImageId = "InsertNumberAlternate";
+            this.toggleButtonFieldFormatHex.ScreenTip = "Displays results as hexadecimal numbers, e.g. \"1CA\"";
             this.toggleButtonFieldFormatHex.ShowImage = true;
             this.toggleButtonFieldFormatHex.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
@@ -259,13 +275,17 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.toggleButtonFieldFormatOrdText.Label = "Ordinal Text";
             this.toggleButtonFieldFormatOrdText.Name = "toggleButtonFieldFormatOrdText";
+            this.toggleButtonFieldFormatOrdText.OfficeImageId = "InsertNumberAlternate";
+            this.toggleButtonFieldFormatOrdText.ScreenTip = "Displays results as ordinal text, e.g. \"twenty-first\"";
             this.toggleButtonFieldFormatOrdText.ShowImage = true;
             this.toggleButtonFieldFormatOrdText.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
             // toggleButtonFieldFormatOrdinal
             // 
-            this.toggleButtonFieldFormatOrdinal.Label = "Ordinal Ararbic Numerals";
+            this.toggleButtonFieldFormatOrdinal.Label = "Ordinal Arabic Numerals";
             this.toggleButtonFieldFormatOrdinal.Name = "toggleButtonFieldFormatOrdinal";
+            this.toggleButtonFieldFormatOrdinal.OfficeImageId = "InsertNumberAlternate";
+            this.toggleButtonFieldFormatOrdinal.ScreenTip = "Displays results as ordinal Arabic numerals, e.g. \"30th\"";
             this.toggleButtonFieldFormatOrdinal.ShowImage = true;
             this.toggleButtonFieldFormatOrdinal.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
@@ -273,6 +293,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.toggleButtonFieldFormatRoman.Label = "Roman Numerals";
             this.toggleButtonFieldFormatRoman.Name = "toggleButtonFieldFormatRoman";
+            this.toggleButtonFieldFormatRoman.OfficeImageId = "InsertNumberAlternate";
+            this.toggleButtonFieldFormatRoman.ScreenTip = "Displays results as ordinal Roman numerals, e.g. \"XI\"";
             this.toggleButtonFieldFormatRoman.ShowImage = true;
             this.toggleButtonFieldFormatRoman.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
@@ -301,8 +323,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.splitButtonInclude.Label = "Include";
             this.splitButtonInclude.Name = "splitButtonInclude";
             this.splitButtonInclude.OfficeImageId = "QuickPartsInsertGallery";
-            this.splitButtonInclude.ScreenTip = "Insert a reference to an external document.";
-            this.splitButtonInclude.SuperTip = "The referenced file is not stored in this document.";
+            this.splitButtonInclude.ScreenTip = "Insert a reference to an external document";
+            this.splitButtonInclude.SuperTip = "The referenced file is not stored in this document";
             this.splitButtonInclude.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeText);
             // 
             // buttonIncludeText
@@ -310,9 +332,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonIncludeText.Label = "Include Text";
             this.buttonIncludeText.Name = "buttonIncludeText";
             this.buttonIncludeText.OfficeImageId = "TextFromFileInsert";
-            this.buttonIncludeText.ScreenTip = "Insert a reference to an external document.";
+            this.buttonIncludeText.ScreenTip = "Insert a reference to an external document";
             this.buttonIncludeText.ShowImage = true;
-            this.buttonIncludeText.SuperTip = "The referenced file is not stored in this document.";
+            this.buttonIncludeText.SuperTip = "The referenced file is not stored in this document";
             this.buttonIncludeText.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludeText);
             // 
             // buttonIncludePicture
@@ -320,9 +342,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonIncludePicture.Label = "Include Picture";
             this.buttonIncludePicture.Name = "buttonIncludePicture";
             this.buttonIncludePicture.OfficeImageId = "PictureFromFileInsert";
-            this.buttonIncludePicture.ScreenTip = "Insert a reference to a graphics file.";
+            this.buttonIncludePicture.ScreenTip = "Insert a reference to a graphics file";
             this.buttonIncludePicture.ShowImage = true;
-            this.buttonIncludePicture.SuperTip = "The referenced file is not stored in this document.";
+            this.buttonIncludePicture.SuperTip = "The referenced file is not stored in this document";
             this.buttonIncludePicture.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonIncludePicture);
             // 
             // separatorFirst
@@ -431,6 +453,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.buttonInsertEmptyField.Label = "Insert empty field";
             this.buttonInsertEmptyField.Name = "buttonInsertEmptyField";
+            this.buttonInsertEmptyField.OfficeImageId = "FieldInsert";
+            this.buttonInsertEmptyField.ScreenTip = "Inserts an empty field at the current selection";
             this.buttonInsertEmptyField.ShowImage = true;
             this.buttonInsertEmptyField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertEmptyField);
             // 
@@ -438,6 +462,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.buttonInsertDateField.Label = "Insert \"Date\" field";
             this.buttonInsertDateField.Name = "buttonInsertDateField";
+            this.buttonInsertDateField.OfficeImageId = "FieldInsert";
+            this.buttonInsertDateField.ScreenTip = "Inserts a DATE field at the current selection";
             this.buttonInsertDateField.ShowImage = true;
             this.buttonInsertDateField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertDateField);
             // 
@@ -445,6 +471,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.buttonInsertTimeField.Label = "Insert \"Time\" field";
             this.buttonInsertTimeField.Name = "buttonInsertTimeField";
+            this.buttonInsertTimeField.OfficeImageId = "FieldInsert";
+            this.buttonInsertTimeField.ScreenTip = "Inserts a TIME field at the current selection";
             this.buttonInsertTimeField.ShowImage = true;
             this.buttonInsertTimeField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertTimeField);
             // 
@@ -452,6 +480,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.buttonInsertListNumField.Label = "Insert \"ListNum\" field";
             this.buttonInsertListNumField.Name = "buttonInsertListNumField";
+            this.buttonInsertListNumField.OfficeImageId = "FieldInsert";
+            this.buttonInsertListNumField.ScreenTip = "Inserts a LISTNUM field at the current selection";
             this.buttonInsertListNumField.ShowImage = true;
             this.buttonInsertListNumField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertListNumField);
             // 
@@ -459,6 +489,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.buttonInsertPageField.Label = "Insert \"Page\" Field";
             this.buttonInsertPageField.Name = "buttonInsertPageField";
+            this.buttonInsertPageField.OfficeImageId = "FieldInsert";
+            this.buttonInsertPageField.ScreenTip = "Inserts a PAGE field at the current selection";
             this.buttonInsertPageField.ShowImage = true;
             this.buttonInsertPageField.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonInsertPageField);
             // 
@@ -471,11 +503,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.menuFieldFormat.Items.Add(this.toggleButtonFieldFormatMergeFormat);
             this.menuFieldFormat.Label = "Field Format";
             this.menuFieldFormat.Name = "menuFieldFormat";
+            this.menuFieldFormat.OfficeImageId = "ChangeStylesMenu";
+            this.menuFieldFormat.ShowImage = true;
             // 
             // toggleButtonFieldFormatMergeFormat
             // 
             this.toggleButtonFieldFormatMergeFormat.Label = "Preserve Formatting";
             this.toggleButtonFieldFormatMergeFormat.Name = "toggleButtonFieldFormatMergeFormat";
+            this.toggleButtonFieldFormatMergeFormat.OfficeImageId = "FormatPainter";
             this.toggleButtonFieldFormatMergeFormat.ShowImage = true;
             this.toggleButtonFieldFormatMergeFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldFormat);
             // 
@@ -487,11 +522,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.menuFieldAction.Items.Add(this.toggleButtonFieldShowCode);
             this.menuFieldAction.Label = "Field Action";
             this.menuFieldAction.Name = "menuFieldAction";
+            this.menuFieldAction.OfficeImageId = "FieldsManage";
+            this.menuFieldAction.ShowImage = true;
             // 
             // buttonFieldUpdate
             // 
             this.buttonFieldUpdate.Label = "Update Field";
             this.buttonFieldUpdate.Name = "buttonFieldUpdate";
+            this.buttonFieldUpdate.OfficeImageId = "FieldsUpdate";
             this.buttonFieldUpdate.ShowImage = true;
             this.buttonFieldUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonFieldUpdate);
             // 
@@ -499,6 +537,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.toggleButtonFieldLock.Label = "Lock Field";
             this.toggleButtonFieldLock.Name = "toggleButtonFieldLock";
+            this.toggleButtonFieldLock.OfficeImageId = "Lock";
             this.toggleButtonFieldLock.ShowImage = true;
             this.toggleButtonFieldLock.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldLock);
             // 
@@ -506,6 +545,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.toggleButtonFieldShowCode.Label = "Show Field Code";
             this.toggleButtonFieldShowCode.Name = "toggleButtonFieldShowCode";
+            this.toggleButtonFieldShowCode.OfficeImageId = "FieldCodes";
+            this.toggleButtonFieldShowCode.ScreenTip = "Applies the formatting of the previous result to the new result";
             this.toggleButtonFieldShowCode.ShowImage = true;
             this.toggleButtonFieldShowCode.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonFieldShowCode);
             // 
@@ -594,57 +635,61 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             // groupMiscellaneous
             // 
-            groupMiscellaneous.Items.Add(this.toggleButtonShowMessagesForm);
+            groupMiscellaneous.Items.Add(this.toggleButtonShowMessages);
             groupMiscellaneous.Items.Add(separatorThird);
-            groupMiscellaneous.Items.Add(this.buttonShowAboutForm);
-            groupMiscellaneous.Items.Add(this.buttonShowHelpForm);
-            groupMiscellaneous.Items.Add(this.buttonShowConfigurationForm);
+            groupMiscellaneous.Items.Add(this.buttonShowAbout);
+            groupMiscellaneous.Items.Add(this.buttonShowHelp);
+            groupMiscellaneous.Items.Add(this.buttonShowConfiguration);
             groupMiscellaneous.Label = "Miscellaneous";
             groupMiscellaneous.Name = "groupMiscellaneous";
             // 
-            // toggleButtonShowMessagesForm
+            // toggleButtonShowMessages
             // 
-            this.toggleButtonShowMessagesForm.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.toggleButtonShowMessagesForm.Label = "Show Messages";
-            this.toggleButtonShowMessagesForm.Name = "toggleButtonShowMessagesForm";
-            this.toggleButtonShowMessagesForm.OfficeImageId = "CreateReportBlankReport";
-            this.toggleButtonShowMessagesForm.ShowImage = true;
-            this.toggleButtonShowMessagesForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonShowMessagesForm);
+            this.toggleButtonShowMessages.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.toggleButtonShowMessages.Label = "Messages";
+            this.toggleButtonShowMessages.Name = "toggleButtonShowMessages";
+            this.toggleButtonShowMessages.OfficeImageId = "CreateReportBlankReport";
+            this.toggleButtonShowMessages.ShowImage = true;
+            this.toggleButtonShowMessages.SuperTip = "Toggles the visibility of the \"Messages\" window";
+            this.toggleButtonShowMessages.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ToggleButtonShowMessagesForm);
             // 
             // separatorThird
             // 
             separatorThird.Name = "separatorThird";
             // 
-            // buttonShowAboutForm
+            // buttonShowAbout
             // 
-            this.buttonShowAboutForm.Label = "About";
-            this.buttonShowAboutForm.Name = "buttonShowAboutForm";
-            this.buttonShowAboutForm.OfficeImageId = "FileProperties";
-            this.buttonShowAboutForm.ShowImage = true;
-            this.buttonShowAboutForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowAboutForm);
+            this.buttonShowAbout.Label = "About";
+            this.buttonShowAbout.Name = "buttonShowAbout";
+            this.buttonShowAbout.OfficeImageId = "FileProperties";
+            this.buttonShowAbout.ShowImage = true;
+            this.buttonShowAbout.SuperTip = "Opens the \"About\" dialog";
+            this.buttonShowAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowAboutForm);
             // 
-            // buttonShowHelpForm
+            // buttonShowHelp
             // 
-            this.buttonShowHelpForm.Label = "Help";
-            this.buttonShowHelpForm.Name = "buttonShowHelpForm";
-            this.buttonShowHelpForm.OfficeImageId = "WorkflowPending";
-            this.buttonShowHelpForm.ShowImage = true;
-            this.buttonShowHelpForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowHelpForm);
+            this.buttonShowHelp.Label = "Read Me";
+            this.buttonShowHelp.Name = "buttonShowHelp";
+            this.buttonShowHelp.OfficeImageId = "WorkflowPending";
+            this.buttonShowHelp.ShowImage = true;
+            this.buttonShowHelp.SuperTip = "Opens the \"Read Me\" dialog";
+            this.buttonShowHelp.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowHelpForm);
             // 
-            // buttonShowConfigurationForm
+            // buttonShowConfiguration
             // 
-            this.buttonShowConfigurationForm.Label = "Configuration";
-            this.buttonShowConfigurationForm.Name = "buttonShowConfigurationForm";
-            this.buttonShowConfigurationForm.OfficeImageId = "ControlsGallery";
-            this.buttonShowConfigurationForm.ShowImage = true;
-            this.buttonShowConfigurationForm.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowConfigurationForm);
+            this.buttonShowConfiguration.Label = "Configuration";
+            this.buttonShowConfiguration.Name = "buttonShowConfiguration";
+            this.buttonShowConfiguration.OfficeImageId = "ControlsGallery";
+            this.buttonShowConfiguration.ShowImage = true;
+            this.buttonShowConfiguration.SuperTip = "Opens the \"Configuration\" dialog";
+            this.buttonShowConfiguration.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowConfigurationForm);
             // 
             // tabComponentBasedAuthoring
             // 
             this.tabComponentBasedAuthoring.Groups.Add(groupReferences);
-            this.tabComponentBasedAuthoring.Groups.Add(groupTools);
             this.tabComponentBasedAuthoring.Groups.Add(groupFields);
             this.tabComponentBasedAuthoring.Groups.Add(groupDocumentProperties);
+            this.tabComponentBasedAuthoring.Groups.Add(groupTools);
             this.tabComponentBasedAuthoring.Groups.Add(groupView);
             this.tabComponentBasedAuthoring.Groups.Add(groupMiscellaneous);
             this.tabComponentBasedAuthoring.Label = "Component-Based Authoring";
@@ -688,23 +733,21 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonIncludePicture;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonOpenSourceFile;
-        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonFieldInsert;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertEmptyField;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertDateField;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertTimeField;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertListNumField;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonInsertPageField;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonShowAboutForm;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonShowHelpForm;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonShowAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonShowHelp;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonFieldCodes;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonFormFieldShading;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDownFieldShading;
         internal RibbonButton buttonCompare;
-        internal RibbonButton buttonShowConfigurationForm;
+        internal RibbonButton buttonShowConfiguration;
         internal RibbonButton buttonBindCustomXMLPart;
         internal RibbonButton buttonCompareDocuments;
-        internal RibbonToggleButton toggleButtonShowMessagesForm;
-        internal RibbonMenu menuFieldFormat;
+        internal RibbonToggleButton toggleButtonShowMessages;
         internal RibbonToggleButton toggleButtonFieldFormatCaps;
         internal RibbonToggleButton toggleButtonFieldFormatFirstCap;
         internal RibbonToggleButton toggleButtonFieldFormatUpper;
@@ -718,20 +761,21 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         internal RibbonToggleButton toggleButtonFieldFormatOrdinal;
         internal RibbonToggleButton toggleButtonFieldFormatRoman;
         internal RibbonToggleButton toggleButtonFieldFormatMergeFormat;
-        internal RibbonMenu menuFieldAction;
         internal RibbonButton buttonFieldUpdate;
         internal RibbonToggleButton toggleButtonFieldLock;
         internal RibbonToggleButton toggleButtonFieldShowCode;
+        internal RibbonSplitButton splitButtonFieldInsert;
+        internal RibbonMenu menuFieldFormat;
+        internal RibbonMenu menuFieldAction;
     }
 
     /// <summary>
-    /// The class <see cref="ThisRibbonCollection"/> contains all ribbons of the
-    /// application.
+    /// The class <see cref="ThisRibbonCollection"/> contains all <see cref="Ribbon"/>s of the application.
     /// </summary>
     partial class ThisRibbonCollection
     {
         /// <summary>
-        /// Gets the ribbon.
+        /// Gets the <see cref="Ribbon"/>.
         /// </summary>
         internal Ribbon ThisRibbon
         {

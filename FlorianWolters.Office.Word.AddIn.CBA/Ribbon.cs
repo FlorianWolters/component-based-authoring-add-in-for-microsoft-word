@@ -143,7 +143,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             catch (FileNotFoundException)
             {
                 MessageBoxes.ShowMessageBoxHelpFieldDoesNotExist(readMeFilePath);
-                this.buttonShowHelpForm.Enabled = false;
+                this.buttonShowHelp.Enabled = false;
             }
         }
 
@@ -583,7 +583,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// <param name="e">The data for the event.</param>
         private void OnClick_ToggleButtonFieldFormat(object sender, RibbonControlEventArgs e)
         {
-            RibbonToggleButton checkBox = (RibbonToggleButton)sender;
+            RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
 
             // ATTENTION: This only works by following the following conventions:
             // * The sender must be a RibbonToggleButton.
@@ -595,7 +595,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             IEnumerable<Word.Field> selectedFields = this.application.Selection.AllFields();
             Word.Field selectedField = selectedFields.ElementAt(0);
 
-            if (checkBox.Checked)
+            if (toggleButton.Checked)
             {
                 fieldSwitch.AddToField(selectedField);
             }
