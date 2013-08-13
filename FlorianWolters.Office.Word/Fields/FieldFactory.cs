@@ -236,7 +236,7 @@ namespace FlorianWolters.Office.Word.Fields
             
             // Append the "\d" switch to avoid that the graphics data is saved
             // in the Word document.
-            this.application.Selection.Range.InsertAfter("\\d");
+            this.application.Selection.Range.InsertAfter("\\d \\* MERGEFORMAT");
         }
 
         /// <summary>
