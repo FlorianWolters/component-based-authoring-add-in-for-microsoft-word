@@ -45,7 +45,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 bool activeDocumentSaved = this.application.ActiveDocument.IsSaved();
 
                 this.ribbon.splitButtonInclude.Enabled = activeDocumentSaved;
-                this.ribbon.buttonCompare.Enabled = activeDocumentSaved;
                 this.ribbon.buttonBindCustomXMLPart.Enabled = activeDocumentSaved;
 
                 this.customDocumentPropertiesDropDown.Update(this.ribbon.checkBoxHideInternal.Checked);
@@ -103,7 +102,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
         public void OnDocumentBeforeSave(Word.Document document, ref bool saveAsUI, ref bool cancel)
         {
-            this.ribbon.buttonCompare.Enabled = true;
             this.ribbon.splitButtonInclude.Enabled = true;
         }
 
@@ -134,29 +132,32 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                                         select f).Count();
                 oneOrMoreFieldsLocked = 0 < lockedFieldCount;
 
+                int includeTextFieldCount = (from f in selectedFields
+                                             where f.Type == Word.WdFieldType.wdFieldIncludeText
+                                             select f).Count();
+                int includePictureFieldCount = (from f in selectedFields
+                                                where f.Type == Word.WdFieldType.wdFieldIncludePicture
+                                                select f).Count();
+                oneOrMoreIncludeTextFields = 0 < includeTextFieldCount;
+                oneOrMoreIncludePictureFields = 0 < includePictureFieldCount;
+                oneOrMoreIncludeFields = oneOrMoreIncludeTextFields || oneOrMoreIncludePictureFields;
+
                 this.ribbon.buttonFieldUpdate.Enabled = !oneOrMoreFieldsLocked;
-                
+
                 this.ribbon.toggleButtonFieldLock.Checked = oneOrMoreFieldsLocked;
-                this.ribbon.toggleButtonFieldLock.Enabled = singleFieldSelected
-                    || lockedFieldCount == 0
-                    || lockedFieldCount == selectedFieldCount;
                 
+                // Because of the problematic of duplicated InsertPicture fields a IncludePicture field cannot be
+                // locked. If a field is locked, it can't be updated. If a IncludePicture field can't be updated it is
+                // duplicated in the OOXML.
+                this.ribbon.toggleButtonFieldLock.Enabled = (singleFieldSelected
+                    || lockedFieldCount == 0
+                    || lockedFieldCount == selectedFieldCount)
+                    && !oneOrMoreIncludePictureFields;
+
                 this.ribbon.toggleButtonFieldShowCode.Checked = oneOrMoreFieldsShowCodes;
                 this.ribbon.toggleButtonFieldShowCode.Enabled = singleFieldSelected
                     || showCodesFieldCount == 0
                     || showCodesFieldCount == selectedFieldCount;
-
-                // Word.WdFieldType.wdFieldIncludePicture is not included in the selection, since it causes a lot of
-                // problems (related to the MERGEFORMAT switch). Thefore we do not allow to modify INCLUDEPICTURE fields via the Add-in.
-                int includeTextFieldCount = (from f in selectedFields
-                                         where f.Type == Word.WdFieldType.wdFieldIncludeText
-                                         select f).Count();
-                int includePictureFieldCount = (from f in selectedFields
-                                         where f.Type == Word.WdFieldType.wdFieldIncludePicture
-                                         select f).Count();
-                oneOrMoreIncludeTextFields = 0 < includeTextFieldCount;
-                oneOrMoreIncludePictureFields = 0 < includePictureFieldCount;
-                oneOrMoreIncludeFields = oneOrMoreIncludeTextFields || oneOrMoreIncludePictureFields;
 
                 if (singleFieldSelected)
                 {
@@ -179,7 +180,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 }
             }
 
-            this.ribbon.menuFieldAction.Enabled = fieldsSelected && !oneOrMoreIncludeFields;
+            this.ribbon.menuFieldAction.Enabled = fieldsSelected;
             this.ribbon.menuFieldFormat.Enabled = fieldsSelected && !oneOrMoreIncludeFields;
             this.ribbon.buttonUpdateFromSource.Enabled = oneOrMoreIncludeFields && !oneOrMoreFieldsLocked;
             this.ribbon.buttonOpenSourceFile.Enabled = oneOrMoreIncludeFields;
