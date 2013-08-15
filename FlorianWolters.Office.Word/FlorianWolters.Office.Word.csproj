@@ -126,6 +126,7 @@
     <Compile Include="Fields\UpdateStrategies\UpdateSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadOnlyDocumentException.cs" />
+    <Compile Include="StateCapture.cs" />
     <Compile Include="TemplateNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>
