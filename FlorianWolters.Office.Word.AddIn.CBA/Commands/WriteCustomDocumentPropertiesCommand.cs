@@ -62,7 +62,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
             string expectedPropertyValue = new FieldFilePathTranslator().Encode(document.Path);
             CustomDocumentPropertyReader customDocumentPropertyReader = new CustomDocumentPropertyReader(document);
 
-            if (customDocumentPropertyReader.Exists(propertyNameForLastDirectoryPath))
+            if (customDocumentPropertyReader.Exists(this.propertyNameForLastDirectoryPath))
             {
                 actualPropertyValue = customDocumentPropertyReader.Get<string>(this.propertyNameForLastDirectoryPath);
             }
