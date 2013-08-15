@@ -13,6 +13,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.InteropServices;
     using System.Windows.Forms;
     using System.Xml;
     using FlorianWolters.Office.Word.AddIn.CBA.CustomXML;
@@ -55,6 +56,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// The <see cref="Word.Application"/> to interact with.
         /// </summary>
         private Word.Application application;
+
+        private ApplicationEventHandler applicationEventHandler;
+
+        private IEventHandler updateFieldsEventHandler;
 
         /// <summary>
         /// Gets or sets the main window of the <see cref="Word.Application"/>.
@@ -157,33 +162,33 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
             // ATTENTION: Since we always inject the Word.Application into the commands, we can always access the current state of the Microsoft Word application.
             // If we would work with Word.Document instead, we would always have to make sure that the reference to the document is up-to-date.
-            ApplicationEventHandler applicationEventHandler = new ApplicationEventHandler(this.application);
+            this.applicationEventHandler = new ApplicationEventHandler(this.application);
 
             // TODO Improve registration of the event handlers in dependency of the settings.
             if (settings.WriteCustomDocumentProperties)
             {
-                WriteCustomDocumentPropertiesFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+                WriteCustomDocumentPropertiesFactory.Instance.RegisterEventHandler(eventExceptionHandler, this.applicationEventHandler);
             }
 
             if (settings.UpdateAttachedTemplate)
             {
-                UpdateAttachedTemplateFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+                UpdateAttachedTemplateFactory.Instance.RegisterEventHandler(eventExceptionHandler, this.applicationEventHandler);
             }
 
             // It is important to update the styles after the template has been updated.
             if (settings.ActivateUpdateStylesOnOpen)
             {
-                ActivateUpdateStylesOnOpenFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+                ActivateUpdateStylesOnOpenFactory.Instance.RegisterEventHandler(eventExceptionHandler, this.applicationEventHandler);
             }
 
             if (settings.RefreshCustomXMLParts)
             {
-                RefreshCustomXMLPartsFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+                RefreshCustomXMLPartsFactory.Instance.RegisterEventHandler(eventExceptionHandler, this.applicationEventHandler);
             }
 
             if (settings.UpdateFields)
             {
-                UpdateFieldsFactory.Instance.RegisterEventHandler(eventExceptionHandler, applicationEventHandler);
+                this.updateFieldsEventHandler = UpdateFieldsFactory.Instance.RegisterEventHandler(eventExceptionHandler, this.applicationEventHandler);
             }
 
             // The RibbonStateEventHandler ensures that the state of the UI of this Ribbon is correctly set.
@@ -192,7 +197,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 this.application,
                 this,
                 this.CustomDocumentPropertiesDropDown);
-            applicationEventHandler.SubscribeEventHandler(eventHandler);
+            this.applicationEventHandler.SubscribeEventHandler(eventHandler);
         }
 
         // TODO Move to other class.
@@ -226,178 +231,128 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 Settings.Default.DocPropertyNameForLastDirectoryPath).Show();
         }
 
-        private IEnumerable<string> RetrieveFileNames(IEnumerable<Word.Field> fields)
-        {
-            IList<string> result = new List<string>();
-
-            foreach (Word.Field field in fields)
-            {
-                 result.Add(new IncludeField(field).FilePath);
-            }
-
-            return result;
-        }
-
         private void OnClick_ButtonUpdateFromSource(object sender, RibbonControlEventArgs e)
         {
             IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
+            IList<string> fileNames = this.RetrieveFileNames(fields).ToList();
 
-            if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentFromSource(this.RetrieveFileNames(fields).ToList()))
+            if (fileNames.Count > 0 && DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentFromSource(fileNames))
             {
-                new FieldUpdater(fields, new UpdateTarget()).Update();
-
-                foreach (Word.Field field in fields)
-                {
-                    this.logger.Info(
-                        "Updated content from \"" + new IncludeField(field).FilePath + "\" in \"" + this.application.ActiveDocument.FullName + "\".");
-                }
-
-                this.logger.Info("Updated " + fields.Count + " source reference(s) in " + this.application.ActiveDocument.FullName + ".");
+                IUpdateStrategy updateStrategy = new UpdateTarget();
+                this.UpdateFields(fields, updateStrategy);
             }
-        }
-
-        private void OnClick_ButtonOpenSourceFile(object sender, RibbonControlEventArgs e)
-        {
-            // Open each referenced file (e.g. a Microsoft Word document) in the current selection.
-            foreach (Word.Field field in this.application.Selection.AllIncludeFields())
-            {
-                Process.Start(new IncludeField(field).FilePath);
-            }
-        }
-
-        private IEnumerable<string> RetrieveReadOnlyFiles(IEnumerable<Word.Field> fields)
-        {
-            IList<string> result = new List<string>();
-            string filePath;
-
-            foreach (Word.Field field in fields)
-            {
-                filePath = new IncludeField(field).FilePath;
-
-                if (new FileInfo(filePath).IsReadOnly)
-                {
-                    result.Add(filePath);
-                }
-            }
-
-            return result;
         }
 
         private void OnClick_ButtonUpdateToSource(object sender, RibbonControlEventArgs e)
         {
             IList<Word.Field> fields = this.application.Selection.AllIncludeTextFields().ToList();
+            IList<string> fileNames = this.RetrieveFileNames(fields).ToList();
 
-            IList<string> readOnlyFiles = this.RetrieveReadOnlyFiles(fields).ToList();
-            
-            if (readOnlyFiles.Count > 0)
-            { 
-                foreach (string filePath in readOnlyFiles)
-                {
-                    this.logger.Warn(
-                        "The source file \"" + filePath + "\" is read-only.");
-                }
-
-                MessageBoxes.ShowMessageBoxFileIsReadOnly(readOnlyFiles);
-            }
-            else if (DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentInSource(this.RetrieveFileNames(fields).ToList()))
+            if (fileNames.Count > 0 && DialogResult.Yes == MessageBoxes.ShowMessageBoxWhetherToUpdateContentInSource(fileNames))
             {
-                new FieldUpdater(fields, new UpdateSource()).Update();
-
-                foreach (Word.Field field in fields)
-                {
-                    this.logger.Info(
-                        "Updated content in \"" + new IncludeField(field).FilePath + "\" from \"" + this.application.ActiveDocument.FullName + "\".");
-                }
-
-                this.logger.Info("Updated " + fields.Count + " source file(s) from " + this.application.ActiveDocument.FullName + ".");
+                IUpdateStrategy updateStrategy = new UpdateSource();
+                this.UpdateFields(fields, updateStrategy);
             }
         }
 
-        private void OnClick_ButtonCheckReferences(object sender, RibbonControlEventArgs e)
+        private void UpdateFields(IList<Word.Field> fields, IUpdateStrategy updateStrategy)
         {
-            bool problemDetected = false;
-            string filePath = string.Empty;
-            string lastModifiedActual = string.Empty;
-            string lastModifiedExpected = string.Empty;
-            IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
+            ExtendedIncludeField extendedIncludeField = null;
+            string currentSourceFilePath = null;
+            string currentTargetFilePath = null;
 
             foreach (Word.Field field in fields)
             {
-                IncludeField includeField = new IncludeField(field);
-                filePath = includeField.FilePath;
-                lastModifiedExpected = File.GetLastWriteTimeUtc(filePath).ToString("u");
-
-                try
+                if (!ExtendedIncludeField.TryCreateExtendedIncludeField(field, out extendedIncludeField))
                 {
-                    lastModifiedActual = includeField.LastModified;
-                }
-                catch (FormatException)
-                {
-                    problemDetected = true;
-
-                    MessageBox.Show(
-                        "An error occured while parsing the field code. Ensure that the field has been created via " + Settings.Default.ApplicationName + ".",
-                        "Warning",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
+                    // Ignore each field with an invalid format.
                     continue;
                 }
 
-                if (lastModifiedExpected != lastModifiedActual)
+                if (updateStrategy is UpdateTarget)
                 {
-                    problemDetected = true;
-
-                    MessageBox.Show(
-                        "The referenced source file " + filePath + " has been modified since it has been included in this target document.",
-                        "Question",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-
-                    // The source document is assumed to be the revised document by convention.
-                    Word.Document revisedDocument = this.application.Documents.Open(
-                        FileName: filePath,
-                        ReadOnly: true,
-                        AddToRecentFiles: false,
-                        Visible: false);
-
-                    // Retrieve the template of the current document and attach it to the temporary document.
-                    Word.Template template = (Word.Template)this.application.ActiveDocument.get_AttachedTemplate();
-
-                    // The result from the INCLUDE field is assumed to be the original (temporary) document by convention.
-                    Word.Document originalDocument = this.application.Documents.Add(
-                        Template: template.FullName,
-                        DocumentType: Word.WdNewDocumentType.wdNewBlankDocument,
-                        Visible: false);
-                    originalDocument.Application.ActiveWindow.Caption = "Temporary Document";
-
-                    // Copy the result of the field to the original (temporary document).
-                    Word.Range fieldRange = field.Result;
-                    fieldRange.TextRetrievalMode.IncludeFieldCodes = false;
-                    fieldRange.TextRetrievalMode.IncludeHiddenText = true;
-                    originalDocument.Range().Text = fieldRange.Text;
-
-                    Word.Document diffDocument = this.application.CompareDocuments(
-                        originalDocument,
-                        revisedDocument);
-
-                    // Close the original and the revised documents.
-                    ((Word._Document)originalDocument).Close(SaveChanges: false);
-                    ((Word._Document)revisedDocument).Close(SaveChanges: false);
-
-                    // Modify the UI for the "diff" document.
-                    diffDocument.ActiveWindow.View.SplitSpecial = Word.WdSpecialPane.wdPaneRevisionsVert;
-                    diffDocument.ActiveWindow.ShowSourceDocuments = Word.WdShowSourceDocuments.wdShowSourceDocumentsBoth;
+                    currentSourceFilePath = extendedIncludeField.FilePath;
+                    currentTargetFilePath = this.application.ActiveDocument.FullName;
                 }
+                else
+                {
+                    if (new FileInfo(extendedIncludeField.FilePath).IsReadOnly)
+                    {
+                        this.HighlightFieldAndShowMessageBoxForReadOnlyFile(field, extendedIncludeField.FilePath);
+                        continue;
+                    }
+
+                    currentSourceFilePath = this.application.ActiveDocument.FullName;
+                    currentTargetFilePath = extendedIncludeField.FilePath;
+                }
+
+                new FieldUpdater(field, updateStrategy).Update();
+
+                // Update the nested empty date and time field of the field.
+                extendedIncludeField.SynchronizeLastModified();
+
+                this.logger.Info(
+                    "Updated content in \"" + currentTargetFilePath + "\" with the content of \""
+                    + currentSourceFilePath + "\".");
+            }
+        }
+
+        private void OnClick_ButtonOpenSourceFile(object sender, RibbonControlEventArgs e)
+        {
+            IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
+            ExtendedIncludeField extendedIncludeField = null;
+
+            // Open each referenced file (e.g. a Microsoft Word document) in the current selection.
+            foreach (Word.Field field in fields)
+            {
+                if (!ExtendedIncludeField.TryCreateExtendedIncludeField(field, out extendedIncludeField))
+                {
+                    this.HighlightFieldAndShowMessageBoxForInvalidFieldCodeFormat(field);
+                    continue;
+                }
+
+                Process process = Process.Start(extendedIncludeField.FilePath);
+            }
+        }
+
+        private void OnClick_ButtonCompare(object sender, RibbonControlEventArgs e)
+        {
+            IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
+            ExtendedIncludeField extendedIncludeField = null;
+            Word.Document diffDocument = null;
+
+            // Temporarily deactivate the UpdateFieldsEventHandler.
+            // If the UpdateFieldsEventHandler is not deactivate, the revised document and original document must
+            // have been opened visible, since otherwise the active document would remain the currently active
+            // document. In that case the fields of the active document would be updated, which is logically wrong,
+            // e.g. if only the result of a field is modified and the user wants to compare that result with the
+            // original file.
+            this.applicationEventHandler.UnsubscribeEventHandler(this.updateFieldsEventHandler);
+
+            foreach (Word.Field field in fields)
+            {
+                if (!ExtendedIncludeField.TryCreateExtendedIncludeField(field, out extendedIncludeField))
+                {
+                    this.HighlightFieldAndShowMessageBoxForInvalidFieldCodeFormat(field);
+                    continue;
+                }
+
+                diffDocument = new ExtendedIncludeFieldComparison(this.application).Execute(extendedIncludeField);
+
+                if (0 == diffDocument.Revisions.Count)
+                {
+                    // Close the "diff" document if there are no changes.
+                    ((Word._Document)diffDocument).Close(SaveChanges: false);
+                    field.Select();
+                    MessageBoxes.ShowMessageBoxFieldResultIsEqualToSourceFile(this.ApplicationWindow);
+                }
+
+                // TODO Find a solution that lets the user "merge" the revisions from the "diff" document with the
+                // result of the field in the active document.
             }
 
-            if (!problemDetected)
-            {
-                MessageBox.Show(
-                    "No problems have been found by " + Settings.Default.ApplicationName + " in the current selection of this document.",
-                    "Information",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
+            // Activate the temporarily deactivated UpdateFieldsEventHandler.
+            this.applicationEventHandler.SubscribeEventHandler(this.updateFieldsEventHandler);
         }
 
         #endregion
@@ -437,7 +392,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this.ApplicationWindow, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBoxes.ShowMessageBoxWithExceptionMessage(ex, this.ApplicationWindow);
                 return;
             }
 
@@ -471,28 +426,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
             catch (ContentControlCreationException ex)
             {
-                MessageBox.Show(this.ApplicationWindow, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBoxes.ShowMessageBoxWithExceptionMessage(ex, this.ApplicationWindow);
             }
 
             progressForm.Close();
-        }
-
-        private Office.CustomXMLNode RetrieveCustomXMLNode(XMLBrowserForm form, CustomXMLPartRepository repository)
-        {
-            // Retrieve the selected CustomXMLPart via its (unique) default namespace.
-            string defaultNamespace = form.ResultXmlDocument.DocumentElement.NamespaceURI;
-            Office.CustomXMLPart customXmlPart = repository.FindByDefaultNamespace(defaultNamespace);
-
-            // The XMLBrowserForm always returns a XPath expression for a single node.
-            string xpath = form.ResultXPath.XPathExpression;
-            Office.CustomXMLNode customXmlNode = customXmlPart.SelectSingleNode(xpath);
-
-            if (null == customXmlNode)
-            {
-                throw new Exception("Unable to select a node with the XPath expression \"" + xpath + "\".");
-            }
-
-            return customXmlNode;
         }
 
         #endregion
@@ -780,5 +717,82 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         #endregion
+
+        // TODO Move the following methods to another class.
+        private void HighlightFieldAndShowMessageBoxForInvalidFieldCodeFormat(Word.Field field)
+        {
+            field.Select();
+            MessageBoxes.ShowMessageBoxInvalidFieldCodeFormat(this.ApplicationWindow);
+            Word.Range range = field.Result;
+            range.Collapse();
+            range.Select();
+        }
+
+        private void HighlightFieldAndShowMessageBoxForReadOnlyFile(Word.Field field, string fileName)
+        {
+            field.Select();
+            MessageBoxes.ShowMessageBoxFileIsReadOnly(fileName, this.ApplicationWindow);
+            Word.Range range = field.Result;
+            range.Collapse();
+            range.Select();
+        }
+
+        private IEnumerable<string> RetrieveFileNames(IEnumerable<Word.Field> fields)
+        {
+            IList<string> result = new List<string>();
+            ExtendedIncludeField extendedIncludeField = null;
+
+            foreach (Word.Field field in fields)
+            {
+                if (!ExtendedIncludeField.TryCreateExtendedIncludeField(field, out extendedIncludeField))
+                {
+                    this.HighlightFieldAndShowMessageBoxForInvalidFieldCodeFormat(field);
+                    continue;
+                }
+
+                result.Add(extendedIncludeField.FilePath);
+            }
+
+            return result;
+        }
+
+        private IEnumerable<string> RetrieveReadOnlyFileNames(IEnumerable<Word.Field> fields)
+        {
+            IList<string> result = new List<string>();
+            ExtendedIncludeField extendedIncludeField = null;
+
+            foreach (Word.Field field in fields)
+            {
+                if (!ExtendedIncludeField.TryCreateExtendedIncludeField(field, out extendedIncludeField))
+                {
+                    continue;
+                }
+
+                if (new FileInfo(extendedIncludeField.FilePath).IsReadOnly)
+                {
+                    result.Add(extendedIncludeField.FilePath);
+                }
+            }
+
+            return result;
+        }
+
+        private Office.CustomXMLNode RetrieveCustomXMLNode(XMLBrowserForm form, CustomXMLPartRepository repository)
+        {
+            // Retrieve the selected CustomXMLPart via its (unique) default namespace.
+            string defaultNamespace = form.ResultXmlDocument.DocumentElement.NamespaceURI;
+            Office.CustomXMLPart customXmlPart = repository.FindByDefaultNamespace(defaultNamespace);
+
+            // The XMLBrowserForm always returns a XPath expression for a single node.
+            string xpath = form.ResultXPath.XPathExpression;
+            Office.CustomXMLNode customXmlNode = customXmlPart.SelectSingleNode(xpath);
+
+            if (null == customXmlNode)
+            {
+                throw new Exception("Unable to select a node with the XPath expression \"" + xpath + "\".");
+            }
+
+            return customXmlNode;
+        }
     }
 }

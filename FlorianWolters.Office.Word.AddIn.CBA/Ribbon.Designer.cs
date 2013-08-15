@@ -399,7 +399,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonCompare.OfficeImageId = "FileDocumentInspect";
             this.buttonCompare.ScreenTip = "Compares the content of the selected references.";
             this.buttonCompare.ShowImage = true;
-            this.buttonCompare.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCheckReferences);
+            this.buttonCompare.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCompare);
             // 
             // groupTools
             // 

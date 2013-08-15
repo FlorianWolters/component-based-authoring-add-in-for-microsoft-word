@@ -8,7 +8,7 @@
 namespace FlorianWolters.Office.Word.Fields
 {
     using System.Text.RegularExpressions;
-using FlorianWolters.Office.Word.Fields.Switches;
+    using FlorianWolters.Office.Word.Fields.Switches;
 
     public class FieldFunctionCode
     {

@@ -114,9 +114,10 @@
     <Compile Include="Fields\FieldFactory.cs" />
     <Compile Include="Fields\FieldFunctionCode.cs" />
     <Compile Include="Fields\FieldFilePathTranslator.cs" />
+    <Compile Include="Fields\ExtendedIncludeFieldComparison.cs" />
     <Compile Include="Fields\FieldUpdater.cs" />
     <Compile Include="Fields\FieldCreationException.cs" />
-    <Compile Include="Fields\IncludeField.cs" />
+    <Compile Include="Fields\ExtendedIncludeField.cs" />
     <Compile Include="Fields\Switches\FieldFormatSwitch.cs" />
     <Compile Include="Fields\Switches\FieldFormatSwitches.cs" />
     <Compile Include="Fields\UpdateStrategies\IUpdateStrategy.cs" />
