@@ -511,7 +511,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         {
             // Update each field in the current selection.
             new FieldUpdater(
-                this.application.Selection.AllFields(),
+                this.application.Selection.AllFields().ToList(),
                 new UpdateTarget()).Update();
         }
 
