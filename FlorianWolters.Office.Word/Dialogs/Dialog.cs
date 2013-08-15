@@ -86,13 +86,8 @@ namespace FlorianWolters.Office.Word.Dialogs
                 }
                 catch (COMException ex)
                 {
-                    // We do need to handle the exception explicit when working
-                    // with a built-in Microsoft Word dialog box.
-                    MessageBox.Show(
-                        ex.Message,
-                        "Microsoft Word",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
+                    // We do need to handle an exception explicit when working with a built-in Microsoft Word dialog box.
+                    this.ShowMessageBoxWithExceptionMessage(ex);
                 }
             }
 
@@ -117,7 +112,18 @@ namespace FlorianWolters.Office.Word.Dialogs
         /// </returns>
         protected virtual DialogResults Display(int timeout = 0)
         {
-            return (DialogResults)this.WordDialog.Display(timeout);
+            DialogResults result = DialogResults.Cancel;
+
+            try
+            {
+                result = (DialogResults)this.WordDialog.Display(timeout);
+            }
+            catch (COMException ex)
+            {
+                this.ShowMessageBoxWithExceptionMessage(ex);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -151,6 +157,11 @@ namespace FlorianWolters.Office.Word.Dialogs
         protected bool ResultIsOk(DialogResults result)
         {
             return result.Equals(DialogResults.Ok);
+        }
+
+        private void ShowMessageBoxWithExceptionMessage(COMException ex)
+        {
+            MessageBox.Show(ex.Message, "Microsoft Word", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }
