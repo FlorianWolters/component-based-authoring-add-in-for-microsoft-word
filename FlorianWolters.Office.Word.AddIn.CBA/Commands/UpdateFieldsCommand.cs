@@ -7,7 +7,10 @@
 
 namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
 {
+    using System;
     using FlorianWolters.Office.Word.Commands;
+    using FlorianWolters.Office.Word.Fields;
+    using FlorianWolters.Office.Word.Fields.UpdateStrategies;
     using NLog;
     using Word = Microsoft.Office.Interop.Word;
 
@@ -22,13 +25,17 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
         /// </summary>
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly FieldUpdater fieldUpdater;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateFieldsCommand"/> class with the specified
         /// <i>Receiver</i>.
         /// </summary>
         /// <param name="application">The <i>Receiver</i> of the <i>Command</i>.</param>
-        public UpdateFieldsCommand(Word.Application application) : base(application)
+        public UpdateFieldsCommand(Word.Application application)
+            : base(application)
         {
+            this.fieldUpdater = new FieldUpdater(new UpdateTarget());
         }
 
         /// <summary>
@@ -37,9 +44,17 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
         public override void Execute()
         {
             Word.Document document = this.Application.ActiveDocument;
+            
+            if (null == document)
+            {
+                throw new InvalidOperationException("The Microsoft Word application has no active document.");
+            }
 
-            document.Fields.Update();
-            this.logger.Info("Updated the result of all fields in the document \"" + document.FullName + "\".");
+            using (new StateCapture(document))
+            {
+                this.fieldUpdater.Update(document);
+                this.logger.Info("Updated the result of all fields in the document \"" + document.FullName + "\".");
+            }
         }
     }
 }

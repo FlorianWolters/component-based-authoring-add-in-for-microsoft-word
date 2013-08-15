@@ -217,6 +217,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             string currentSourceFilePath = null;
             string currentTargetFilePath = null;
 
+            FieldUpdater fieldUpdater = new FieldUpdater(updateStrategy);
+
             foreach (Word.Field field in fields)
             {
                 if (!ExtendedIncludeField.TryCreateExtendedIncludeField(field, out extendedIncludeField))
@@ -242,7 +244,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                     currentTargetFilePath = extendedIncludeField.FilePath;
                 }
 
-                new FieldUpdater(field, updateStrategy).Update();
+                fieldUpdater.Update(field);
 
                 // Update the nested empty date and time field of the field.
                 extendedIncludeField.SynchronizeLastModified();
@@ -510,9 +512,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         private void OnClick_ButtonFieldUpdate(object sender, RibbonControlEventArgs e)
         {
             // Update each field in the current selection.
-            new FieldUpdater(
-                this.application.Selection.AllFields().ToList(),
-                new UpdateTarget()).Update();
+            new FieldUpdater(new UpdateTarget()).Update(this.application.Selection.AllFields().ToList());
         }
 
         private void OnClick_ToggleButtonFieldLock(object sender, RibbonControlEventArgs e)
