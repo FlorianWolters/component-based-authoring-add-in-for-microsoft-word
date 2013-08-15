@@ -15,12 +15,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using System.Reflection;
     using System.Windows.Forms;
     using System.Xml;
-    using FlorianWolters.Office.Word.AddIn.CBA.CustomXML;
     using FlorianWolters.Office.Word.AddIn.CBA.EventHandlers;
     using FlorianWolters.Office.Word.AddIn.CBA.Forms;
     using FlorianWolters.Office.Word.AddIn.CBA.Properties;
     using FlorianWolters.Office.Word.ContentControls;
     using FlorianWolters.Office.Word.ContentControls.MappingStrategies;
+    using FlorianWolters.Office.Word.CustomXML;
     using FlorianWolters.Office.Word.Dialogs;
     using FlorianWolters.Office.Word.DocumentProperties;
     using FlorianWolters.Office.Word.Event.EventHandlers;

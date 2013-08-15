@@ -70,6 +70,8 @@
     <Compile Include="ContentControls\MappingStrategies\ListMappingStrategy.cs" />
     <Compile Include="ContentControls\MappingStrategies\CustomXMLNodeMappingStrategy.cs" />
     <Compile Include="ContentControls\MappingStrategies\OneToOneMappingStrategy.cs" />
+    <Compile Include="CustomXML\CustomXMLPartDefaultNamespaceException.cs" />
+    <Compile Include="CustomXML\CustomXMLPartRepository.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogResults.cs" />
     <Compile Include="Dialogs\InsertReferenceDialog.cs" />

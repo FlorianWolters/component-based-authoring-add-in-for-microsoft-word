@@ -201,8 +201,6 @@
     <Compile Include="EventHandlers\RibbonStateEventHandler.cs" />
     <Compile Include="Commands\UpdateAttachedTemplateCommand.cs" />
     <Compile Include="EventHandlers\WriteCustomDocumentPropertiesEventHandler.cs" />
-    <Compile Include="CustomXML\CustomXMLPartDefaultNamespaceException.cs" />
-    <Compile Include="CustomXML\CustomXMLPartRepository.cs" />
     <Compile Include="EventHandlers\ActivateUpdateStylesOnOpenEventHandler.cs" />
     <Compile Include="EventHandlers\UpdateAttachedTemplateEventHandler.cs" />
     <Compile Include="Forms\AboutForm.cs">

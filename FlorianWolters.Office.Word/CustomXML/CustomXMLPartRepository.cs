@@ -5,7 +5,7 @@
 // <author>Florian Wolters &lt;wolters.fl@gmail.com&gt;</author>
 //------------------------------------------------------------------------------
 
-namespace FlorianWolters.Office.Word.AddIn.CBA.CustomXML
+namespace FlorianWolters.Office.Word.CustomXML
 {
     using System;
     using System.Collections.Generic;

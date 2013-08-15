@@ -8,9 +8,9 @@
 namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
 {
     using System.IO;
-    using FlorianWolters.Office.Word.AddIn.CBA.CustomXML;
     using FlorianWolters.Office.Word.AddIn.CBA.Properties;
     using FlorianWolters.Office.Word.Commands;
+    using FlorianWolters.Office.Word.CustomXML;
     using NLog;
     using Word = Microsoft.Office.Interop.Word;
 
