@@ -9,10 +9,7 @@
 namespace FlorianWolters.Office.Word.AddIn.CBA
 {
     using System.ComponentModel;
-    using System.Windows.Forms;
-    using FlorianWolters.Office.Word.AddIn.CBA.Forms;
     using Microsoft.Office.Tools.Ribbon;
-    using NLog;
 
     /// <content>
     /// Contains both auto-generated source code by the Microsoft Visual Studio Designer and essential user source code
@@ -26,37 +23,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         private IContainer components = null;
 
         /// <summary>
-        /// The <see cref="Logger"/> for the class <see cref="Ribbon"/>.
-        /// </summary>
-        private readonly Logger logger;
-
-        /// <summary>
-        /// The <see cref="Form"/> whose <see cref="RichTextBox"/> is utilized as a target by <see cref="NLog"/>.
-        /// </summary>
-        private readonly Form messagesForm;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Ribbon"/> class.
         /// </summary>
         public Ribbon() : base(Globals.Factory.GetRibbonFactory())
         {
             this.InitializeComponent();
-
-            // The first NLog Logger must be created after the Form with the RichTextBox that should be utilized for
-            // logging. In addition, the Form has to be displayed for the first time before the first NLog Logger is
-            // created. There doesn't exist a Form event for that use case. The "earliest" event is Form.Load, which
-            // occurs before a fFrm is displayed for the first time. Therefore we do have to workaround the problem:
-            // 1. Make the Form invisible by setting its opacity to 0.
-            // 2. Toogle the visibility of the Form (to raise its Form.Load event).
-            // 3. Restore the default opacity of the Form.
-            this.messagesForm = new MessagesForm();
-            double defaultOpacity = this.messagesForm.Opacity;
-            this.messagesForm.Opacity = 0d;
-            this.messagesForm.Visible = true;
-            this.messagesForm.Visible = false;
-            this.messagesForm.Opacity = defaultOpacity;
-
-            this.logger = LogManager.GetCurrentClassLogger();
         }
 
         /// <summary>

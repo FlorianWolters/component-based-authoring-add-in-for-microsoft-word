@@ -8,93 +8,106 @@
 namespace FlorianWolters.Office.Word.AddIn.CBA
 {
     using System;
+    using System.Diagnostics;
     using System.Globalization;
     using System.Threading;
+    using System.Windows.Forms;
+    using FlorianWolters.Office.Word.AddIn.CBA.Factories;
+    using FlorianWolters.Office.Word.AddIn.CBA.Forms;
+    using FlorianWolters.Office.Word.AddIn.CBA.Properties;
+    using FlorianWolters.Office.Word.Event;
+    using FlorianWolters.Office.Word.Event.EventHandlers;
+    using FlorianWolters.Office.Word.Event.ExceptionHandlers;
     using Microsoft.Office.Tools;
+    using NLog;
     using Office = Microsoft.Office.Core;
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The class <see cref="ThisAddIn"/> is the entry point of the <i>Microsoft
-    /// Word</i> Application-Level Add-in.
+    /// The class <see cref="ThisAddIn"/> is the entry point of the <i>Microsoft Word</i> Application-Level Add-in.
     /// </summary>
     public partial class ThisAddIn
     {
         /// <summary>
-        /// Returns an object that implements the <see
-        /// ref="Office.IRibbonExtensibility"/> interface.
+        /// Determines whether the custom initialization of <see cref="ThisAddIn"/> has executed.
+        /// </summary>
+        private bool initialized = false;
+
+        /// <summary>
+        /// Gets the <see cref="Logger"/> for the class <see cref="ThisAddIn"/>.
+        /// </summary>
+        public Logger Logger { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="Form"/> whose <see cref="RichTextBox"/> is utilized as a target by <see cref="NLog"/>.
+        /// </summary>
+        public Form MessagesForm { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="ApplicationEventHandler"/> used to subscribe and unsubscribe <i>Event Handler</i>s.
+        /// </summary>
+        public ApplicationEventHandler ApplicationEventHandler { get; private set; }
+
+        /// <summary>
+        /// Gets the <i>Event Handler</i> used to update <see cref="Word.Field"/>s.
+        /// </summary>
+        public IEventHandler UpdateFieldsEventHandler { get; private set; }
+
+        /// <summary>
+        /// Returns an object that implements the <see ref="Office.IRibbonExtensibility"/> interface.
         /// <para>
-        /// Sets the <see cref="CultureInfo"/> for the <i>Ribbons</i> of <see
-        /// cref="ThisAddIn"/> to the language of the <i>Microsoft Word</i>
-        /// applicationEvent.
+        /// Sets the <see cref="CultureInfo"/> for the ribbons of <see cref="ThisAddIn"/> to the language of the
+        /// <i>Microsoft Word</i> application.
         /// </para>
         /// </summary>
-        /// <returns>The extension for the <i>Ribbons</i>.</returns>
+        /// <returns>The extension for the ribbons.</returns>
         protected override Office.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
-            // We can't access the property "this.Application" here, since this
-            // method is invoked before the event handler, triggered by the
-            // "this.Startup" event. Therefore "this.Application" is "null" here
-            // and we do have to retrieve the
-            // "Microsoft.Office.Interop.Word.Application" otherwise.
-            this.ChangeCultureOfCurrentThreadToCultureOfWordApplication(
-                this.RetrieveWordApplication(this));
+            // We can't access the property "this.Application" here, since this method is invoked before the event
+            // handler method, called by the "Startup" event. Therefore "this.Application" returns "null" here and the
+            // "Microsoft.Office.Interop.Word.Application" instance must be retrieved via another method.
+            this.ChangeCultureOfCurrentThreadToCultureOfWordApplication(this.RetrieveWordApplication(this));
 
             return base.CreateRibbonExtensibilityObject();
         }
 
         /// <summary>
-        /// Returns the <see cref="Word.Application"/> of <see
-        /// cref="ThisAddIn"/>.
+        /// Returns the <see cref="Word.Application"/> of <see cref="ThisAddIn"/>.
         /// </summary>
         /// <param name="addIn">An Application-Level Add-in.</param>
-        /// <returns>The Word application.</returns>
+        /// <returns>The <see cref="Word.Application"/> of the specified <see cref="ThisAddIn"/>.</returns>
         private Word.Application RetrieveWordApplication(AddInBase addIn)
         {
-            return this.GetHostItem<Word.Application>(
-                typeof(Word.Application),
-                "Application");
+            return this.GetHostItem<Word.Application>(typeof(Word.Application), "Application");
         }
 
         /// <summary>
-        /// Executes code when <see cref="ThisAddIn"/> is loaded, after all the
-        /// initialization code in the assembly has run.
+        /// Executes code when <see cref="ThisAddIn"/> is loaded, after all the initialization code in the assembly has
+        /// run.
         /// </summary>
-        /// <remarks>
-        /// The <see cref="ThisAddIn_Startup"/> is a default event handler.
-        /// </remarks>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The arguments of the event.</param>
-        private void ThisAddIn_Startup(object sender, EventArgs e)
+        private void OnStartUpEventHandler(object sender, EventArgs e)
         {
-            // Attention: "VSTO" waits for "Microsoft Word" to be ready before
-            // firing the "Startup" event. Therefore the "DocumentOpen" and
-            // "WindowActivate" events may have already fired.
+            // "VSTO" waits for "Microsoft Word" to be ready before firing the "Startup" event. Therefore the
+            // "DocumentOpen", "NewDocument" and "WindowActivate" events may have already fired (but the event handlers
+            // haven't registered yet).
+            // A workaround has been taken from the following Microsoft Developer Network Thread:
+            // http://social.msdn.microsoft.com/Forums/vstudio/3027424c-add3-4935-a822-b517147dbdef/documentopen-and-windowactivate-events-do-not-fire-on-word-2010
 
-            // Sets the culture of this Add-In (e.g. dialogs) to the culture of
-            // the "Microsoft Word" application.
-            this.ChangeCultureOfCurrentThreadToCultureOfWordApplication(
-                this.Application);
+            // Make sure the custom initialization code has been executed (method "InitializeCustom"). It might not run
+            // if the "ThisAddin.Designer.cs" file is regenerated by the Designer.
+            Debug.Assert(this.initialized, "The custom initialization method of the Add-in has not been called.");
+
+            // Sets the culture of this Add-In (e.g. dialogs) to the culture of the "Microsoft Word" application.
+            this.ChangeCultureOfCurrentThreadToCultureOfWordApplication(this.Application);
         }
 
         /// <summary>
-        /// Executes code when <see cref="ThisAddIn"/> is about to be unloaded. 
+        /// Sets the <see cref="CultureInfo"/> of <see cref="ThisAddIn"/> to the language of the specified <see
+        /// cref="Word.Application"/>.
         /// </summary>
-        /// <remarks>
-        /// The <see cref="ThisAddIn_Startup"/> is a default event handler.
-        /// </remarks>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The arguments of the event.</param>
-        private void ThisAddIn_Shutdown(object sender, EventArgs e)
-        {
-            // NOOP
-        }
-
-        /// <summary>
-        /// Sets the <see cref="CultureInfo"/> of <see cref="ThisAddIn"/> to the
-        /// language of the specified <see cref="Word.Application"/>.
-        /// </summary>
-        /// <param name="application">A <see cref="Word.Application"/>.</param>
+        /// <param name="application">The <see cref="Word.Application"/> whose language to use.</param>
         private void ChangeCultureOfCurrentThreadToCultureOfWordApplication(
             Word.Application application)
         {
@@ -109,31 +122,119 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        /// Returns the Locale ID (LCID) of the specified <see
-        /// cref="Word.Application"/>.
+        /// Returns the Locale ID (LCID) of the specified <see cref="Word.Application"/>.
         /// </summary>
         /// <remarks>
-        /// <b>Locale ID (LCID)</b>: A 32-bit value defined by Microsoft Windows
-        /// that consists of a language ID, sort ID, and reserved bits that
-        /// identify a particular language. For example, the LCID for English is
-        /// 1033, and the LCID for German is 1031. 
+        /// <b>Locale ID (LCID)</b>: A 32-bit value defined by Microsoft Windows that consists of a language ID, sort
+        /// ID, and reserved bits that identify a particular language. For example, the LCID for English is 1033, and
+        /// the LCID for German is 1031. 
         /// </remarks>
         /// <param name="application">A <see cref="Word.Application"/>.</param>
         /// <returns>The LCID of the A <see cref="Word.Application"/>.</returns>
         private int GetLocaleIdOfWordApplication(Word.Application application)
         {
-            return application.LanguageSettings.get_LanguageID(
-                Office.MsoAppLanguageID.msoLanguageIDUI);
+            return application.LanguageSettings.get_LanguageID(Office.MsoAppLanguageID.msoLanguageIDUI);
         }
 
         /// <summary>
-        /// Required method for Designer support - do not modify the contents of
-        /// this method with the code editor.
+        /// Required method for Designer support - do not modify the contents of this method with the code editor.
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += this.ThisAddIn_Startup;
-            this.Shutdown += this.ThisAddIn_Shutdown;
+            this.Startup += this.OnStartUpEventHandler;
+        }
+
+        /// <summary>
+        /// Executes custom initialization code. 
+        /// </summary>
+        private void InitializeCustom()
+        {
+            // The MessageForm has to be displayed for the first time before the first NLog Logger is created to utilize
+            // it for logging. There doesn't exist a Form event for that use case. The "earliest" event is Form.Load,
+            // which occurs before a Form is displayed for the first time. Therefore we do have to workaround the
+            // problem:
+            // 1. Make the Form invisible by setting its opacity to 0.
+            // 2. Toogle the visibility of the Form (to raise its Form.Load event).
+            // 3. Restore the default opacity of the Form.
+            this.MessagesForm = this.CreateMessageForm();
+
+            // ATTENTION: The first NLog Logger must be created after the Form with the RichTextBox that should be
+            // utilized for logging has been displayed for the first time.
+            this.Logger = LogManager.GetLogger("FlorianWolters.Office.Word.AddIn.CBA.*");
+
+            this.RegisterEventHandler(this.Application, Settings.Default, this.Logger);
+            this.initialized = true;
+        }
+
+        /// <summary>
+        /// Creates a new instance of a <see cref="MessagesForm"/>.
+        /// </summary>
+        /// <returns>The newly created form.</returns>
+        private Form CreateMessageForm()
+        {
+            Form result = new MessagesForm();
+            double defaultOpacity = result.Opacity;
+            result.Opacity = 0d;
+            result.Visible = true;
+            result.Visible = false;
+            result.Opacity = defaultOpacity;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Registers <i>Event Handler</i>s for the specified <see cref="Word.Application"/> in dependency of the
+        /// specified <see cref="Settings"/> and uses the specified <see cref="Logger"/> to log exceptions inside the
+        /// <i>Event Handler</i> methods.
+        /// </summary>
+        /// <param name="application">The <see cref="Word.Application"/> to manage.</param>
+        /// <param name="settings">The <see cref="Settings"/> of this Add-in.</param>
+        /// <param name="logger">The <see cref="Logger"/> to use to log exceptions.</param>
+        private void RegisterEventHandler(Word.Application application, Settings settings, Logger logger)
+        {
+            // Since the "Word.Application" is always injected into the commands, the complete state of the "Microsoft
+            // Word" application is accessible. If a "Word.Document" would be injected instead, one would always have to
+            // make sure that the reference to that object is up-to-date.
+            this.ApplicationEventHandler = new ApplicationEventHandler(application);
+
+            IExceptionHandler eventExceptionHandler = new LoggerExceptionHandler(logger);
+
+            // TODO Improve registration of the event handlers in dependency of the settings.
+            if (settings.WriteCustomDocumentProperties)
+            {
+                WriteCustomDocumentPropertiesFactory.Instance.RegisterEventHandler(
+                    eventExceptionHandler,
+                    this.ApplicationEventHandler);
+            }
+
+            if (settings.UpdateAttachedTemplate) 
+            {
+                UpdateAttachedTemplateFactory.Instance.RegisterEventHandler(
+                    eventExceptionHandler,
+                    this.ApplicationEventHandler);
+            }
+
+            // It is important to update the styles after the template has been updated.
+            if (settings.ActivateUpdateStylesOnOpen)
+            {
+                ActivateUpdateStylesOnOpenFactory.Instance.RegisterEventHandler(
+                    eventExceptionHandler,
+                    this.ApplicationEventHandler);
+            }
+
+            if (settings.RefreshCustomXMLParts)
+            {
+                RefreshCustomXMLPartsFactory.Instance.RegisterEventHandler(
+                    eventExceptionHandler,
+                    this.ApplicationEventHandler);
+            }
+
+            if (settings.UpdateFields)
+            {
+                this.UpdateFieldsEventHandler = UpdateFieldsFactory.Instance.RegisterEventHandler(
+                    eventExceptionHandler,
+                    this.ApplicationEventHandler);
+            }
         }
     }
 }

@@ -48,6 +48,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA {
             this.InitializeControls();
             this.InitializeComponents();
             this.InitializeData();
+            this.InitializeCustom();
         }
         
         /// 

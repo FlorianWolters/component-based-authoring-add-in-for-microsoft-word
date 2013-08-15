@@ -13,21 +13,17 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.InteropServices;
     using System.Windows.Forms;
     using System.Xml;
     using FlorianWolters.Office.Word.AddIn.CBA.CustomXML;
     using FlorianWolters.Office.Word.AddIn.CBA.EventHandlers;
-    using FlorianWolters.Office.Word.AddIn.CBA.Factories;
     using FlorianWolters.Office.Word.AddIn.CBA.Forms;
     using FlorianWolters.Office.Word.AddIn.CBA.Properties;
     using FlorianWolters.Office.Word.ContentControls;
     using FlorianWolters.Office.Word.ContentControls.MappingStrategies;
     using FlorianWolters.Office.Word.Dialogs;
     using FlorianWolters.Office.Word.DocumentProperties;
-    using FlorianWolters.Office.Word.Event;
     using FlorianWolters.Office.Word.Event.EventHandlers;
-    using FlorianWolters.Office.Word.Event.ExceptionHandlers;
     using FlorianWolters.Office.Word.Extensions;
     using FlorianWolters.Office.Word.Fields;
     using FlorianWolters.Office.Word.Fields.Switches;
@@ -41,9 +37,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The class <see cref="Ribbon"/> contains the presentation logic (the
-    /// <i>Ribbon</i> and delegates to the business logic of the <i>Microsoft
-    /// Word</i> Application-Level Add-In.
+    /// The class <see cref="Ribbon"/> contains the presentation logic and delegates to the business logic of the
+    /// "Microsoft Word" Application-Level Add-in.
     /// </summary>
     internal partial class Ribbon
     {
@@ -53,13 +48,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         private const string ReadMeFileName = "README.md";
 
         /// <summary>
+        /// The Add-In.
+        /// </summary>
+        private ThisAddIn addIn;
+
+        /// <summary>
         /// The <see cref="Word.Application"/> to interact with.
         /// </summary>
         private Word.Application application;
-
-        private ApplicationEventHandler applicationEventHandler;
-
-        private IEventHandler updateFieldsEventHandler;
 
         /// <summary>
         /// Gets or sets the main window of the <see cref="Word.Application"/>.
@@ -104,13 +100,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // Microsoft Word application object.
             // The global Add-In object is first available when the event
             // handler for the "Load" event of the "Ribbon" is invoked.
-            this.application = Globals.ThisAddIn.Application;
+            this.addIn = Globals.ThisAddIn;
+            this.application = this.addIn.Application;
 
             // TODO Validate configuration options.
             Settings settings = Settings.Default;
 
             AssemblyInfo assemblyInfo = new AssemblyInfo(Assembly.GetExecutingAssembly());
-            this.logger.Info("Loaded " + Settings.Default.ApplicationName + " v" + assemblyInfo.Version.ToString() + ".");
+            this.addIn.Logger.Info("Loaded " + settings.ApplicationName + " v" + assemblyInfo.Version.ToString() + ".");
 
             CustomDocumentPropertyReader customDocumentPropertyReader = new CustomDocumentPropertyReader();
             this.FieldFactory = new FieldFactory(this.application, customDocumentPropertyReader);
@@ -121,7 +118,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 customDocumentPropertyReader);
 
             this.InitializeForms(settings, assemblyInfo);
-            this.RegisterEventHandler(settings);
+
+            // The RibbonStateEventHandler ensures that the state of the UI of this Ribbon is correctly set.
+            // TODO Refactor.
+            IEventHandler eventHandler = new RibbonStateEventHandler(
+                this.application,
+                this,
+                this.CustomDocumentPropertiesDropDown);
+            this.addIn.ApplicationEventHandler.SubscribeEventHandler(eventHandler);
         }
 
         /// <summary>
@@ -150,54 +154,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 MessageBoxes.ShowMessageBoxHelpFieldDoesNotExist(readMeFilePath);
                 this.buttonShowHelp.Enabled = false;
             }
-        }
-
-        /// <summary>
-        /// Registers all <i>Event Handlers</i> for this <see cref="Ribbon"/>.
-        /// </summary>
-        /// <param name="settings">The <see cref="Settings"/> of this application.</param>
-        private void RegisterEventHandler(Settings settings)
-        {
-            IExceptionHandler eventExceptionHandler = new LoggerExceptionHandler(this.logger);
-
-            // ATTENTION: Since we always inject the Word.Application into the commands, we can always access the current state of the Microsoft Word application.
-            // If we would work with Word.Document instead, we would always have to make sure that the reference to the document is up-to-date.
-            this.applicationEventHandler = new ApplicationEventHandler(this.application);
-
-            // TODO Improve registration of the event handlers in dependency of the settings.
-            if (settings.WriteCustomDocumentProperties)
-            {
-                WriteCustomDocumentPropertiesFactory.Instance.RegisterEventHandler(eventExceptionHandler, this.applicationEventHandler);
-            }
-
-            if (settings.UpdateAttachedTemplate)
-            {
-                UpdateAttachedTemplateFactory.Instance.RegisterEventHandler(eventExceptionHandler, this.applicationEventHandler);
-            }
-
-            // It is important to update the styles after the template has been updated.
-            if (settings.ActivateUpdateStylesOnOpen)
-            {
-                ActivateUpdateStylesOnOpenFactory.Instance.RegisterEventHandler(eventExceptionHandler, this.applicationEventHandler);
-            }
-
-            if (settings.RefreshCustomXMLParts)
-            {
-                RefreshCustomXMLPartsFactory.Instance.RegisterEventHandler(eventExceptionHandler, this.applicationEventHandler);
-            }
-
-            if (settings.UpdateFields)
-            {
-                this.updateFieldsEventHandler = UpdateFieldsFactory.Instance.RegisterEventHandler(eventExceptionHandler, this.applicationEventHandler);
-            }
-
-            // The RibbonStateEventHandler ensures that the state of the UI of this Ribbon is correctly set.
-            // TODO Refactor.
-            IEventHandler eventHandler = new RibbonStateEventHandler(
-                this.application,
-                this,
-                this.CustomDocumentPropertiesDropDown);
-            this.applicationEventHandler.SubscribeEventHandler(eventHandler);
         }
 
         // TODO Move to other class.
@@ -291,7 +247,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 // Update the nested empty date and time field of the field.
                 extendedIncludeField.SynchronizeLastModified();
 
-                this.logger.Info(
+                this.addIn.Logger.Info(
                     "Updated content in \"" + currentTargetFilePath + "\" with the content of \""
                     + currentSourceFilePath + "\".");
             }
@@ -327,7 +283,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // document. In that case the fields of the active document would be updated, which is logically wrong,
             // e.g. if only the result of a field is modified and the user wants to compare that result with the
             // original file.
-            this.applicationEventHandler.UnsubscribeEventHandler(this.updateFieldsEventHandler);
+            this.addIn.ApplicationEventHandler.UnsubscribeEventHandler(this.addIn.UpdateFieldsEventHandler);
 
             foreach (Word.Field field in fields)
             {
@@ -352,7 +308,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
 
             // Activate the temporarily deactivated UpdateFieldsEventHandler.
-            this.applicationEventHandler.SubscribeEventHandler(this.updateFieldsEventHandler);
+            this.addIn.ApplicationEventHandler.SubscribeEventHandler(this.addIn.UpdateFieldsEventHandler);
         }
 
         #endregion
@@ -693,11 +649,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
             if (toggleButton.Checked)
             {
-                this.messagesForm.Show(this.ApplicationWindow);
+                this.addIn.MessagesForm.Show(this.ApplicationWindow);
             }
             else
             {
-                this.messagesForm.Visible = toggleButton.Checked;
+                this.addIn.MessagesForm.Visible = toggleButton.Checked;
             }
         }
 
