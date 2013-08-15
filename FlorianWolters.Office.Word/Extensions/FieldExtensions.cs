@@ -10,20 +10,16 @@ namespace FlorianWolters.Office.Word.Extensions
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The static class <see cref="FieldExtensions"/> contains extension
-    /// methods for a Microsoft Word field, represented by an object of the
-    /// class <see cref="Word.Field"/>.
+    /// The static class <see cref="FieldExtensions"/> contains extension methods for a Microsoft Word field,
+    /// represented by an object of the class <see cref="Word.Field"/>.
     /// </summary>
     public static class FieldExtensions
     {
         /// <summary>
-        /// Determines whether the specified <see cref="Word.Field"/> can be
-        /// updated.
+        /// Determines whether the specified <see cref="Word.Field"/> can be updated.
         /// </summary>
         /// <param name="field">The <see cref="Word.Field"/> to check.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="Word.Field"/> can be
-        /// updated; <c>false</c> otherwise.
+        /// <returns><c>true</c> if the specified <see cref="Word.Field"/> can be updated; <c>false</c> otherwise.
         /// </returns>
         public static bool CanUpdate(this Word.Field field)
         {
@@ -31,14 +27,13 @@ namespace FlorianWolters.Office.Word.Extensions
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Word.Field"/> is an
-        /// <i>INCLUDE</i>, <i>INCLUDETEXT</i> or <i>INCLUDEPICTURE</i> field.
+        /// Determines whether the specified <see cref="Word.Field"/> is an <i>INCLUDE</i>, <i>INCLUDETEXT</i> or
+        /// <i>INCLUDEPICTURE</i> field.
         /// </summary>
         /// <param name="field">The <see cref="Word.Field"/> to check.</param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Word.Field"/> is an
-        /// <i>INCLUDE</i>, <i>INCLUDETEXT</i> or <i>INCLUDEPICTURE</i> field;
-        /// <c>false</c> otherwise.
+        /// <c>true</c> if the specified <see cref="Word.Field"/> is an <i>INCLUDE</i>, <i>INCLUDETEXT</i> or
+        /// <i>INCLUDEPICTURE</i> field; <c>false</c> otherwise.
         /// </returns>
         public static bool IsTypeInclude(this Word.Field field)
         {
@@ -48,13 +43,11 @@ namespace FlorianWolters.Office.Word.Extensions
         }
 
         /// <summary>
-        /// Determines whether the source of the specified <see
-        /// cref="Word.Field"/> can be updated.
+        /// Determines whether the source of the specified <see cref="Word.Field"/> can be updated.
         /// </summary>
         /// <param name="field">The <see cref="Word.Field"/> to check.</param>
         /// <returns>
-        /// <c>true</c> if the source of the specified <see cref="Word.Field"/>
-        /// can be updated; <c>false</c> otherwise.
+        /// <c>true</c> if the source of the specified <see cref="Word.Field"/> can be updated; <c>false</c> otherwise.
         /// </returns>
         public static bool CanUpdateSource(this Word.Field field)
         {
