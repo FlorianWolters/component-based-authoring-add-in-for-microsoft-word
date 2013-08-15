@@ -102,7 +102,7 @@ namespace FlorianWolters.Office.Word.Dialogs
                     catch (ArgumentException)
                     {
                         MessageBox.Show(
-                            "The source document (the document to insert) has to be stored on the identical drive as the target Document (this Document).",
+                            "The source document (the document to insert) has to be stored on the identical drive as the target document (this document).",
                             "Attention",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Exclamation);
