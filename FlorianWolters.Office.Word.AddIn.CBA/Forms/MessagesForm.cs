@@ -9,7 +9,15 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
 {
     using System.Windows.Forms;
 
-    public partial class MessagesForm : Form
+    /// <summary>
+    /// The class <see cref="MessagesForm"/> implements a simple dialog, which displays log messages (e.g. for events)
+    /// of the application.
+    /// </summary>
+    /// <remarks>
+    /// This class is compatible with <i>NLog</i> and can be specified in the <c>formName</c> argument for a
+    /// <c>RichTextBox</c> target.
+    /// </remarks>
+    internal partial class MessagesForm : Form
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagesForm" /> class.

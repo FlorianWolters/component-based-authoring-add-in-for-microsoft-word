@@ -13,8 +13,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
     using FlorianWolters.Office.Word.AddIn.CBA.Properties;
 
     /// <summary>
-    /// The class <see cref="ConfigurationForm"/> allows to configure the <see
-    /// cref="Settings"/> of the Microsoft Word Application-Level Add-In.
+    /// The class <see cref="ConfigurationForm"/> allows to configure the <see cref="Settings"/> of the Microsoft Word
+    /// Application-Level Add-in.
     /// </summary>
     internal partial class ConfigurationForm : Form
     {
@@ -24,9 +24,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         private readonly Settings settings;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationForm"/> class with the specified <see cref="Settings"/> to display.
+        /// Initializes a new instance of the <see cref="ConfigurationForm"/> class with the specified <see
+        /// cref="Settings"/> to display.
         /// </summary>
-        /// <param name="settings">The <see cref="Settings"/> of the Microsoft Word Application-Level Add-In.
+        /// <param name="settings">The <see cref="Settings"/> of the Microsoft Word Application-Level Add-in.
         /// </param>
         public ConfigurationForm(Settings settings)
         {

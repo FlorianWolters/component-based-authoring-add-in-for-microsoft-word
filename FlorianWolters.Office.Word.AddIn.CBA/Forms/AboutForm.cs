@@ -13,9 +13,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
     using FlorianWolters.Reflection;
 
     /// <summary>
-    /// The class <see cref="AboutForm"/> implements a simple <i>About</i>
-    /// dialog, which displays information (e.g. the version) about the
-    /// application.
+    /// The class <see cref="AboutForm"/> implements a simple <i>About</i> dialog, which displays information (e.g. the
+    /// version) of the application.
     /// </summary>
     internal partial class AboutForm : Form
     {
