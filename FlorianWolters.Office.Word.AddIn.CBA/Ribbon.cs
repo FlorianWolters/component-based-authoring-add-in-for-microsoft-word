@@ -76,7 +76,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// <summary>
         /// Gets or sets the <see cref="MarkdownForm"/>.
         /// </summary>
-        private MarkdownForm HelpForm { get; set; }
+        private MarkdownForm ReadMeForm { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="ConfigurationForm"/>.
@@ -107,7 +107,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             Settings settings = Settings.Default;
 
             AssemblyInfo assemblyInfo = new AssemblyInfo(Assembly.GetExecutingAssembly());
-            this.addIn.Logger.Info("Loaded " + settings.ApplicationName + " v" + assemblyInfo.Version.ToString() + ".");
 
             CustomDocumentPropertyReader customDocumentPropertyReader = new CustomDocumentPropertyReader();
             this.FieldFactory = new FieldFactory(this.application, customDocumentPropertyReader);
@@ -146,8 +145,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
             try
             {
-                this.HelpForm = new MarkdownForm(readMeFilePath);
-                this.HelpForm.ChangeTitle("Help");
+                this.ReadMeForm = new MarkdownForm(readMeFilePath);
+                this.ReadMeForm.ChangeTitle("README");
             }
             catch (FileNotFoundException)
             {
@@ -371,11 +370,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             {
                 Word.ListGallery listGallery = this.application.ListGalleries[Word.WdListGalleryType.wdBulletGallery];
                 mappingStrategy = new ListMappingStrategy(customXmlNode, contentControlFactory, listGallery);
-
-                // TODO ListMappingStrategy currently works only if the range is set to the main document story.
-                // I haven't found a solution yet, to solve this with any valid range.
-                // Also see: http://stackoverflow.com/questions/18125808/creating-a-multi-level-bullet-list-with-word-interop
-                range = document.Content;
             }
 
             try
@@ -664,7 +658,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         private void OnClick_ButtonShowHelpForm(object sender, RibbonControlEventArgs e)
         {
-            this.HelpForm.ShowDialog(this.ApplicationWindow);
+            this.ReadMeForm.ShowDialog(this.ApplicationWindow);
         }
 
         private void OnClick_ButtonShowConfigurationForm(object sender, RibbonControlEventArgs e)
