@@ -52,7 +52,7 @@ namespace FlorianWolters.Office.Word.ContentControls
             Word.WdContentControlType contentControlType,
             Office.CustomXMLNode customXMLNode = null,
             Word.Range range = null,
-            bool lockContents = true,
+            bool lockContents = false,
             bool lockControl = false)
         {
             Word.ContentControl result = null;
@@ -61,7 +61,6 @@ namespace FlorianWolters.Office.Word.ContentControls
             {
                 result = this.document.ContentControls.Add(contentControlType, range);
 
-                result.Tag = result.ID;
                 this.MapContentControlToCustomXMLNode(result, customXMLNode);
                 result.LockContents = lockContents;
                 result.LockContentControl = lockControl;
@@ -86,7 +85,7 @@ namespace FlorianWolters.Office.Word.ContentControls
             Word.ContentControl contentControl,
             Office.CustomXMLNode customXMLNode)
         {
-            if (null != customXMLNode && Word.WdContentControlType.wdContentControlText == contentControl.Type)
+            if (null != customXMLNode)
             {
                 if (!contentControl.XMLMapping.SetMappingByNode(customXMLNode))
                 {
