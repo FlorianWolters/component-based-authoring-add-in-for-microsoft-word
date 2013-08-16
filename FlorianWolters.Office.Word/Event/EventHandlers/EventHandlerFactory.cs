@@ -9,21 +9,23 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
 {
     using FlorianWolters.Office.Word.Commands;
     using FlorianWolters.Office.Word.Event.ExceptionHandlers;
-    using Microsoft.Office.Interop.Word;
+    using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The abstract class <see cref="EventHandlerFactory"/> allows to create
-    /// <i>Event Handler</i> instances.
+    /// The abstract class <see cref="EventHandlerFactory"/> allows to create <i>Event Handler</i> instances.
     /// </summary>
     public abstract class EventHandlerFactory : IEventHandlerFactory
     {
         /// <summary>
-        /// Creates an <i>Event Handler</i> with the specified <see
-        /// cref="IExceptionHandler"/> and registers it at the specified <see
+        /// Creates an <i>Event Handler</i> with the specified exception handler and registers it at the specified <see
         /// cref="ApplicationEventHandler"/>
         /// </summary>
-        /// <param name="exceptionHandler">Used if an <see cref="Exception"/> inside an <i>Event Handler</i> occurs.</param>
-        /// <param name="applicationEventHandler">Used to register the newly created <i>Event Handler</i> at the Microsoft Word application.</param>
+        /// <param name="exceptionHandler">
+        /// Used if an <see cref="Exception"/> inside an <i>Event Handler</i> occurs.
+        /// </param>
+        /// <param name="applicationEventHandler">
+        /// Used to register the newly created <i>Event Handler</i> at the Microsoft Word application.
+        /// </param>
         /// <returns>The newly created <i>Event Handler</i> instance.</returns>
         public IEventHandler RegisterEventHandler(
             IExceptionHandler exceptionHandler,
@@ -41,13 +43,15 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
         /// </summary>
         /// <param name="application">The Microsoft Word application used by the <i>Command</i>.</param>
         /// <returns>The newly created <i>Command</i> instance.</returns>
-        protected abstract ICommand CreateCommand(Application application);
+        protected abstract ICommand CreateCommand(Word.Application application);
 
         /// <summary>
-        /// Creates the <i>Event Handler</i> to return by this <i>Factory</i>.
+        /// Creates the <i>Event Handler</i> to return by the <i>Factory Method</i>.
         /// </summary>
         /// <param name="command">The <i>Command</i> to inject into the <i>Event Handler</i>.</param>
-        /// <param name="exceptionHandler">The <i>Exception Handler</i> to use if an <see cref="Exception"/> inside an <i>Event Handler</i> occurs.</param>
+        /// <param name="exceptionHandler">
+        /// The exception handler to use if an <see cref="Exception"/> inside an <i>Event Handler</i> occurs.
+        /// </param>
         /// <returns>The newly created <i>Event Handler</i> instance.</returns>
         protected abstract IEventHandler CreateEventHandler(ICommand command, IExceptionHandler exceptionHandler);
     }

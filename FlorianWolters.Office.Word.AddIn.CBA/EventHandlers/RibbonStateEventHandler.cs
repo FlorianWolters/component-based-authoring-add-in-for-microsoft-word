@@ -16,18 +16,34 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
     using FlorianWolters.Office.Word.Fields.Switches;
     using Word = Microsoft.Office.Interop.Word;
 
+    /// <summary>
+    /// The class <see cref="RibbonStateEventHandler"/> implements <i>Event Handler</i> methods which modify the state
+    /// of the user interface of the <see cref="Ribbon"/>.
+    /// </summary>
     internal class RibbonStateEventHandler
-        : IEventHandler,
-        IDocumentChangeEventHandler,
-        IDocumentBeforeSaveEventHandler,
-        IWindowSelectionChangeEventHandler
+        : IEventHandler, IDocumentChangeEventHandler, IDocumentBeforeSaveEventHandler, IWindowSelectionChangeEventHandler
     {
+        /// <summary>
+        /// The <see cref="Word.Application"/> to react to.
+        /// </summary>
         private readonly Word.Application application;
 
+        /// <summary>
+        /// The <see cref="Ribbon"/> whose user interface state to modify.
+        /// </summary>
         private readonly Ribbon ribbon;
 
+        /// <summary>
+        /// Allows to modify the dropdown control with the custom document properties.
+        /// </summary>
         private readonly CustomDocumentPropertiesDropDown customDocumentPropertiesDropDown;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RibbonStateEventHandler"/> class.
+        /// </summary>
+        /// <param name="application">The <see cref="Word.Application"/> to react to.</param>
+        /// <param name="ribbon">The <see cref="Ribbon"/> whose user interface state to modify.</param>
+        /// <param name="customDocumentPropertiesDropDown">Allows to modify the dropdown control with the custom document properties.</param>
         public RibbonStateEventHandler(
             Word.Application application,
             Ribbon ribbon,
@@ -38,6 +54,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             this.customDocumentPropertiesDropDown = customDocumentPropertiesDropDown;
         }
 
+        /// <summary>
+        /// Handles the event which occurs when a new <see cref="Microsoft.Office.Interop.Word.Document"/> is created,
+        /// when an existing <see cref="Microsoft.Office.Interop.Word.Document"/> is opened, or when another <see
+        /// cref="Microsoft.Office.Interop.Word.Document"/> is made the active <see
+        /// cref="Microsoft.Office.Interop.Word.Document"/>. 
+        /// </summary>
         public void OnDocumentChange()
         {
             if (this.application.HasOpenDocuments())
@@ -100,11 +122,32 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             }
         }
 
+        /// <summary>
+        /// Handles the event which occurs before any <see cref="Word.Document"/> is saved.
+        /// </summary>
+        /// <param name="document">The <see cref="Word.Document"/> that's being saved.</param>
+        /// <param name="saveAsUI">
+        /// <c>true</c> if the <b>Save As</b> dialog box is displayed, whether to save a new <see
+        /// cref="Word.Document"/>, in response to the <b>Save</b> command; or in response to the <b>Save As</b>
+        /// command; or in response to the <b>SaveAs</b> or <b>SaveAs2</b> method.
+        /// </param>
+        /// <param name="cancel">
+        /// <c>false</c> when the event occurs. If the event procedure sets this argument to <c>true</c>, the <see
+        /// cref="Word.Document"/> is not saved when the procedure is finished.
+        /// </param>
         public void OnDocumentBeforeSave(Word.Document document, ref bool saveAsUI, ref bool cancel)
         {
             this.ribbon.splitButtonInclude.Enabled = true;
         }
 
+        /// <summary>
+        /// Handles the event which occurs when the <see cref="Word.Selection"/> changes in the active <see
+        /// cref="Word.Document"/> <see cref="Word.Window"/>.
+        /// </summary>
+        /// <param name="selection">
+        /// The text selected. If no text is selected, this parameter is either <c>null</c> or contains the first
+        /// character to the right of the insertion point.
+        /// </param>
         public void OnWindowSelectionChange(Word.Selection selection)
         {
             this.ribbon.splitButtonFieldInsert.Enabled = selection.Start == selection.End;
@@ -117,7 +160,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
             // TODO The extension method AllFields is too slow. Find a better solution.
             // Meanwhile we stick with selection.Range.Field.
-            //IList<Word.Field> selectedFields = selection.AllFields().ToList();
+            ////IList<Word.Field> selectedFields = selection.AllFields().ToList();
             IList<Word.Field> selectedFields = new List<Word.Field>(selection.Range.Fields.Cast<Word.Field>());
             int selectedFieldCount = selectedFields.Count();
 

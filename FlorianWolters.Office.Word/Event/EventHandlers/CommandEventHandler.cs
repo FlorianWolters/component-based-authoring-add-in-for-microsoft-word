@@ -12,8 +12,8 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
     using FlorianWolters.Office.Word.Event.ExceptionHandlers;
 
     /// <summary>
-    /// The abstract class <see cref="CommandEventHandler"/> can be extended to
-    /// implement a concrete <i>Event Handler</i> for a <i>Command</i>.
+    /// The abstract class <see cref="CommandEventHandler"/> can be extended to implement a concrete <i>Event
+    /// Handler</i> for a <i>Command</i>.
     /// </summary>
     public abstract class CommandEventHandler : IEventHandler
     {
@@ -28,27 +28,23 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
         protected readonly IExceptionHandler ExceptionHandler;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommandEventHandler"/>
-        /// class with the specified <i>Command</i> and the specified exception
-        /// handler.
+        /// Initializes a new instance of the <see cref="CommandEventHandler"/> class with the specified <i>Command</i>
+        /// and the specified exception handler.
         /// </summary>
         /// <param name="command">The <i>Command</i>.</param>
         /// <param name="exceptionHandler">The exception handler.</param>
-        protected CommandEventHandler(
-            ICommand command,
-            IExceptionHandler exceptionHandler)
+        protected CommandEventHandler(ICommand command, IExceptionHandler exceptionHandler)
         {
             this.Command = command;
             this.ExceptionHandler = exceptionHandler;
         }
 
         /// <summary>
-        /// Tries to execute the <i>Command</i> of this <see
-        /// cref="CommandEventHandler"/>.
+        /// Tries to execute the <i>Command</i> of this <see cref="CommandEventHandler"/>.
         /// </summary>
         /// <remarks>
-        /// If the <i>Command</i> throws an exception, the exception handler,
-        /// configured via the constructor, is used to handle the exception.
+        /// If the <i>Command</i> throws an exception, the exception handler (configured via the constructor), is used
+        /// to handle the exception.
         /// </remarks>
         protected void TryExecute()
         {

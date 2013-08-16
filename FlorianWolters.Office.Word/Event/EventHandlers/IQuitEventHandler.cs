@@ -7,8 +7,15 @@
 
 namespace FlorianWolters.Office.Word.Event.EventHandlers
 {
+    /// <summary>
+    /// The interface <see cref="IQuitEventHandler"/> allows to handle the event which occurs when the user exits
+    /// Microsoft Word.
+    /// </summary>
     public interface IQuitEventHandler : IEventHandler
     {
+        /// <summary>
+        /// Handles the event which occurs when the user exits Microsoft Word.
+        /// </summary>
         void OnQuit();
     }
 }
