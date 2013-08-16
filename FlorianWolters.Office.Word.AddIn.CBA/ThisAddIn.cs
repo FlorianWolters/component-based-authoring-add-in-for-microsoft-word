@@ -10,6 +10,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using System;
     using System.Diagnostics;
     using System.Globalization;
+    using System.Reflection;
     using System.Threading;
     using System.Windows.Forms;
     using FlorianWolters.Office.Word.AddIn.CBA.Factories;
@@ -18,6 +19,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
     using FlorianWolters.Office.Word.Event;
     using FlorianWolters.Office.Word.Event.EventHandlers;
     using FlorianWolters.Office.Word.Event.ExceptionHandlers;
+    using FlorianWolters.Reflection;
     using Microsoft.Office.Tools;
     using NLog;
     using Office = Microsoft.Office.Core;
@@ -162,7 +164,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // utilized for logging has been displayed for the first time.
             this.Logger = LogManager.GetLogger("FlorianWolters.Office.Word.AddIn.CBA.*");
 
-            this.RegisterEventHandler(this.Application, Settings.Default, this.Logger);
+            Settings settings = Settings.Default;
+            AssemblyInfo assemblyInfo = new AssemblyInfo(Assembly.GetExecutingAssembly());
+            this.Logger.Info("Loaded " + assemblyInfo.Title + " v" + assemblyInfo.Version + ".");
+
+            this.RegisterEventHandler(this.Application, settings, this.Logger);
             this.initialized = true;
         }
 
