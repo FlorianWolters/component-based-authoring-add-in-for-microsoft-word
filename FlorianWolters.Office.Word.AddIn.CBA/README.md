@@ -2,11 +2,9 @@
 
 ## Introduction
 
-The aim of this project is to allow component-based authoring in the word
-processor software *Microsoft Word*. It is implemented as an [Application-Level
-Add-In](http://msdn.microsoft.com/library/vstudio/bb386298.aspx) and should
-therefore be compatible with other Application-Level Add-Ins and Document-Level
-Customizations.
+The aim of this project is to allow component-based authoring in the word processor software *Microsoft Word*. It is
+implemented as an [Application-Level Add-in](http://msdn.microsoft.com/library/vstudio/bb386298.aspx) and is therefore
+compatible with other Application-Level Add-ins and Document-Level Customizations.
 
 ## Requirements
 
@@ -25,7 +23,11 @@ Customizations.
 
 ## Features
 
-TBD
+* Completely unobtrusive:
+  * Implemented as an [Application-Level Add-in](http://msdn.microsoft.com/bb386298.aspx), which can be used together with a [Document-Level Customization](http://msdn.microsoft.com/zcfbd2sk.aspx) and other Application-Level Add-Ins.
+  * Allows to enable and disable each automatism separately.
+* Allows to enforce copying of all styles from the attached Microsoft Word template into the active Microsoft Word document, overwriting any existing styles in the document that have the same name.
+* TBD
 
 ## License
 
