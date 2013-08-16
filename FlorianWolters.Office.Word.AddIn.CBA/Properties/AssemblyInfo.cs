@@ -8,11 +8,11 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("FlorianWolters.Office.Word.AddIn.CBA")]
-[assembly: AssemblyDescription("An Application-Level Add-In for Microsoft Word that allows Component-Based Authoring")]
+[assembly: AssemblyTitle("Component-Based Authoring Application Level Add-in for Microsoft Word")]
+[assembly: AssemblyDescription("The aim of this project is to allow component-based authoring in the word processor software Microsoft Word.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Florian Wolters")]
-[assembly: AssemblyProduct("FlorianWolters.Office.Word.AddIn.CBA")]
+[assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("Copyright © Florian Wolters 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
