@@ -48,10 +48,15 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
         {
             Word.Document document = this.Application.ActiveDocument;
 
-            if (null != document)
+            if (null == document || string.Empty == document.Path)
             {
-                string directoryPath = this.DirectoryPathForXMLFiles(document);
+                return;
+            }
 
+            string directoryPath = this.DirectoryPathForXMLFiles(document);
+            
+            if (Directory.Exists(directoryPath))
+            {
                 // TODO Fix violation of IoC.
                 CustomXMLPartRepository customXMLPartRepository = new CustomXMLPartRepository(document.CustomXMLParts);
                 customXMLPartRepository.SynchronizeWithDirectory(directoryPath);
