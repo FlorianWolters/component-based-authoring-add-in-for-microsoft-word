@@ -64,11 +64,20 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
 
             try
             {
+                string actualTemplateFileName = ((Word.Template)document.get_AttachedTemplate()).FullName;
                 string templateFileName = this.RetrieveDocumentTemplateFilePath(document.Path);
-                document.set_AttachedTemplate(templateFileName);
-                this.logger.Info(
-                    "Set the attached template of the document \"" + document.FullName
-                    + "\" to the template \"" + templateFileName + "\".");
+
+                if (actualTemplateFileName != templateFileName)
+                {
+                    using (new StateCapture(document))
+                    {
+                        document.set_AttachedTemplate(templateFileName);
+                    }
+
+                    this.logger.Info(
+                        "Set the attached template of the document \"" + document.FullName
+                        + "\" to the template \"" + templateFileName + "\".");
+                }
             }
             catch (FileNotFoundException)
             {
