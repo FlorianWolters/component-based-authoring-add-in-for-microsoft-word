@@ -110,7 +110,15 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             this.ribbon.splitButtonFieldInsert.Enabled = selection.Start == selection.End;
             this.ribbon.buttonBindCustomXMLPart.Enabled = 0 == selection.Range.ContentControls.Count;
 
-            IEnumerable<Word.Field> selectedFields = selection.AllFields();
+            if (selection.Range.ContentControls.Count > 0)
+            {
+                return;
+            }
+
+            // TODO The extension method AllFields is too slow. Find a better solution.
+            // Meanwhile we stick with selection.Range.Field.
+            //IList<Word.Field> selectedFields = selection.AllFields().ToList();
+            IList<Word.Field> selectedFields = new List<Word.Field>(selection.Range.Fields.Cast<Word.Field>());
             int selectedFieldCount = selectedFields.Count();
 
             bool fieldsSelected = 0 < selectedFieldCount;
