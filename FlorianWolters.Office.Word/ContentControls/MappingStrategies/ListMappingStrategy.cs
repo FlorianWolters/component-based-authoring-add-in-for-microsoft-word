@@ -85,17 +85,29 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
             {
                 throw new ArgumentNullException("range");
             }
-            
+
+            // TODO Wow, this is serious crap code.
+            Word.Range oldRange = range;
+
+            range = range.Application.ActiveDocument.Content;
+
             // TODO The handling of the Word.Range within this class is incorrect. Therfore this method only returns the
             // correct result if Document.Content.Range is passed as the argument. The returned Word.Range is correct.
             int rangeStart = range.End;
+            range.InsertParagraphAfter();
 
             // Disable screen updating of the Microsoft Word application to improve the performance.
             range.Application.ScreenUpdating = false;
             this.MapCustomXMLNodeToContentControls(this.RootNode, range);
             range.Application.ScreenUpdating = true;
 
-            return range.Application.ActiveDocument.Range(rangeStart, range.End);
+            Word.Range insertedRange = range.Application.ActiveDocument.Range(rangeStart - 1, range.End);
+            insertedRange.Select();
+            insertedRange.Application.Selection.Copy();
+            insertedRange.Delete();
+            oldRange.Paste();
+
+            return oldRange;
         }
 
         /// <summary>
