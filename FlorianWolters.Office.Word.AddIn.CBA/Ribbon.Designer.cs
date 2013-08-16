@@ -569,6 +569,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             // dropDownFieldShading
             // 
+            this.dropDownFieldShading.Enabled = false;
             ribbonDropDownItemImpl1.Label = "Never";
             ribbonDropDownItemImpl1.Tag = "0";
             ribbonDropDownItemImpl2.Label = "Always";
@@ -587,6 +588,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             // toggleButtonFormFieldShading
             // 
+            this.toggleButtonFormFieldShading.Enabled = false;
             this.toggleButtonFormFieldShading.Label = "Form Field Shading";
             this.toggleButtonFormFieldShading.Name = "toggleButtonFormFieldShading";
             this.toggleButtonFormFieldShading.OfficeImageId = "FieldShading";
@@ -597,6 +599,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             // toggleButtonFieldCodes
             // 
+            this.toggleButtonFieldCodes.Enabled = false;
             this.toggleButtonFieldCodes.Label = "Field Codes";
             this.toggleButtonFieldCodes.Name = "toggleButtonFieldCodes";
             this.toggleButtonFieldCodes.OfficeImageId = "FieldCodes";
