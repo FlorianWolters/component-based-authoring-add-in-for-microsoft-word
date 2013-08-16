@@ -170,10 +170,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
             // checkBoxWriteCustomDocumentProperties
             // 
             this.checkBoxWriteCustomDocumentProperties.AutoSize = true;
-            this.checkBoxWriteCustomDocumentProperties.Location = new System.Drawing.Point(6, 98);
+            this.checkBoxWriteCustomDocumentProperties.Location = new System.Drawing.Point(6, 6);
             this.checkBoxWriteCustomDocumentProperties.Name = "checkBoxWriteCustomDocumentProperties";
             this.checkBoxWriteCustomDocumentProperties.Size = new System.Drawing.Size(191, 17);
-            this.checkBoxWriteCustomDocumentProperties.TabIndex = 4;
+            this.checkBoxWriteCustomDocumentProperties.TabIndex = 0;
             this.checkBoxWriteCustomDocumentProperties.Text = "Write Custom Document Properties";
             this.checkBoxWriteCustomDocumentProperties.UseVisualStyleBackColor = true;
             // 
@@ -182,39 +182,39 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
             this.checkBoxUpdateFields.AutoSize = true;
             this.checkBoxUpdateFields.Location = new System.Drawing.Point(6, 75);
             this.checkBoxUpdateFields.Name = "checkBoxUpdateFields";
-            this.checkBoxUpdateFields.Size = new System.Drawing.Size(91, 17);
+            this.checkBoxUpdateFields.Size = new System.Drawing.Size(137, 17);
             this.checkBoxUpdateFields.TabIndex = 3;
-            this.checkBoxUpdateFields.Text = "Update Fields";
+            this.checkBoxUpdateFields.Text = "Update Fields On Open";
             this.checkBoxUpdateFields.UseVisualStyleBackColor = true;
             // 
             // checkBoxUpdateAttachedTemplate
             // 
             this.checkBoxUpdateAttachedTemplate.AutoSize = true;
-            this.checkBoxUpdateAttachedTemplate.Location = new System.Drawing.Point(6, 52);
+            this.checkBoxUpdateAttachedTemplate.Location = new System.Drawing.Point(6, 29);
             this.checkBoxUpdateAttachedTemplate.Name = "checkBoxUpdateAttachedTemplate";
-            this.checkBoxUpdateAttachedTemplate.Size = new System.Drawing.Size(154, 17);
-            this.checkBoxUpdateAttachedTemplate.TabIndex = 2;
-            this.checkBoxUpdateAttachedTemplate.Text = "Update Attached Template";
+            this.checkBoxUpdateAttachedTemplate.Size = new System.Drawing.Size(200, 17);
+            this.checkBoxUpdateAttachedTemplate.TabIndex = 1;
+            this.checkBoxUpdateAttachedTemplate.Text = "Update Attached Template On Open";
             this.checkBoxUpdateAttachedTemplate.UseVisualStyleBackColor = true;
             // 
             // checkBoxRefreshCustomXMLParts
             // 
             this.checkBoxRefreshCustomXMLParts.AutoSize = true;
-            this.checkBoxRefreshCustomXMLParts.Location = new System.Drawing.Point(6, 29);
+            this.checkBoxRefreshCustomXMLParts.Location = new System.Drawing.Point(6, 98);
             this.checkBoxRefreshCustomXMLParts.Name = "checkBoxRefreshCustomXMLParts";
-            this.checkBoxRefreshCustomXMLParts.Size = new System.Drawing.Size(153, 17);
-            this.checkBoxRefreshCustomXMLParts.TabIndex = 1;
-            this.checkBoxRefreshCustomXMLParts.Text = "Refresh Custom XML Parts";
+            this.checkBoxRefreshCustomXMLParts.Size = new System.Drawing.Size(220, 17);
+            this.checkBoxRefreshCustomXMLParts.TabIndex = 4;
+            this.checkBoxRefreshCustomXMLParts.Text = "Synchronize Custom XML Parts On Open";
             this.checkBoxRefreshCustomXMLParts.UseVisualStyleBackColor = true;
             // 
             // checkBoxUpdateStylesOnOpen
             // 
             this.checkBoxUpdateStylesOnOpen.AutoSize = true;
-            this.checkBoxUpdateStylesOnOpen.Location = new System.Drawing.Point(6, 6);
+            this.checkBoxUpdateStylesOnOpen.Location = new System.Drawing.Point(6, 52);
             this.checkBoxUpdateStylesOnOpen.Name = "checkBoxUpdateStylesOnOpen";
-            this.checkBoxUpdateStylesOnOpen.Size = new System.Drawing.Size(185, 17);
-            this.checkBoxUpdateStylesOnOpen.TabIndex = 0;
-            this.checkBoxUpdateStylesOnOpen.Text = "Activate \"Update Style On Open\"";
+            this.checkBoxUpdateStylesOnOpen.Size = new System.Drawing.Size(138, 17);
+            this.checkBoxUpdateStylesOnOpen.TabIndex = 2;
+            this.checkBoxUpdateStylesOnOpen.Text = "Update Styles On Open";
             this.checkBoxUpdateStylesOnOpen.UseVisualStyleBackColor = true;
             // 
             // tabPageFileNames
