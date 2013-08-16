@@ -234,9 +234,9 @@ namespace FlorianWolters.Office.Word.Fields
                 propertyName,
                 "INCLUDEPICTURE");
             
-            // Append the "\d" switch to avoid that the graphics data is saved
-            // in the Word document.
+            // Append the "\d" switch to avoid that the graphics data is saved in the Word document.
             this.application.Selection.Range.InsertAfter("\\d \\* MERGEFORMAT");
+            this.application.Selection.Range.Select();
         }
 
         /// <summary>
@@ -256,6 +256,7 @@ namespace FlorianWolters.Office.Word.Fields
                 filePath,
                 propertyName,
                 "INCLUDETEXT");
+            this.application.Selection.Range.Select();
         }
 
         /// <summary>
