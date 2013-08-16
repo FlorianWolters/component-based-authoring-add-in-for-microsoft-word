@@ -46,8 +46,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
 
             if (null != document && !document.UpdateStylesOnOpen)
             {
-                document.UpdateStylesOnOpen = true;
-                document.UpdateStyles();
+                using (new StateCapture(document))
+                {
+                    document.UpdateStylesOnOpen = true;
+                    document.UpdateStyles();
+                }
 
                 this.logger.Info(
                     "The styles of the document \"" + document.FullName
