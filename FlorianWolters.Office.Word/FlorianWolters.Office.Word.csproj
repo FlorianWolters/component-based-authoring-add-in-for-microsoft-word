@@ -99,10 +99,8 @@
     <Compile Include="Event\EventHandlers\IDocumentBeforePrintEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IWindowDeactivateEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IWindowActivateEventHandler.cs" />
-    <Compile Include="Event\EventHandlers\IDocumentSyncEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IQuitEventHandler.cs" />
     <Compile Include="Event\EventHandlers\INewDocumentEventHandler.cs" />
-    <Compile Include="Event\EventHandlers\IStartupEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IWindowBeforeDoubleClickEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IWindowBeforeRightClickEventHandler.cs" />
     <Compile Include="Event\EventHandlers\IWindowSizeEventHandler.cs" />
@@ -123,7 +121,6 @@
     <Compile Include="Fields\Switches\FieldFormatSwitch.cs" />
     <Compile Include="Fields\Switches\FieldFormatSwitches.cs" />
     <Compile Include="Fields\UpdateStrategies\IUpdateStrategy.cs" />
-    <Compile Include="Fields\UpdateStrategies\UpdateNothing.cs" />
     <Compile Include="Fields\UpdateStrategies\UpdateTarget.cs" />
     <Compile Include="Fields\UpdateStrategies\UpdateSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
