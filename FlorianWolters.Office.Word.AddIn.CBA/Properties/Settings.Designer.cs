@@ -61,7 +61,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".dotm;.dotx")]
+        [global::System.Configuration.DefaultSettingValueAttribute("dotm;dotx")]
         public string WordTemplateFileExtensions {
             get {
                 return ((string)(this["WordTemplateFileExtensions"]));
@@ -90,15 +90,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Properties {
         public string HostingServiceUrl {
             get {
                 return ((string)(this["HostingServiceUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Component-Based Authoring Application Level Add-In for Microsoft Word")]
-        public string ApplicationName {
-            get {
-                return ((string)(this["ApplicationName"]));
             }
         }
         
