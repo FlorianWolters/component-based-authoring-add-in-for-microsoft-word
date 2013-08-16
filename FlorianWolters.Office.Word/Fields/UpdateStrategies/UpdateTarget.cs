@@ -9,6 +9,9 @@ namespace FlorianWolters.Office.Word.Fields.UpdateStrategies
 {
     using Word = Microsoft.Office.Interop.Word;
 
+    /// <summary>
+    /// The class <see cref="UpdateTarget"/> updates the result of a <see cref="Word.Field"/>.
+    /// </summary>
     public class UpdateTarget : IUpdateStrategy
     {
         /// <summary>
@@ -17,12 +20,7 @@ namespace FlorianWolters.Office.Word.Fields.UpdateStrategies
         /// <param name="field">The <see cref="Word.Field"/> to update.</param>
         public void Update(Word.Field field)
         {
-            // If a field is updated if its field codes are visible, the field
-            // codes are replaced by the field result. Therefore we do have to
-            // manually keep track of the UI state.
-            bool showCodes = field.ShowCodes;
             field.Update();
-            field.ShowCodes = showCodes;
         }
     }
 }
