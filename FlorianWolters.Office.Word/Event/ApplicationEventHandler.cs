@@ -73,11 +73,6 @@ namespace FlorianWolters.Office.Word.Event
                 this.SubscribeEventHandler((IDocumentOpenEventHandler)eventHandler);
             }
 
-            if (eventHandler is IDocumentSyncEventHandler)
-            {
-                this.SubscribeEventHandler((IDocumentSyncEventHandler)eventHandler);
-            }
-
             if (eventHandler is INewDocumentEventHandler)
             {
                 this.SubscribeEventHandler((INewDocumentEventHandler)eventHandler);
@@ -86,11 +81,6 @@ namespace FlorianWolters.Office.Word.Event
             if (eventHandler is IQuitEventHandler)
             {
                 this.SubscribeEventHandler((IQuitEventHandler)eventHandler);
-            }
-
-            if (eventHandler is IStartupEventHandler)
-            {
-                this.SubscribeEventHandler((IStartupEventHandler)eventHandler);
             }
 
             if (eventHandler is IWindowActivateEventHandler)
@@ -165,11 +155,6 @@ namespace FlorianWolters.Office.Word.Event
                 this.UnsubscribeEventHandler((IDocumentOpenEventHandler)eventHandler);
             }
 
-            if (eventHandler is IDocumentSyncEventHandler)
-            {
-                this.UnsubscribeEventHandler((IDocumentSyncEventHandler)eventHandler);
-            }
-
             if (eventHandler is INewDocumentEventHandler)
             {
                 this.UnsubscribeEventHandler((INewDocumentEventHandler)eventHandler);
@@ -178,11 +163,6 @@ namespace FlorianWolters.Office.Word.Event
             if (eventHandler is IQuitEventHandler)
             {
                 this.UnsubscribeEventHandler((IQuitEventHandler)eventHandler);
-            }
-
-            if (eventHandler is IStartupEventHandler)
-            {
-                this.UnsubscribeEventHandler((IStartupEventHandler)eventHandler);
             }
 
             if (eventHandler is IWindowActivateEventHandler)
@@ -357,25 +337,6 @@ namespace FlorianWolters.Office.Word.Event
         private void UnsubscribeEventHandler(IQuitEventHandler eventHandler)
         {
             ((Word.ApplicationEvents4_Event)this.Application).Quit -= eventHandler.OnQuit;
-        }
-
-        /// <summary>
-        /// Subscribes the specified <i>Event Handler</i> to the <c>Startup</c> event.
-        /// </summary>
-        /// <param name="eventHandler">The <i>Event Handler</i> to subscribe.</param>
-        private void SubscribeEventHandler(IStartupEventHandler eventHandler)
-        {
-            this.UnsubscribeEventHandler(eventHandler);
-            this.Application.Startup += eventHandler.OnStartup;
-        }
-
-        /// <summary>
-        /// Unsubscribes the specified <i>Event Handler</i> from the <c>Startup</c> event.
-        /// </summary>
-        /// <param name="eventHandler">The <i>Event Handler</i> to unsubscribe.</param>
-        private void UnsubscribeEventHandler(IStartupEventHandler eventHandler)
-        {
-            this.Application.Startup -= eventHandler.OnStartup;
         }
 
         /// <summary>
