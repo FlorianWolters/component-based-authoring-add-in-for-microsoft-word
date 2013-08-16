@@ -73,7 +73,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
                     .Set(this.propertyNameForLastDirectoryPath, expectedPropertyValue);
                 this.logger.Info(
                     "Set the custom document property with the name \"" + this.propertyNameForLastDirectoryPath
-                    + "\" to the value \"" + expectedPropertyValue + "\" in the document \"" + document.FullName + "\".");
+                    + "\" to the value \"" + expectedPropertyValue
+                    + "\" in the document \"" + document.FullName + "\".");
             }
         }
     }
