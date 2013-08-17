@@ -571,11 +571,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // 
             this.dropDownFieldShading.Enabled = false;
             ribbonDropDownItemImpl1.Label = "Never";
-            ribbonDropDownItemImpl1.Tag = "0";
+            ribbonDropDownItemImpl1.ScreenTip = "Never apply on-screen shading for fields. ";
+            ribbonDropDownItemImpl1.Tag = "wdFieldShadingNever";
             ribbonDropDownItemImpl2.Label = "Always";
-            ribbonDropDownItemImpl2.Tag = "1";
+            ribbonDropDownItemImpl2.ScreenTip = "Always apply on-screen shading for fields. ";
+            ribbonDropDownItemImpl2.Tag = "wdFieldShadingAlways";
             ribbonDropDownItemImpl3.Label = "When Selected";
-            ribbonDropDownItemImpl3.Tag = "2";
+            ribbonDropDownItemImpl3.ScreenTip = "Apply on-screen shading only when a fields is selected.";
+            ribbonDropDownItemImpl3.Tag = "wdFieldShadingWhenSelected";
             this.dropDownFieldShading.Items.Add(ribbonDropDownItemImpl1);
             this.dropDownFieldShading.Items.Add(ribbonDropDownItemImpl2);
             this.dropDownFieldShading.Items.Add(ribbonDropDownItemImpl3);
