@@ -150,20 +150,28 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
         /// </param>
         public void OnWindowSelectionChange(Word.Selection selection)
         {
-            this.ribbon.splitButtonFieldInsert.Enabled = selection.Start == selection.End;
-            this.ribbon.buttonBindCustomXMLPart.Enabled = 0 == selection.Range.ContentControls.Count;
+            Word.Range range = selection.Range;
 
-            if (selection.Range.ContentControls.Count > 0)
+            if (null == selection || null == range)
             {
                 return;
             }
 
-            // TODO The extension method AllFields is too slow. Find a better solution.
-            // Meanwhile we stick with selection.Range.Field.
-            ////IList<Word.Field> selectedFields = selection.AllFields().ToList();
-            IList<Word.Field> selectedFields = new List<Word.Field>(selection.Range.Fields.Cast<Word.Field>());
-            int selectedFieldCount = selectedFields.Count();
+            bool oneOrMoreContentControlsSelected = range.ContentControls.Count > 0;
+            this.ribbon.splitButtonFieldInsert.Enabled = !oneOrMoreContentControlsSelected;
+            this.ribbon.buttonBindCustomXMLPart.Enabled = !oneOrMoreContentControlsSelected;
 
+            if (oneOrMoreContentControlsSelected)
+            {
+                return;
+            }
+
+            // TODO The extension method AllFields is very slow, which causes freezes.
+            // We need to find a better solution. In the meanwhile we stick with Selection.Range.Field.
+            ////IList<Word.Field> fields = selection.AllFields().ToList();
+            Word.Fields fields = range.Fields;
+            
+            int selectedFieldCount = fields.Count;
             bool fieldsSelected = 0 < selectedFieldCount;
             bool singleFieldSelected = 1 == selectedFieldCount;
             bool oneOrMoreFieldsLocked = false;
@@ -173,20 +181,22 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
             if (fieldsSelected)
             {
-                int showCodesFieldCount = (from f in selectedFields
-                                        where f.ShowCodes == true
-                                        select f).Count();
+                IList<Word.Field> selectedFieldsAsList = new List<Word.Field>(fields.Cast<Word.Field>());
+
+                int showCodesFieldCount = (from f in selectedFieldsAsList
+                                           where f.ShowCodes == true
+                                           select f).Count();
                 bool oneOrMoreFieldsShowCodes = 0 < showCodesFieldCount;
 
-                int lockedFieldCount = (from f in selectedFields
+                int lockedFieldCount = (from f in selectedFieldsAsList
                                         where f.Locked == true
                                         select f).Count();
                 oneOrMoreFieldsLocked = 0 < lockedFieldCount;
 
-                int includeTextFieldCount = (from f in selectedFields
+                int includeTextFieldCount = (from f in selectedFieldsAsList
                                              where f.Type == Word.WdFieldType.wdFieldIncludeText
                                              select f).Count();
-                int includePictureFieldCount = (from f in selectedFields
+                int includePictureFieldCount = (from f in selectedFieldsAsList
                                                 where f.Type == Word.WdFieldType.wdFieldIncludePicture
                                                 select f).Count();
                 oneOrMoreIncludeTextFields = 0 < includeTextFieldCount;
@@ -194,9 +204,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 oneOrMoreIncludeFields = oneOrMoreIncludeTextFields || oneOrMoreIncludePictureFields;
 
                 this.ribbon.buttonFieldUpdate.Enabled = !oneOrMoreFieldsLocked;
-
                 this.ribbon.toggleButtonFieldLock.Checked = oneOrMoreFieldsLocked;
-                
+
                 // Because of the problematic of duplicated InsertPicture fields a IncludePicture field cannot be
                 // locked. If a field is locked, it can't be updated. If a IncludePicture field can't be updated it is
                 // duplicated in the OOXML.
@@ -212,7 +221,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
                 if (singleFieldSelected)
                 {
-                    Word.Field selectedField = selectedFields.ElementAt(0);
+                    Word.Field selectedField = fields[1];
                     FieldFunctionCode fieldFunctionCode = new FieldFunctionCode(selectedField.Code.Text);
 
                     this.ribbon.toggleButtonFieldFormatAlphabetic.Checked = fieldFunctionCode.ContainsFormatSwitch(FieldFormatSwitches.Alphabetic);
@@ -239,15 +248,13 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
             this.ribbon.buttonCompare.Enabled = oneOrMoreIncludeTextFields;
         }
 
+        /// <summary>
+        /// Updates the drop-down list with the on-screen shading shading options for fields.
+        /// </summary>
         private void UpdateDropDownFieldShading()
         {
             Word.WdFieldShading wordFieldShading = this.application.ActiveWindow.View.FieldShading;
-
-            int wordFieldShadingAsInt = (int)wordFieldShading;
-            string wordFieldShadingAsString = wordFieldShadingAsInt.ToString();
-            this.ribbon.dropDownFieldShading.SelectedItem = (from items in this.ribbon.dropDownFieldShading.Items
-                                                             where items.Tag.Equals(wordFieldShadingAsString)
-                                                             select items).First();
+            this.ribbon.dropDownFieldShading.SelectedItemIndex = (int)wordFieldShading;
             this.ribbon.dropDownFieldShading.Enabled = true;
         }
     }
