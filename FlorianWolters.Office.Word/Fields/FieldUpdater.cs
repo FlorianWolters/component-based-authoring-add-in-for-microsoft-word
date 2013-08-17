@@ -59,7 +59,10 @@ namespace FlorianWolters.Office.Word.Fields
         /// <param name="fields">The collection of <see cref="Word.Field"/> objects to update.</param>
         public void Update(Word.Fields fields)
         {
-            this.Update(new List<Word.Field>(fields.Cast<Word.Field>()));
+            foreach (Word.Field field in fields)
+            {
+                this.updateStrategy.Update(field);
+            }
         }
 
         /// <summary>
