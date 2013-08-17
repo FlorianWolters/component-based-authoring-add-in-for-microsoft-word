@@ -45,6 +45,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         protected override void CreateField()
         {
             this.FieldFactory.InsertIncludeTextWithNestedDocProperty(
+                this.Application.Selection.Range,
                 this.AbsoluteFilePathOfTargetFile(),
                 this.CustomDocumentPropertyNameWithDocumentPath);
         }

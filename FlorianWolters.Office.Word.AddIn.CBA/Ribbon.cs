@@ -391,8 +391,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         #region Event handler methods for the menu "Field Insert".
 
         /// <summary>
-        /// Handles the <i>Click</i> event for the split button <i>Insert
-        /// Field</i>.
+        /// Handles the <i>Click</i> event for the split button <i>Insert Field</i>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The data for the event.</param>
@@ -402,60 +401,53 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        /// Handles the <i>Click</i> event for the split button <i>Insert Empty
-        /// Field</i>.
+        /// Handles the <i>Click</i> event for the split button <i>Insert Empty Field</i>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The data for the event.</param>
         private void OnClick_ButtonInsertEmptyField(object sender, RibbonControlEventArgs e)
         {
-            this.FieldFactory.InsertEmpty(
-                this.application.Selection.Range.Text,
-                this.toggleButtonFieldFormatMergeFormat.Checked);
+            this.FieldFactory.InsertEmpty(this.application.Selection.Range);
         }
 
         /// <summary>
-        /// Handles the <i>Click</i> event for the split button <i>Insert Date
-        /// Field</i>.
+        /// Handles the <i>Click</i> event for the split button <i>Insert Date Field</i>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The data for the event.</param>
         private void OnClick_ButtonInsertDateField(object sender, RibbonControlEventArgs e)
         {
-            this.FieldFactory.InsertDate(this.toggleButtonFieldFormatMergeFormat.Checked);
+            this.FieldFactory.InsertDate(this.application.Selection.Range);
         }
 
         /// <summary>
-        /// Handles the <i>Click</i> event for the split button <i>Insert Time
-        /// Field</i>.
+        /// Handles the <i>Click</i> event for the split button <i>Insert Time Field</i>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The data for the event.</param>
         private void OnClick_ButtonInsertTimeField(object sender, RibbonControlEventArgs e)
         {
-            this.FieldFactory.InsertTime(this.toggleButtonFieldFormatMergeFormat.Checked);
+            this.FieldFactory.InsertTime(this.application.Selection.Range);
         }
 
         /// <summary>
-        /// Handles the <i>Click</i> event for the split button <i>Insert List
-        /// Number Field</i>.
+        /// Handles the <i>Click</i> event for the split button <i>Insert List Number Field</i>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The data for the event.</param>
         private void OnClick_ButtonInsertListNumField(object sender, RibbonControlEventArgs e)
         {
-            this.FieldFactory.InsertListNum(this.toggleButtonFieldFormatMergeFormat.Checked);
+            this.FieldFactory.InsertListNum(this.application.Selection.Range);
         }
 
         /// <summary>
-        /// Handles the <i>Click</i> event for the split button <i>Insert Page
-        /// Field</i>.
+        /// Handles the <i>Click</i> event for the split button <i>Insert Page Field</i>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The data for the event.</param>
         private void OnClick_ButtonInsertPageField(object sender, RibbonControlEventArgs e)
         {
-            this.FieldFactory.InsertPage(this.toggleButtonFieldFormatMergeFormat.Checked);
+            this.FieldFactory.InsertPage(this.application.Selection.Range);
         }
 
         #endregion
@@ -463,8 +455,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         #region Event handler methods for the menu "Field Format".
 
         /// <summary>
-        /// Handles the <i>Click</i> event for all toggle buttons related to
-        /// field code formatting.
+        /// Handles the <i>Click</i> event for all toggle buttons related to field code formatting.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The data for the event.</param>
@@ -545,7 +536,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             string propertyName = dropDown.SelectedItem.Label;
             bool mergeFormat = this.toggleButtonFieldFormatMergeFormat.Checked;
 
-            this.FieldFactory.InsertDocProperty(propertyName, mergeFormat);
+            this.FieldFactory.InsertDocProperty(this.application.Selection.Range, propertyName, mergeFormat);
 
             dropDown.SelectedItemIndex = 0;
         }

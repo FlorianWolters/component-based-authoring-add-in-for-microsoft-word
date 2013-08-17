@@ -50,6 +50,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         protected override void CreateField()
         {
             this.FieldFactory.InsertIncludePictureWithNestedDocProperty(
+                this.Application.Selection.Range,
                 this.AbsoluteFilePathOfTargetFile(),
                 this.CustomDocumentPropertyNameWithDocumentPath);
         }
