@@ -17,21 +17,12 @@ namespace FlorianWolters.Office.Word.Fields
     /// The class <see cref="ExtendedIncludeField"/> extends the functionality of a Microsoft Word <c>IncludeText</c>,
     /// <c>IncludePicture</c> and <c>Include</c> field.
     /// <para>
-    /// This class can get and set data from a Microsoft Word field which has two nested fields, one <c>DocProperty</c>
-    /// field (which holds the absolute base directory path for the included file) and one empty field (which holds the
-    /// date and time of the last modification of the included file).
+    /// This class can get and set data from a Microsoft Word field which has one nested fields, a <c>DocProperty</c>
+    /// field (which holds the absolute base directory path for the included file).
     /// </para>
     /// </summary>
     public class ExtendedIncludeField
     {
-        /// <summary>
-        /// A standard date and time format string.
-        /// <para>
-        /// The universal sortable date/time pattern is used.
-        /// </para>
-        /// </summary>
-        private const string DateTimeFormat = "u";
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendedIncludeField"/> class.
         /// </summary>
@@ -51,18 +42,14 @@ namespace FlorianWolters.Office.Word.Fields
 
             Word.Fields nestedFields = field.Code.Fields;
 
-            if (2 != nestedFields.Count
-                || Word.WdFieldType.wdFieldDocProperty != nestedFields[1].Type
-                || Word.WdFieldType.wdFieldEmpty != nestedFields[2].Type)
+            if (1 != nestedFields.Count || Word.WdFieldType.wdFieldDocProperty != nestedFields[1].Type)
             {
-                // The field doesn't have two nested fields.
-                // The first nested field must be of type DocProperty and the second nested field must be of type empty.
+                // The field doesn't have a nested DocProperty field.
                 throw new FormatException("field");
             } 
 
             this.IncludeField = field;
             this.DocPropertyField = nestedFields[1];
-            this.EmptyField = nestedFields[2];
         }
 
         /// <summary>
@@ -74,11 +61,6 @@ namespace FlorianWolters.Office.Word.Fields
         /// Gets the nested <c>DocProperty</c> <see cref="Word.Field"/>.
         /// </summary>
         public Word.Field DocPropertyField { get; private set; }
-
-        /// <summary>
-        /// Gets the nested empty <see cref="Word.Field"/>.
-        /// </summary>
-        public Word.Field EmptyField { get; private set; }
 
         /// <summary>
         /// Gets the (absolute) file path of this <see cref="ExtendedIncludeField"/>.
@@ -109,22 +91,6 @@ namespace FlorianWolters.Office.Word.Fields
         }
 
         /// <summary>
-        /// Gets the date and time of the last modification of this <see cref="ExtendedIncludeField"/>.
-        /// </summary>
-        public string LastModified
-        {
-            get
-            {
-                return this.EmptyField.Code.Text.Trim();
-            }
-
-            private set
-            {
-                this.EmptyField.Code.Text = value;
-            }
-        }
-
-        /// <summary>
         /// Tries to create a <see cref="ExtendedIncludeField"/> from the specified <see cref="Word.Field"/>.
         /// </summary>
         /// <param name="field">A <c>IncludeText</c>, <c>IncludePicture</c> or <c>Include</c> <see cref="Word.Field"/>.</param>
@@ -145,44 +111,6 @@ namespace FlorianWolters.Office.Word.Fields
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Updates the date and time of the empty <see cref="Word.Field"/> to the date and time of the last
-        /// modification of the included source file.
-        /// </summary>
-        public void SynchronizeLastModified()
-        {
-            this.LastModified = LastModifiedForFile(this.FilePath);
-        }
-
-        /// <summary>
-        /// Determines whether this <see cref="ExtendedIncludeField"/> is in sync with the referenced source file.
-        /// </summary>
-        /// <returns><c>true</c> if in sync; <c>false</c> if out-of-sync.</returns>
-        public bool IsInSync()
-        {
-            return ExtendedIncludeField.LastModifiedForFile(this.FilePath) == this.LastModified;
-        }
-
-        /// <summary>
-        /// Determines whether this <see cref="ExtendedIncludeField"/> is out-of-sync with the referenced source file.
-        /// </summary>
-        /// <returns><c>true</c> if out-of-sync; <c>false</c> if in sync.</returns>
-        public bool IsNotInSync()
-        {
-            return !this.IsInSync();
-        }
-
-        /// <summary>
-        /// Returns the date and time, in coordinated universal time (UTC), that the specified file or directory was
-        /// last written to.
-        /// </summary>
-        /// <param name="filePath">The file or directory for which to obtain write date and time information.</param>
-        /// <returns>A standard date and time format string.</returns>
-        private static string LastModifiedForFile(string filePath)
-        {
-            return File.GetLastWriteTimeUtc(filePath).ToString(DateTimeFormat);
         }
     }
 }

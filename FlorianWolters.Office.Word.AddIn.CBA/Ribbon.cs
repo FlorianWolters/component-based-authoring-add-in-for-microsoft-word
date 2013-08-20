@@ -245,9 +245,6 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
                 fieldUpdater.Update(field);
 
-                // Update the nested empty date and time field of the field.
-                extendedIncludeField.SynchronizeLastModified();
-
                 this.addIn.Logger.Info(
                     "Updated content in \"" + currentTargetFilePath + "\" with the content of \""
                     + currentSourceFilePath + "\".");
