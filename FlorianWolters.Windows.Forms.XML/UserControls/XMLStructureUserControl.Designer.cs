@@ -18,6 +18,14 @@ namespace FlorianWolters.Windows.Forms.XML.UserControls
         private System.Windows.Forms.ToolStripButton toolStripButtonSelectNode;
         internal System.Windows.Forms.TreeView treeViewStructure;
 
+        /// <summary>
+        /// Releases the unmanaged resources used by this <see cref="XPathUserControl"/> and optionally releases the
+        /// managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged
+        /// resources.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (this.components != null))

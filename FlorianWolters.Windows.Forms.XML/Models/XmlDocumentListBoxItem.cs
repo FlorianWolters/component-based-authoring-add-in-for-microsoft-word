@@ -11,10 +11,10 @@ namespace FlorianWolters.Windows.Forms.XML.Models
 
     /// <summary>
     /// The class <see cref="XmlDocumentListBoxItem"/> allows to use <see cref="XmlDocument"/> objects inside a <see
-    /// cref="ListBox"/>.
+    /// cref="System.Windows.Forms.ListBox"/>.
     /// <para>
     /// The default namespace of the <see cref="XmlDocument"/> is used as the text if this object is passed to a <see
-    /// cref="ListBox"/> object.
+    /// cref="System.Windows.Forms.ListBox"/> object.
     /// </para>
     /// </summary>
     internal class XmlDocumentListBoxItem
@@ -38,8 +38,8 @@ namespace FlorianWolters.Windows.Forms.XML.Models
         /// Returns a string representation of this <see cref="XmlDocumentListBoxItem"/>.
         /// </summary>
         /// <remarks>
-        /// The return value of this method is used as the text if this object is passed to a <see cref="ListBox"/>
-        /// object.
+        /// The return value of this method is used as the text if this object is passed to a <see
+        /// cref="System.Windows.Forms.ListBox"/> object.
         /// </remarks>
         /// <returns>The string representation.</returns>
         public override string ToString()

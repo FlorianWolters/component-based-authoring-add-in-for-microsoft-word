@@ -69,8 +69,8 @@ namespace FlorianWolters.Windows.Forms.XML.UserControls
         }
 
         /// <summary>
-        /// Handles the event that occurs when the <see cref="SelectedIndex"/> property or the <see
-        /// cref="SelectedIndices"/> collection of the <see cref="ListBox"/> has changed.
+        /// Handles the event that occurs when the <c>SelectedIndex</c> property or the <c>SelectedIndices</c>
+        /// collection of the <see cref="ListBox"/> has changed.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The event data.</param>

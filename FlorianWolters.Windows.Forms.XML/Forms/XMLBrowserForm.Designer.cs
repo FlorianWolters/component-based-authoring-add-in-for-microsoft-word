@@ -15,9 +15,18 @@ namespace FlorianWolters.Windows.Forms.XML.Forms
         internal XMLDataUserControl xmlDataUserControl;
         internal XMLNamespaceUserControl xmlNamespaceUserControl;
         internal XMLStructureUserControl xmlStructureUserControl;
+        private XPathUserControl xPathUserControl;
 
         private System.ComponentModel.IContainer components = null;
 
+        /// <summary>
+        /// Releases the unmanaged resources used by this <see cref="XPathUserControl"/> and optionally releases the
+        /// managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged
+        /// resources.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (this.components != null))
@@ -96,12 +105,9 @@ namespace FlorianWolters.Windows.Forms.XML.Forms
             this.Name = "XMLBrowserForm";
             this.Text = "XML Browser";
             this.ResumeLayout(false);
-
         }
 
         #endregion
-
-        private XPathUserControl xPathUserControl;
     }
 }
 

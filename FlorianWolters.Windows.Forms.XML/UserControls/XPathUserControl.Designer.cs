@@ -14,12 +14,21 @@ namespace FlorianWolters.Windows.Forms.XML.UserControls
         private System.Windows.Forms.TextBox textBoxXPathExpression;
         private System.Windows.Forms.TextBox textBoxXPathPrefixMapping;
 
+        /// <summary>
+        /// Releases the unmanaged resources used by this <see cref="XPathUserControl"/> and optionally releases the
+        /// managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged
+        /// resources.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (this.components != null))
             {
                 this.components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
