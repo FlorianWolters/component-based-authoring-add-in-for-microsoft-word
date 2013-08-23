@@ -26,19 +26,15 @@ namespace FlorianWolters.Office.Word.Fields
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtendedIncludeField"/> class.
         /// </summary>
-        /// <param name="field">A <c>IncludeText</c>, <c>IncludePicture</c> or <c>Include</c> <see cref="Word.Field"/>.</param>
+        /// <param name="field">
+        /// A <c>IncludeText</c>, <c>IncludePicture</c> or <c>Include</c> <see cref="Word.Field"/>.
+        /// </param>
+        /// <exception cref="ArgumentNullException">If <c>field</c> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">If the <see cref="Word.Field"/> has the wrong type.</exception>
+        /// <exception cref="FormatException">If the <see cref="Word.Field"/> has an invalid format.</exception>
         public ExtendedIncludeField(Word.Field field)
         {
-            if (null == field)
-            {
-                throw new ArgumentNullException("field");
-            }
-
-            if (!field.IsTypeInclude())
-            {
-                // The field has the wrong type.
-                throw new ArgumentException("field");
-            }
+            this.FilePath = this.ParseFilePath(field);
 
             Word.Fields nestedFields = field.Code.Fields;
 
@@ -65,30 +61,7 @@ namespace FlorianWolters.Office.Word.Fields
         /// <summary>
         /// Gets the (absolute) file path of this <see cref="ExtendedIncludeField"/>.
         /// </summary>
-        public string FilePath
-        {
-            get
-            {
-                const string Pattern = "INCLUDE(?:TEXT|PICTURE)?.+\\s+\"(.+)\"";
-
-                Word.Range fieldRange = this.IncludeField.Code;
-                fieldRange.TextRetrievalMode.IncludeFieldCodes = false;
-
-                Match match = Regex.Match(
-                    fieldRange.Text,
-                    Pattern,
-                    RegexOptions.IgnoreCase);
-
-                if (!match.Success)
-                {
-                    throw new FormatException(
-                        "Unable to retrieve the file path from the INCLUDE field.");
-                }
-
-                // TODO Fix violation of IoC.
-                return new FieldFilePathTranslator().Decode(match.Groups[1].Value);
-            }
-        }
+        public string FilePath { get; private set; }
 
         /// <summary>
         /// Tries to create a <see cref="ExtendedIncludeField"/> from the specified <see cref="Word.Field"/>.
@@ -111,6 +84,45 @@ namespace FlorianWolters.Office.Word.Fields
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Returns the file path from the specified <i>INCLUDE[...]</i> <see cref="Word.Field"/>.
+        /// </summary>
+        /// <param name="field">The <see cref="Word.Field"/> to parse.</param>
+        /// <returns>The file path.</returns>
+        /// <exception cref="ArgumentNullException">If <c>field</c> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">If the <see cref="Word.Field"/> has the wrong type.</exception>
+        /// <exception cref="FormatException">If the <see cref="Word.Field"/> has an invalid format.</exception>
+        private string ParseFilePath(Word.Field field)
+        {
+            if (null == field)
+            {
+                throw new ArgumentNullException("field");
+            }
+
+            if (!field.IsTypeInclude())
+            {
+                throw new ArgumentException("field");
+            }
+
+            const string Pattern = "INCLUDE(?:TEXT|PICTURE)?.+\\s+\"(.+)\"";
+
+            Word.Range fieldRange = field.Code;
+            fieldRange.TextRetrievalMode.IncludeFieldCodes = false;
+
+            Match match = Regex.Match(
+                fieldRange.Text,
+                Pattern,
+                RegexOptions.IgnoreCase);
+
+            if (!match.Success)
+            {
+                throw new FormatException("Unable to retrieve the file path from the INCLUDE field.");
+            }
+
+            // TODO Fix violation of IoC.
+            return new FieldFilePathTranslator().Decode(match.Groups[1].Value);
         }
     }
 }

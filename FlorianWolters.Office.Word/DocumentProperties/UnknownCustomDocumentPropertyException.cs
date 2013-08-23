@@ -14,6 +14,7 @@ namespace FlorianWolters.Office.Word.DocumentProperties
     /// be thrown when an application tries to access an undefined custom
     /// document property of a Microsoft Word document file.
     /// </summary>
+    [Serializable]
     public class UnknownCustomDocumentPropertyException : Exception
     {
         /// <summary>

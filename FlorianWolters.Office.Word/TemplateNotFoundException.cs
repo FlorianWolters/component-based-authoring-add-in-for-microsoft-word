@@ -7,12 +7,14 @@
 
 namespace FlorianWolters.Office.Word
 {
+    using System;
     using System.IO;
 
     /// <summary>
     /// The exception <see cref="TemplateNotFoundException"/> can be thrown when a Microsoft Word template file does not
     /// exist.
     /// </summary>
+    [Serializable]
     public class TemplateNotFoundException : FileNotFoundException
     {
         /// <summary>

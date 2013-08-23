@@ -13,6 +13,7 @@ namespace FlorianWolters.Office.Word.ContentControls
     /// The exception <see cref="ContentControlMappingException"/> can be thrown if the creation of a content control
     /// fails.
     /// </summary>
+    [Serializable]
     public class ContentControlCreationException : Exception
     {
         /// <summary>

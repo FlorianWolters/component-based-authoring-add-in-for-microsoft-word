@@ -12,6 +12,7 @@ namespace FlorianWolters.Office.Word
     /// <summary>
     /// The exception <see cref="ReadOnlyDocumentException"/> can be thrown if a Microsoft Word document is read-only.
     /// </summary>
+    [Serializable]
     public class ReadOnlyDocumentException : Exception
     {
         /// <summary>

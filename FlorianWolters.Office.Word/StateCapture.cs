@@ -50,12 +50,29 @@ namespace FlorianWolters.Office.Word
         /// </summary>
         public void Dispose()
         {
-            if (null != this.application)
-            {
-                this.application.ScreenUpdating = this.initialScreenUpdating;
-            }
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            this.application = null;
+        /// <summary>
+        /// Releases the unmanaged resources used by this <see cref="StateCapture"/> and optionally releases the managed
+        /// resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged
+        /// resources.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (null != this.application)
+                {
+                    this.application.ScreenUpdating = this.initialScreenUpdating;
+                }
+
+                this.application = null;
+            }
         }
     }
 }

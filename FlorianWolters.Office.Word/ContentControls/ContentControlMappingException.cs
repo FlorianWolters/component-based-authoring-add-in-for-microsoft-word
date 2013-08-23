@@ -13,6 +13,7 @@ namespace FlorianWolters.Office.Word.ContentControls
     /// The exception <see cref="ContentControlMappingException"/> can be thrown if the mapping between a content
     /// control and a custom XML part fails.
     /// </summary>
+    [Serializable]
     public class ContentControlMappingException : Exception
     {
         /// <summary>

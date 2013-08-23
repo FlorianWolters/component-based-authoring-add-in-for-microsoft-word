@@ -13,6 +13,7 @@ namespace FlorianWolters.Office.Word.CustomXML
     /// The exception <see cref="CustomXMLPartDefaultNamespaceException"/> can be thrown if a custom XML part has a
     /// invalid default namespace.
     /// </summary>
+    [Serializable]
     public class CustomXMLPartDefaultNamespaceException : Exception
     {
         /// <summary>
