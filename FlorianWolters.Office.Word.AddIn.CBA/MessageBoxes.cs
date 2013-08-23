@@ -37,20 +37,48 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// </summary>
         private const string TitleForWarning = "Warning";
 
+        /// <summary>
+        /// Displays a message box in front of the specified object and with the message of the specified <see
+        /// cref="Exception"/>.
+        /// </summary>
+        /// <param name="ex">The <see cref="Exception"/> whose message to display in the message box.</param>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
         public static DialogResult ShowMessageBoxWithExceptionMessage(Exception ex, IWin32Window owner = null)
         {
             return MessageBox.Show(owner, ex.Message, TitleForError, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+        /// <summary>
+        /// Displays a message box in front of the specified object with a message that the file with the specified file
+        /// path is read-only.
+        /// </summary>
+        /// <param name="filePath">The file path of the read-only file.</param>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
         public static DialogResult ShowMessageBoxFileIsReadOnly(string filePath, IWin32Window owner = null)
         {
-            return MessageBox.Show(owner,
+             return MessageBox.Show(
+                owner,
                 "The file \"" + filePath + "\" is read-only and cannot be updated.",
                 TitleForWarning,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning);
         }
 
+        /// <summary>
+        /// Displays a message box in front of the specified object with a message that the files with the specified
+        /// list of file paths are read-only.
+        /// </summary>
+        /// <param name="filePaths">The file paths of the read-only files.</param>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
         public static DialogResult ShowMessageBoxFileIsReadOnly(IList<string> filePaths, IWin32Window owner = null)
         {
             StringBuilder message = new StringBuilder("The following ");
@@ -78,6 +106,15 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// Displays a message box in front of the specified object with a message that the file with the specified
+        /// file path does not exist.
+        /// </summary>
+        /// <param name="filePath">The file path of the non-existing file.</param>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
         public static DialogResult ShowMessageBoxHelpFieldDoesNotExist(string filePath, IWin32Window owner = null)
         {
             return MessageBox.Show(
@@ -88,6 +125,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 MessageBoxIcon.Error);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filePaths">The file paths of the files to update to.</param>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
         public static DialogResult ShowMessageBoxWhetherToUpdateContentInSource(IList<string> filePaths, IWin32Window owner = null)
         {
             return MessageBox.Show(
@@ -99,6 +144,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 MessageBoxDefaultButton.Button2);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filePaths">The file paths of the files to update from.</param>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
         public static DialogResult ShowMessageBoxWhetherToUpdateContentFromSource(IList<string> filePaths, IWin32Window owner = null)
         {
             return MessageBox.Show(
@@ -110,7 +163,17 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 MessageBoxDefaultButton.Button2);
         }
 
-        public static DialogResult ShowMessageBoxWhetherToOverwriteCustomDocumentProperty(string propertyName, IWin32Window owner = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyName">The name of the custom document property.</param>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
+        public static DialogResult ShowMessageBoxWhetherToOverwriteCustomDocumentProperty(
+            string propertyName,
+            IWin32Window owner = null)
         {
             return MessageBox.Show(
                 owner,
@@ -121,6 +184,15 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 MessageBoxDefaultButton.Button2);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyName">The name of the custom document property.</param>
+        /// <param name="propertyValue">The value of the custom document property.</param>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
         public static DialogResult ShowMessageBoxSetCustomDocumentPropertySuccess(string propertyName, string propertyValue, IWin32Window owner = null)
         {
             return MessageBox.Show(
@@ -131,6 +203,13 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
         public static DialogResult ShowMessageBoxNoCustomDocumentPropertyModfied(IWin32Window owner = null)
         {
             return MessageBox.Show(
@@ -141,6 +220,13 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
         public static DialogResult ShowMessageBoxInvalidFieldCodeFormat(IWin32Window owner = null)
         {
             return MessageBox.Show(
@@ -151,6 +237,13 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 MessageBoxIcon.Warning);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="owner">
+        /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
+        /// </param>
+        /// <returns>One of the <see cref="DialogResult"/> values.</returns>
         public static DialogResult ShowMessageBoxFieldResultIsEqualToSourceFile(IWin32Window owner = null)
         {
             return MessageBox.Show(

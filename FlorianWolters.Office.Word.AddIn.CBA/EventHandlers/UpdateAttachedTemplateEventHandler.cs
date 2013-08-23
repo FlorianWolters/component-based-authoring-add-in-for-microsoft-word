@@ -7,6 +7,7 @@
 
 namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 {
+    using FlorianWolters.Office.Word.AddIn.CBA.Commands;
     using FlorianWolters.Office.Word.Commands;
     using FlorianWolters.Office.Word.Event.EventHandlers;
     using FlorianWolters.Office.Word.Event.ExceptionHandlers;
@@ -14,7 +15,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
     /// <summary>
     /// The class <see cref="UpdateAttachedTemplateEventHandler"/> implements <i>Event Handler</i> methods which execute
-    /// the <see cref="UpdateAttachedTemplateCommand"/>.
+    /// the <see cref="FlorianWolters.Office.Word.AddIn.CBA.Commands.UpdateAttachedTemplateCommand"/>.
     /// </summary>
     internal class UpdateAttachedTemplateEventHandler : CommandEventHandler, IDocumentOpenEventHandler
     {

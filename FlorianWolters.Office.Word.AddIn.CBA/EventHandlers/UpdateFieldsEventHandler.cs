@@ -14,7 +14,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
     /// <summary>
     /// The class <see cref="UpdateFieldsEventHandler"/> implements <i>Event Handler</i> methods which execute the <see
-    /// cref="UpdateFieldsCommand"/>.
+    /// cref="FlorianWolters.Office.Word.AddIn.CBA.Commands.UpdateFieldsCommand"/>.
     /// </summary>
     internal class UpdateFieldsEventHandler : CommandEventHandler, IDocumentOpenEventHandler
     {

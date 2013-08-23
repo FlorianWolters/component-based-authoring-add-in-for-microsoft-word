@@ -102,6 +102,7 @@
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\FlorianWolters.Office.Word.AddIn.CBA.XML</DocumentationFile>
   </PropertyGroup>
   <!--
     This section defines properties that are set when the "Release" configuration is selected.
@@ -315,7 +316,7 @@
       <Project>{2fef12b0-09d7-45d3-8cad-4e8377ff0b41}</Project>
       <Name>FlorianWolters.Reflection</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FlorianWolters.Windows.Forms.XMLTreeView\FlorianWolters.Windows.Forms.XML.csproj">
+    <ProjectReference Include="..\FlorianWolters.Windows.Forms.XML\FlorianWolters.Windows.Forms.XML.csproj">
       <Project>{b44f18f3-fd1f-4255-ad38-84e251c5bd81}</Project>
       <Name>FlorianWolters.Windows.Forms.XML</Name>
     </ProjectReference>

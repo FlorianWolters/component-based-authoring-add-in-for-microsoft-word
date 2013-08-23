@@ -13,60 +13,53 @@ namespace FlorianWolters.Office.Word.DocumentProperties
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The class <see cref="CustomDocumentPropertyReader"/> represents a reader
-    /// that can read custom document properties from a Microsoft Word document.
+    /// The class <see cref="CustomDocumentPropertyReader"/> represents a reader that can read custom document
+    /// properties from a <see cref="Word.Document"/>.
     /// </summary>
     public class CustomDocumentPropertyReader
     {
         /// <summary>
-        /// The character used as a prefix to mark <i>internal</i> custom
-        /// document properties.
+        /// The character used as a prefix to mark <i>internal</i> custom document properties.
         /// </summary>
         public const char InternalPrefixCharacter = '_';
 
         /// <summary>
-        /// The custom document properties of the Microsoft Word document.
+        /// The custom document properties of a <see cref="Word.Document"/>.
         /// </summary>
         private Core.DocumentProperties properties;
 
         /// <summary>
-        /// Initializes a new instance of the <see
-        /// cref="CustomDocumentPropertyReader"/> class with the specified
-        /// Microsoft Word document.
+        /// Initializes a new instance of the <see cref="CustomDocumentPropertyReader"/> class for the specified <see
+        /// cref="Word.Document"/>.
         /// </summary>
-        /// <param name="document">The Microsoft Word document to load.</param>
+        /// <param name="document">The <see cref="Word.Document"/> to read custom document properties from.</param>
         public CustomDocumentPropertyReader(Word.Document document) : this()
         {
             this.Load(document);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see
-        /// cref="CustomDocumentPropertyReader"/> class.
+        /// Initializes a new instance of the <see cref="CustomDocumentPropertyReader"/> class.
         /// </summary>
         public CustomDocumentPropertyReader()
         {
         }
 
         /// <summary>
-        /// Loads the custom document properties from the specified Microsoft
-        /// Word document.
+        /// Loads the custom document properties from the specified <see cref="Word.Document"/>.
         /// </summary>
-        /// <param name="document">The Microsoft Word document to load.</param>
+        /// <param name="document">The <see cref="Word.Document"/> to read custom document properties from.</param>
         public void Load(Word.Document document)
         {
-            // TODO Some COM interfaces are "lately bound", therefore this won't
-            // work outside of a VSTO context. Solutions that do use Reflection
-            // exist:
+            // TODO Some COM interfaces are "lately bound", therefore this won't work outside of a VSTO context.
+            // Solutions that do use Reflection exist:
             // http://xtractpro.com/articles/Office-Properties.aspx?page=2
             // http://support.microsoft.com/kb/303296
             this.properties = (Core.DocumentProperties)document.CustomDocumentProperties;
         }
 
         /// <summary>
-        /// Returns all custom document properties from the Microsoft Word
-        /// document, loaded with this <see
-        /// cref="CustomDocumentPropertyReader"/>.
+        /// Returns all custom document properties.
         /// </summary>
         /// <returns>All custom document properties.</returns>
         public IEnumerable<Core.DocumentProperty> GetAll()
@@ -75,15 +68,12 @@ namespace FlorianWolters.Office.Word.DocumentProperties
         }
 
         /// <summary>
-        /// Returns all <i>internal</i> custom document properties from the
-        /// Microsoft Word document, loaded with this <see
-        /// cref="CustomDocumentPropertyReader"/>.
-        /// <para>
-        /// <i>Internal</i> custom document properties start with the character
-        /// <c>_</c>.
-        /// </para>
+        /// Returns all <i>internal</i> custom document properties from the.
         /// </summary>
         /// <returns>All <i>internal</i> custom document properties.</returns>
+        /// <remarks>
+        /// An <i>internal</i> custom document properties starts with the underscore character <c>_</c>.
+        /// </remarks>
         public IEnumerable<Core.DocumentProperty> FindAllExceptInternal()
         {
             return from property in this.GetAll()
@@ -92,11 +82,12 @@ namespace FlorianWolters.Office.Word.DocumentProperties
         }
 
         /// <summary>
-        /// Determines whether a custom document property with the specified
-        /// name exists in the Microsoft Word document.
+        /// Determines whether a custom document property with the specified name exists.
         /// </summary>
-        /// <param name="propertyName">The name of the property to check.</param>
-        /// <returns><c>true</c> if the property with the specified name exists, <c>false</c> otherwise.</returns>
+        /// <param name="propertyName">The name of the custom document property to check.</param>
+        /// <returns>
+        /// <c>true</c> if the custom document property with the specified name exists; <c>false</c> otherwise.
+        /// </returns>
         public bool Exists(string propertyName)
         {
             return 1 == this.properties.Cast<Core.DocumentProperty>()
@@ -105,31 +96,31 @@ namespace FlorianWolters.Office.Word.DocumentProperties
         }
 
         /// <summary>
-        /// Returns the value of the custom property with the specified name
-        /// from the Microsoft Word document and casts it to the specified type.
+        /// Returns the value of the custom document property with the specified name and casts it to the specified
+        /// type.
         /// </summary>
-        /// <typeparam name="T">
-        /// The type to cast the value of the custom document property to.
-        /// </typeparam>
-        /// <param name="propertyName">The name of the property to read.</param>
-        /// <returns>The value of the property with the specified name.</returns>
+        /// <typeparam name="T">The type to cast the value of the custom document property to.</typeparam>
+        /// <param name="propertyName">The name of the custom document property to read.</param>
+        /// <returns>The value of the custom document property with the specified name.</returns>
         public T Get<T>(string propertyName)
         {
             return (T)this.Get(propertyName);
         }
 
         /// <summary>
-        /// Returns the value of the custom property with the specified name
-        /// from the Microsoft Word document.
+        /// Returns the value of the custom document property property with the specified name.
         /// </summary>
-        /// <param name="propertyName">The name of the property to read.</param>
-        /// <returns>The value of the property with the specified name.</returns>
+        /// <param name="propertyName">The name of the custom document property to read.</param>
+        /// <returns>The value of the custom document property with the specified name.</returns>
+        /// <exception cref="UnknownCustomDocumentPropertyException">
+        /// If a custom document property with the name <c>propertyName</c> does not exist.
+        /// </exception>
         public object Get(string propertyName)
         {
             if (!this.Exists(propertyName))
             {
                 throw new UnknownCustomDocumentPropertyException(
-                    "The custom document property \"" + propertyName + "\" does not exist in the Microsoft Word document.");
+                    "The custom document property \"" + propertyName + "\" does not exist.");
             }
 
             return this.properties[propertyName].Value;

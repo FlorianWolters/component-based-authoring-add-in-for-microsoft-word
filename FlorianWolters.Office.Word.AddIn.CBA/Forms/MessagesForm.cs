@@ -40,7 +40,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         }
 
         /// <summary>
-        /// Handles the <see cref="FormClosing"/> event of this <see cref="MessagesForm"/>.
+        /// Handles the <see cref="Form.FormClosing"/> event of this <see cref="MessagesForm"/>.
         /// <para>Prevents the closing of the form by the user.</para>
         /// </summary>
         /// <param name="sender">The source of the event.</param>

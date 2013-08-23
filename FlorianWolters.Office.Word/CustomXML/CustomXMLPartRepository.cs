@@ -22,7 +22,7 @@ namespace FlorianWolters.Office.Word.CustomXML
     public class CustomXMLPartRepository
     {
         /// <summary>
-        /// The <see cref="Office.CustomXMLParts"/> of an Microsoft Word <see cref="Word.Document"/>.
+        /// The <see cref="Office.CustomXMLParts"/> of an Microsoft Word document.
         /// </summary>
         private readonly Office.CustomXMLParts customXMLParts;
 
@@ -202,7 +202,7 @@ namespace FlorianWolters.Office.Word.CustomXML
         }
 
         /// <summary>
-        /// Adds a new <see cref="Word.CustomXMLPart"/> for each XML file in the specified directory.
+        /// Adds a new <see cref="Office.CustomXMLPart"/> for each XML file in the specified directory.
         /// </summary>
         /// <param name="directoryPath">The path of the directory.</param>
         public void AddFromDirectory(string directoryPath)
@@ -213,10 +213,10 @@ namespace FlorianWolters.Office.Word.CustomXML
         }
 
         /// <summary>
-        /// Adds a new <see cref="Word.CustomXMLPart"/> for the specified XML file.
+        /// Adds a new <see cref="Office.CustomXMLPart"/> for the specified XML file.
         /// </summary>
         /// <param name="filePath">The path of the XML file.</param>
-        /// <returns>The newly created <see cref="Word.CustomXMLPart"/>.</returns>
+        /// <returns>The newly created <see cref="Office.CustomXMLPart"/>.</returns>
         public Office.CustomXMLPart AddFromFile(string filePath)
         {
             Office.CustomXMLPart result = null;

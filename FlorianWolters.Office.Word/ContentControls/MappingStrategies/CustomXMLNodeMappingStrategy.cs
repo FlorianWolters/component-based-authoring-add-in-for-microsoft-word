@@ -13,7 +13,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
 
     /// <summary>
     /// The abstract class <see cref="CustomXMLNodeMappingStrategy"/> allows to map a <see cref="Office.CustomXMLNode"/>
-    /// to one or more <see cref="Office.ContentControl"/>s.
+    /// to one or more <see cref="Word.ContentControl"/>s.
     /// </summary>
     public abstract class CustomXMLNodeMappingStrategy : IMappingStrategy
     {
@@ -23,7 +23,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         protected readonly Office.CustomXMLNode RootNode;
 
         /// <summary>
-        /// Used to create instances of <see cref="Office.ContentControl"/>.
+        /// Used to create instances of <see cref="Word.ContentControl"/>.
         /// </summary>
         protected readonly ContentControlFactory ContentControlFactory;
 
@@ -31,7 +31,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         /// Initializes a new instance of the <see cref="CustomXMLNodeMappingStrategy"/> class.
         /// </summary>
         /// <param name="rootNode">The root <see cref="Office.CustomXMLNode"/> which determines the data to map.</param>
-        /// <param name="contentControlFactory">Used to create instances of <see cref="Office.ContentControl"/>.</param>
+        /// <param name="contentControlFactory">Used to create instances of <see cref="Word.ContentControl"/>.</param>
         /// <exception cref="ArgumentNullException">If <c>rootNode</c> is <c>null</c>.</exception>
         /// <exception cref="ArgumentNullException">If <c>contentControlFactory</c> is <c>null</c>.</exception>
         protected CustomXMLNodeMappingStrategy(
@@ -54,7 +54,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         }
 
         /// <summary>
-        /// Maps the data of the <i>Strategy</i> to <see cref="Office.ContentControl"/>s which are created in the
+        /// Maps the data of the <i>Strategy</i> to <see cref="Word.ContentControl"/>s which are created in the
         /// specified <see cref="Word.Range"/>.
         /// </summary>
         /// <param name="range">The <see cref="Word.Range"/> to use.</param>
@@ -75,7 +75,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         /// </summary>
         /// <param name="node">The <see cref="Office.CustomXMLNode"/> to map the <see cref="Word.ContentControl"/> to.</param>
         /// <param name="range">The <see cref="Word.Range"/> to insert the <see cref="Word.ContentControl"/> in.</param>
-        /// <returns>The <see cref="Word.Range"/> of the newly created <see cref="Word.ContentControl."/></returns>
+        /// <returns>The <see cref="Word.Range"/> of the newly created <see cref="Word.ContentControl"/>.</returns>
         protected virtual Word.ContentControl CreateContentControl(
             Office.CustomXMLNode node,
             Word.Range range)

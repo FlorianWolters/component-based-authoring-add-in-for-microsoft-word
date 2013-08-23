@@ -12,20 +12,16 @@ namespace FlorianWolters.Office.Word.Dialogs
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The abstract class <see cref="Dialog"/> allows to interact with a
-    /// built-in Microsoft Word dialog box.
+    /// The abstract class <see cref="Dialog"/> allows to interact with a built-in Microsoft Word dialog box.
     /// </summary>
     public abstract class Dialog
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Dialog"/> class with
-        /// the specified <see cref="Word.Application"/> and the specified <see
-        /// cref="Word.WdWordDialog"/>.
+        /// Initializes a new instance of the <see cref="Dialog"/> class with the specified <see
+        /// cref="Word.Application"/> and the specified <see cref="Word.WdWordDialog"/>.
         /// </summary>
         /// <param name="application">The Microsoft Word application.</param>
-        /// <param name="dialogType">
-        /// The type of the built-in Microsoft Word dialog box.
-        /// </param>
+        /// <param name="dialogType">The type of the built-in Microsoft Word dialog box.</param>
         protected Dialog(
             Word.Application application,
             Word.WdWordDialog dialogType)
@@ -40,18 +36,18 @@ namespace FlorianWolters.Office.Word.Dialogs
         protected Word.Application Application { get; private set; }
 
         /// <summary>
-        /// Gets the Microsoft Word dialog box (represented via a constant of
-        /// the <see cref="Word.WdWordDialog"/> enumeration) to handle.
+        /// Gets the Microsoft Word dialog box (represented via a constant of the <see cref="Word.WdWordDialog"/>
+        /// enumeration) to handle.
         /// </summary>
         protected dynamic WordDialog { get; private set; }
 
         /// <summary>
-        /// Displays and carries out actions initiated in the specified built-in
-        /// Microsoft Word dialog box represented by this <see cref="Dialog"/>.
+        /// Displays and carries out actions initiated in the specified built-in Microsoft Word dialog box represented
+        /// by this <see cref="Dialog"/>.
         /// </summary>
         /// <returns>
-        /// An identifier of the enumeration <see cref="DialogResults"/>,
-        /// indicating the return value of this <see cref="Dialog"/>.
+        /// An identifier of the enumeration <see cref="DialogResults"/>, indicating the return value of this <see
+        /// cref="Dialog"/>.
         /// </returns>
         public virtual DialogResults Show()
         {
@@ -61,18 +57,17 @@ namespace FlorianWolters.Office.Word.Dialogs
         /// <summary>
         /// Handles the result of this <see cref="Dialog"/>.
         /// <para>
-        /// By default, the current settings of the Microsoft Word dialog box
-        /// are applied. This method can be overwritten to change that behavior.
+        /// By default, the current settings of the Microsoft Word dialog box are applied. This method can be
+        /// overwritten to change that behavior.
         /// </para>
         /// </summary>
         /// <param name="result">
-        /// An identifier of the enumeration <see cref="DialogResults"/>,
-        /// indicating the return value of the built-in Microsoft Word dialog
-        /// box.
+        /// An identifier of the enumeration <see cref="DialogResults"/>, indicating the return value of the built-in
+        /// Microsoft Word dialog box.
         /// </param>
         /// <returns>
-        /// An identifier of the enumeration <see cref="DialogResults"/>,
-        /// indicating the return value of this <see cref="Dialog"/>.
+        /// An identifier of the enumeration <see cref="DialogResults"/>, indicating the return value of this <see
+        /// cref="Dialog"/>.
         /// </returns>
         protected virtual DialogResults HandleResult(DialogResults result)
         {
@@ -95,20 +90,17 @@ namespace FlorianWolters.Office.Word.Dialogs
         }
 
         /// <summary>
-        /// Displays this <see cref="Dialog"/> until either the user closes it
-        /// or the specified amount of time has passed.
+        /// Displays this <see cref="Dialog"/> until either the user closes it or the specified amount of time has
+        /// passed.
         /// </summary>
         /// <param name="timeout">
-        /// The amount of time that Word will wait before closing the dialog box
-        /// automatically. One unit is approximately 0.001 second. Concurrent
-        /// system activity may increase the effective time value. If this
-        /// argument is omitted, the dialog box is closed when the user closes
-        /// it.
+        /// The amount of time that Word will wait before closing the dialog box automatically. One unit is
+        /// approximately 0.001 second. Concurrent system activity may increase the effective time value. If this
+        /// argument is omitted, the dialog box is closed when the user closes it.
         /// </param>
         /// <returns>
-        /// An identifier of the enumeration <see cref="DialogResults"/>,
-        /// indicating the return value of the built-in Microsoft Word dialog
-        /// box.
+        /// An identifier of the enumeration <see cref="DialogResults"/>, indicating the return value of the built-in
+        /// Microsoft Word dialog box.
         /// </returns>
         protected virtual DialogResults Display(int timeout = 0)
         {
@@ -127,8 +119,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         }
 
         /// <summary>
-        /// Checks whether the specified <see cref="DialogResults"/> is equal to
-        /// <see cref="DialogResults.Cancel"/>.
+        /// Checks whether the specified <see cref="DialogResults"/> is equal to <see cref="DialogResults.Cancel"/>.
         /// </summary>
         /// <param name="result">The <see cref="DialogResults"/> object to check.</param>
         /// <returns><c>true</c> on success; <c>false</c> on failure.</returns>
@@ -138,8 +129,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         }
 
         /// <summary>
-        /// Checks whether the specified <see cref="DialogResults"/> is equal to
-        /// <see cref="DialogResults.Close"/>.
+        /// Checks whether the specified <see cref="DialogResults"/> is equal to <see cref="DialogResults.Close"/>.
         /// </summary>
         /// <param name="result">The <see cref="DialogResults"/> object to check.</param>
         /// <returns><c>true</c> on success; <c>false</c> on failure.</returns>
@@ -149,8 +139,7 @@ namespace FlorianWolters.Office.Word.Dialogs
         }
 
         /// <summary>
-        /// Checks whether the specified <see cref="DialogResults"/> is equal to
-        /// <see cref="DialogResults.Ok"/>.
+        /// Checks whether the specified <see cref="DialogResults"/> is equal to <see cref="DialogResults.Ok"/>.
         /// </summary>
         /// <param name="result">The <see cref="DialogResults"/> object to check.</param>
         /// <returns><c>true</c> on success; <c>false</c> on failure.</returns>
@@ -159,6 +148,10 @@ namespace FlorianWolters.Office.Word.Dialogs
             return result.Equals(DialogResults.Ok);
         }
 
+        /// <summary>
+        /// Displays a message box with the message of the specified <see cref="COMException"/>.
+        /// </summary>
+        /// <param name="ex">The <see cref="COMException"/> whose message to display in the message box.</param>
         private void ShowMessageBoxWithExceptionMessage(COMException ex)
         {
             MessageBox.Show(ex.Message, "Microsoft Word", MessageBoxButtons.OK, MessageBoxIcon.Warning);

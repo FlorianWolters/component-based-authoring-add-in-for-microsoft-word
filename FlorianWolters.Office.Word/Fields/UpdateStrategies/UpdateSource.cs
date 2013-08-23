@@ -29,9 +29,10 @@ namespace FlorianWolters.Office.Word.Fields.UpdateStrategies
         /// <param name="field">The <see cref="Word.Field"/> to update.</param>
         public void Update(Word.Field field)
         {
-            if (!field.CanUpdateSource())
+            if (field.Type != Word.WdFieldType.wdFieldIncludeText
+                && field.Type != Word.WdFieldType.wdFieldInclude)
             {
-                throw new ArgumentException("Invalid field type.");
+                throw new ArgumentException("Invalid field type.", "field");
             }
 
             try

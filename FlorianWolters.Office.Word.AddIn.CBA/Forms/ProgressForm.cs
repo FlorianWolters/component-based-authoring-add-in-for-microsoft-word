@@ -45,7 +45,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Forms
         }
 
         /// <summary>
-        /// Handles the <see cref="FormClosing"/> event of this <see cref="ProgressForm"/>.
+        /// Handles the <see cref="Form.FormClosing"/> event of this <see cref="ProgressForm"/>.
         /// <para>Prevents the closing of the by the user.</para>
         /// </summary>
         /// <param name="sender">The source of the event.</param>

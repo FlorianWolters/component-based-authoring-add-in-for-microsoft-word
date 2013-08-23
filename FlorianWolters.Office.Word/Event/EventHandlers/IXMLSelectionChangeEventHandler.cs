@@ -24,7 +24,7 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
         /// </param>
         /// <param name="oldXMLNode">The XML node from which the insertion point is moving.</param>
         /// <param name="newXMLNode">The XML node to which the insertion point is moving.</param>
-        /// <param name="reason">Can be any of the <see cref="Word.wdXMLSelectionChange"/> constants.</param>
+        /// <param name="reason">Can be any of the <see cref="Word.WdXMLSelectionChangeReason"/> constants.</param>
         void OnXMLSelectionChange(
             Word.Selection selection,
             Word.XMLNode oldXMLNode,

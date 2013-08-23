@@ -12,24 +12,26 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
     using Office = Microsoft.Office.Core;
     using Word = Microsoft.Office.Interop.Word;
 
+    /// <summary>
+    /// The class <see cref="OneToOneMappingStrategy"/> maps one <see cref="Office.CustomXMLNode"/> to one <see
+    /// cref="Word.ContentControl"/> in a Microsoft Word document.
+    /// </summary>
     public class OneToOneMappingStrategy : CustomXMLNodeMappingStrategy
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OneToOneMappingStrategy"/> class.
         /// </summary>
         /// <param name="rootNode">The root <see cref="Office.CustomXMLNode"/> which determines the data to map.</param>
-        /// <param name="contentControlFactory">Used to create instances of <see cref="Office.ContentControl"/>.</param>
+        /// <param name="contentControlFactory">Used to create instances of <see cref="Word.ContentControl"/>.</param>
         /// <exception cref="ArgumentNullException">If <c>rootNode</c> is <c>null</c>.</exception>
         /// <exception cref="ArgumentNullException">If <c>contentControlFactory</c> is <c>null</c>.</exception>
-        public OneToOneMappingStrategy(
-            Office.CustomXMLNode rootNode,
-            ContentControlFactory contentControlFactory)
+        public OneToOneMappingStrategy(Office.CustomXMLNode rootNode, ContentControlFactory contentControlFactory)
             : base(rootNode, contentControlFactory)
         {
         }
 
         /// <summary>
-        /// Maps the data of the <i>Strategy</i> to <see cref="Office.ContentControl"/>s which are created in the
+        /// Maps the data of the <i>Strategy</i> to <see cref="Word.ContentControl"/>s which are created in the
         /// specified <see cref="Word.Range"/>.
         /// </summary>
         /// <param name="range">The <see cref="Word.Range"/> to use.</param>

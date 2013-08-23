@@ -9,6 +9,10 @@ namespace FlorianWolters.Office.Word.Fields.UpdateStrategies
 {
     using Word = Microsoft.Office.Interop.Word;
 
+    /// <summary>
+    /// The interface <see cref="IUpdateStrategy"/> specifies that the implementing class is able to update a <see
+    /// cref="Word.Field"/>.
+    /// </summary>
     public interface IUpdateStrategy
     {
         /// <summary>

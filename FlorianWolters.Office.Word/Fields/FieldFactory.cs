@@ -359,6 +359,12 @@ namespace FlorianWolters.Office.Word.Fields
             }
         }
 
+        /// <summary>
+        /// Returns a <see cref="Word.Range"/> which contains the next start of a field.
+        /// </summary>
+        /// <param name="range">The <see cref="Word.Range"/> to search in.</param>
+        /// <param name="text">The text to be searched for.</param>
+        /// <returns>A new <see cref="Word.Range"/> which contains the next start of a field.</returns>
         private Word.Range FindNextOpen(Word.Range range, string text)
         {
             Word.Find find = this.CreateFind(range, text);
@@ -373,11 +379,23 @@ namespace FlorianWolters.Office.Word.Fields
             return result;
         }
 
+        /// <summary>
+        /// Returns a <see cref="Word.Range"/> which contains the next end of a field.
+        /// </summary>
+        /// <param name="range">The <see cref="Word.Range"/> to search in.</param>
+        /// <param name="text">The text to be searched for.</param>
+        /// <returns>A new <see cref="Word.Range"/> which contains the next end of a field.</returns>
         private Word.Range FindNextClose(Word.Range range, string text)
         {
             return this.CreateFind(range, text).Found ? range.Duplicate : null;
         }
 
+        /// <summary>
+        /// Modifies the specified <see cref="Word.Range"/> to match the text to be searched for.
+        /// </summary>
+        /// <param name="range">The <see cref="Word.Range"/> to search in and to modify.</param>
+        /// <param name="text">The text to be searched for.</param>
+        /// <returns>The modified <see cref="Word.Range"/>.</returns>
         private Word.Find CreateFind(Word.Range range, string text)
         {
             Word.Find result = range.Find;
@@ -387,7 +405,7 @@ namespace FlorianWolters.Office.Word.Fields
         }
 
         /// <summary>
-        /// Creates a <see cref="Word.Field"/> and adds it to the specified <see cref="Word.Range"/>
+        /// Creates a <see cref="Word.Field"/> and adds it to the specified <see cref="Word.Range"/>.
         /// </summary>
         /// <remarks>
         /// The <see cref="Word.Field"/> is added to the <see cref="Word.Fields"/> collection of the specified <see
@@ -420,6 +438,11 @@ namespace FlorianWolters.Office.Word.Fields
             }
         }
 
+        /// <summary>
+        /// Creates the file name argument for a <i>INCLUDE[...]</i> field.
+        /// </summary>
+        /// <param name="filePath">The file path to use.</param>
+        /// <returns>The file name argument.</returns>
         private StringBuilder CreateFileNameArgument(string filePath)
         {
             StringBuilder result = new StringBuilder("\"");
@@ -429,7 +452,23 @@ namespace FlorianWolters.Office.Word.Fields
             return result;
         }
 
-        private Word.Field InsertIncludeWithNestedDocProperty(Word.Range range, string filePath, string propertyName, bool includePicture = false)
+        /// <summary>
+        /// Adds a new <i>INCLUDE[...]</i> <see cref="Word.Field"/> which contains a nested <i>DOCPROPERTY</i>
+        /// <see cref="Word.Field"/> to the specified <see cref="Word.Range"/>.
+        /// </summary>
+        /// <param name="range">The <see cref="Word.Range"/> where to add the <see cref="Word.Field"/>.</param>
+        /// <param name="filePath">The file path of the file to include.</param>
+        /// <param name="propertyName">The name of a custom document property.</param>
+        /// <param name="includePicture">
+        /// Whether the <see cref="Word.Field"/> to create is of type <i>IncludePicture</i>.
+        /// </param>
+        /// <returns>The newly created <see cref="Word.Field"/>.</returns>
+        /// <exception cref="FileNotFoundException">If the specified file path does not exist.</exception>
+        private Word.Field InsertIncludeWithNestedDocProperty(
+            Word.Range range,
+            string filePath,
+            string propertyName,
+            bool includePicture = false)
         {
             this.ThrowFileNotFoundExceptionIfFileDoesNotExist(filePath);
 

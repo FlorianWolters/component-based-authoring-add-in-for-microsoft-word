@@ -19,7 +19,7 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
         /// cref="ApplicationEventHandler"/>
         /// </summary>
         /// <param name="exceptionHandler">
-        /// Used if an <see cref="Exception"/> inside an <i>Event Handler</i> occurs.
+        /// Used if an <see cref="System.Exception"/> inside an <i>Event Handler</i> occurs.
         /// </param>
         /// <param name="applicationEventHandler">
         /// Used to register the newly created <i>Event Handler</i> at the Microsoft Word application.

@@ -14,7 +14,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
     /// <summary>
     /// The class <see cref="ActivateUpdateStylesOnOpenEventHandler"/> implements <i>Event Handler</i> methods which
-    /// execute the <see cref="ActivateUpdateStylesOnOpenCommand"/>.
+    /// execute the <see cref="FlorianWolters.Office.Word.AddIn.CBA.Commands.ActivateUpdateStylesOnOpenCommand"/>.
     /// </summary>
     internal class ActivateUpdateStylesOnOpenEventHandler : CommandEventHandler, IDocumentOpenEventHandler
     {

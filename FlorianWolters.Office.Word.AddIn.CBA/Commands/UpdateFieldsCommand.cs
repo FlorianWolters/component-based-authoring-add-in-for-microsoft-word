@@ -25,6 +25,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Commands
         /// </summary>
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// The <see cref="FieldUpdater"/> used to update a <see cref="Word.Field"/>.
+        /// </summary>
         private readonly FieldUpdater fieldUpdater;
 
         /// <summary>

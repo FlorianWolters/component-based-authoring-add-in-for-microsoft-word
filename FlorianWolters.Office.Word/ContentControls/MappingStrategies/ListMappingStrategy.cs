@@ -13,8 +13,8 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The class <see cref="ListMappingStrategy"/> maps <see
-    /// cref="Office.CustomXMLNode"/>s to a list of <see cref="Office.ContentControl"/>s in a Microsoft Word document.
+    /// The class <see cref="ListMappingStrategy"/> maps <see cref="Office.CustomXMLNode"/>s to a list of <see
+    /// cref="Word.ContentControl"/>s in a Microsoft Word document.
     /// <para>
     /// This class only outputs XML nodes of type element or attribute.
     /// Each node name follows a content control with the value of the node.
@@ -27,8 +27,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         /// <summary>
         /// The number of list templates to use.
         /// <para>
-        /// If the current level of the list exceeds this number, the first list
-        /// template is used again.
+        /// If the current level of the list exceeds this number, the first list template is used again.
         /// </para>
         /// </summary>
         private const int NumberOfListTemplatesToUse = 3;
@@ -52,7 +51,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         /// Initializes a new instance of the <see cref="ListMappingStrategy"/> class.
         /// </summary>
         /// <param name="rootNode">The root <see cref="Office.CustomXMLNode"/> which determines the data to map.</param>
-        /// <param name="contentControlFactory">Used to create instances of <see cref="Office.ContentControl"/>.</param>
+        /// <param name="contentControlFactory">Used to create instances of <see cref="Word.ContentControl"/>.</param>
         /// <param name="listGallery">The gallery of the list format used to style the output.</param>
         /// <exception cref="ArgumentNullException">If <c>rootNode</c> is <c>null</c>.</exception>
         /// <exception cref="ArgumentNullException">If <c>contentControlFactory</c> is <c>null</c>.</exception>
@@ -73,7 +72,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         }
 
         /// <summary>
-        /// Maps the data of the <i>Strategy</i> to <see cref="Office.ContentControl"/>s which are created in the
+        /// Maps the data of the <i>Strategy</i> to <see cref="Word.ContentControl"/>s which are created in the
         /// specified <see cref="Word.Range"/>.
         /// </summary>
         /// <param name="range">The <see cref="Word.Range"/> to use.</param>
@@ -191,7 +190,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         /// </summary>
         /// <param name="node">The <see cref="Office.CustomXMLNodes"/> whose base name to use.</param>
         /// <param name="range">The <see cref="Word.Range"/> to use.</param>
-        /// <returns>The <see cref="Word.Range"/> of the newly created <see cref="Word.Paragraph."/></returns>
+        /// <returns>The <see cref="Word.Range"/> of the newly created <see cref="Word.Paragraph"/>.</returns>
         private Word.Range InsertLabelParagraph(Office.CustomXMLNode node, Word.Range range)
         {
             Word.Paragraph paragraph = range.Paragraphs.Add();
@@ -230,7 +229,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         /// </summary>
         /// <param name="node">The <see cref="Office.CustomXMLNode"/> whose data to use.</param>
         /// <param name="range">The <see cref="Word.Range"/> to insert both elements in.</param>
-        /// <returns>The <see cref="Word.Range"/> of the newly created <see cref="Word.ContentControl."/></returns>
+        /// <returns>The <see cref="Word.Range"/> of the newly created <see cref="Word.ContentControl"/>.</returns>
         private Word.Range InsertLabelAndContentControlParagraph(Office.CustomXMLNode node, Word.Range range)
         {
             Word.Range paragraphRange = this.InsertLabelParagraph(node, range);
@@ -254,8 +253,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         }
 
         /// <summary>
-        /// Returns a <see cref="Word.ListTemplate"/> from the <see cref="Word.Gallery"/> which corresponds to the
-        /// current level of the list.
+        /// Returns a <see cref="Word.ListTemplate"/> which corresponds to the current level of the list.
         /// </summary>
         /// <returns>A <see cref="Word.ListTemplate"/>.</returns>
         private Word.ListTemplate GetListTemplateFromListGallery()

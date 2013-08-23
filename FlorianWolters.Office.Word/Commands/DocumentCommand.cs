@@ -8,7 +8,6 @@
 namespace FlorianWolters.Office.Word.Commands
 {
     using System;
-    using NLog;
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>

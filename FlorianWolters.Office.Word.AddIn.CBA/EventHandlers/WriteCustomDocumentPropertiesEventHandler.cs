@@ -15,7 +15,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
     /// <summary>
     /// The class <see cref="WriteCustomDocumentPropertiesEventHandler"/> implements <i>Event Handler</i> methods which
-    /// execute the <see cref="WriteCustomDocumentPropertiesCommand"/>.
+    /// execute the <see cref="FlorianWolters.Office.Word.AddIn.CBA.Commands.WriteCustomDocumentPropertiesCommand"/>.
     /// </summary>
     internal class WriteCustomDocumentPropertiesEventHandler
         : CommandEventHandler, IDocumentBeforeSaveEventHandler, IDocumentOpenEventHandler

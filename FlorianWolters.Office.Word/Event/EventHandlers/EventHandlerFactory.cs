@@ -21,7 +21,7 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
         /// cref="ApplicationEventHandler"/>
         /// </summary>
         /// <param name="exceptionHandler">
-        /// Used if an <see cref="Exception"/> inside an <i>Event Handler</i> occurs.
+        /// Used if an <see cref="System.Exception"/> inside an <i>Event Handler</i> occurs.
         /// </param>
         /// <param name="applicationEventHandler">
         /// Used to register the newly created <i>Event Handler</i> at the Microsoft Word application.
@@ -50,7 +50,7 @@ namespace FlorianWolters.Office.Word.Event.EventHandlers
         /// </summary>
         /// <param name="command">The <i>Command</i> to inject into the <i>Event Handler</i>.</param>
         /// <param name="exceptionHandler">
-        /// The exception handler to use if an <see cref="Exception"/> inside an <i>Event Handler</i> occurs.
+        /// The exception handler to use if an <see cref="System.Exception"/> inside an <i>Event Handler</i> occurs.
         /// </param>
         /// <returns>The newly created <i>Event Handler</i> instance.</returns>
         protected abstract IEventHandler CreateEventHandler(ICommand command, IExceptionHandler exceptionHandler);

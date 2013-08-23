@@ -14,7 +14,7 @@ namespace FlorianWolters.Office.Word.ContentControls
 
     /// <summary>
     /// The class <see cref="ContentControlFactory"/> allows to create new instances of the class <see
-    /// cref="ContentControl"/>.
+    /// cref="Word.ContentControl"/>.
     /// </summary>
     public class ContentControlFactory
     {
@@ -39,14 +39,14 @@ namespace FlorianWolters.Office.Word.ContentControls
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ContentControl"/>.
+        /// Creates a new instance of the <see cref="Word.ContentControl"/> class.
         /// </summary>
         /// <param name="contentControlType">The type of content control to create.</param>
         /// <param name="customXMLNode">The custom XML node to map to the content control.</param>
         /// <param name="range">The range where to insert the content control.</param>
         /// <param name="lockContents"><c>true</c> if the contents of the content control should be locked.</param>
         /// <param name="lockControl"><c>true</c> if the content control should be locked.</param>
-        /// <returns>A newly created <see cref="ContentControl"/>.</returns>
+        /// <returns>A newly created <see cref="Word.ContentControl"/>.</returns>
         /// <exception cref="ContentControlCreationException">If a content control cannot be created in the specified range.</exception>
         public Word.ContentControl CreateContentControl(
             Word.WdContentControlType contentControlType,

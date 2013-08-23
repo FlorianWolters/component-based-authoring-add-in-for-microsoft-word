@@ -15,9 +15,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Factories
     using Word = Microsoft.Office.Interop.Word;
 
     /// <summary>
-    /// The class <see cref="UpdateAttachedTemplateFactory"/>
-    /// implements a <i>FactoryMethod</i> to create instances of <see
-    /// cref="UpdateAttachedTemplateEventHandler"/>.
+    /// The class <see cref="UpdateAttachedTemplateFactory"/> implements a <i>FactoryMethod</i> to create instances of
+    /// <see cref="UpdateAttachedTemplateEventHandler"/>.
     /// </summary>
     public sealed class UpdateAttachedTemplateFactory : EventHandlerFactory
     {
@@ -47,15 +46,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.Factories
         /// Creates the <i>Event Handler</i> to return by this <i>Factory</i>.
         /// </summary>
         /// <param name="command">The <i>Command</i> to inject into the <i>Event Handler</i>.</param>
-        /// <param name="exceptionHandler">The <i>Exception Handler</i> to use if an <see cref="Exception"/> inside an <i>Event Handler</i> occurs.</param>
+        /// <param name="exceptionHandler">
+        /// The <i>Exception Handler</i> to use if an <see cref="System.Exception"/> inside an <i>Event Handler</i>
+        /// occurs.
+        /// </param>
         /// <returns>The newly created <i>Event Handler</i> instance.</returns>
-        protected override IEventHandler CreateEventHandler(
-            ICommand command,
-            IExceptionHandler exceptionHandler)
+        protected override IEventHandler CreateEventHandler(ICommand command, IExceptionHandler exceptionHandler)
         {
-            return new UpdateAttachedTemplateEventHandler(
-                command,
-                exceptionHandler);
+            return new UpdateAttachedTemplateEventHandler(command, exceptionHandler);
         }
     }
 }
