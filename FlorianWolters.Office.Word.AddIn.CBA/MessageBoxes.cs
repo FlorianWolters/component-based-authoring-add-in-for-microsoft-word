@@ -126,7 +126,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        /// 
+        /// Displays a message box in front of the specified object with a question whether the content of the source
+        /// file should be updated.
         /// </summary>
         /// <param name="filePaths">The file paths of the files to update to.</param>
         /// <param name="owner">
@@ -145,7 +146,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        /// 
+        /// Displays a message box in front of the specified object with a question whether the content of the target
+        /// file should be updated.
         /// </summary>
         /// <param name="filePaths">The file paths of the files to update from.</param>
         /// <param name="owner">
@@ -164,7 +166,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        /// 
+        /// Displays a message box in front of the specified object with a question whether to overwrite a custom
+        /// document property.
         /// </summary>
         /// <param name="propertyName">The name of the custom document property.</param>
         /// <param name="owner">
@@ -185,7 +188,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        /// 
+        /// Displays a message box in front of the specified object with a message that the custom document property
+        /// with the specified name has been set to the specified value.
         /// </summary>
         /// <param name="propertyName">The name of the custom document property.</param>
         /// <param name="propertyValue">The value of the custom document property.</param>
@@ -193,7 +197,10 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
         /// </param>
         /// <returns>One of the <see cref="DialogResult"/> values.</returns>
-        public static DialogResult ShowMessageBoxSetCustomDocumentPropertySuccess(string propertyName, string propertyValue, IWin32Window owner = null)
+        public static DialogResult ShowMessageBoxSetCustomDocumentPropertySuccess(
+            string propertyName,
+            string propertyValue,
+            IWin32Window owner = null)
         {
             return MessageBox.Show(
                 owner,
@@ -204,13 +211,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        /// 
+        /// Displays a message box in front of the specified object with a message that no custom document property has
+        /// been modified.
         /// </summary>
         /// <param name="owner">
         /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
         /// </param>
         /// <returns>One of the <see cref="DialogResult"/> values.</returns>
-        public static DialogResult ShowMessageBoxNoCustomDocumentPropertyModfied(IWin32Window owner = null)
+        public static DialogResult ShowMessageBoxNoCustomDocumentPropertyModified(IWin32Window owner = null)
         {
             return MessageBox.Show(
                 owner,
@@ -221,7 +229,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        /// 
+        /// Displays a message box in front of the specified object with a message that a field has an invalid field
+        /// code format.
         /// </summary>
         /// <param name="owner">
         /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.
@@ -238,7 +247,8 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        /// 
+        /// Displays a message box in front of the specified object with a message that the content of the field result
+        /// is equal to the content of the source file.
         /// </summary>
         /// <param name="owner">
         /// An implementation of <see cref="IWin32Window"/> that will own the modal dialog box.

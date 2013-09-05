@@ -642,7 +642,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
             if (string.Empty == propertyName)
             {
-                MessageBoxes.ShowMessageBoxNoCustomDocumentPropertyModfied();
+                MessageBoxes.ShowMessageBoxNoCustomDocumentPropertyModified();
                 return;
             }
 
@@ -650,7 +650,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             {
                 if (DialogResult.No == MessageBoxes.ShowMessageBoxWhetherToOverwriteCustomDocumentProperty(propertyName))
                 {
-                    MessageBoxes.ShowMessageBoxNoCustomDocumentPropertyModfied();
+                    MessageBoxes.ShowMessageBoxNoCustomDocumentPropertyModified();
                     return;
                 }
             }
@@ -661,7 +661,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
             if (string.Empty == propertyValue)
             {
-                MessageBoxes.ShowMessageBoxNoCustomDocumentPropertyModfied();
+                MessageBoxes.ShowMessageBoxNoCustomDocumentPropertyModified();
                 return;
             }
 
