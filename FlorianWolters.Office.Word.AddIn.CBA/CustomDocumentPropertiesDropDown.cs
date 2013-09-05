@@ -125,7 +125,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         }
 
         /// <summary>
-        // Creates a new <see cref="RibbonDropDownItem"/> with the specified label and screen tip.
+        /// Creates a new <see cref="RibbonDropDownItem"/> with the specified label and screen tip.
         /// </summary>
         /// <param name="label">The label of the <see cref="RibbonDropDownItem"/>.</param>
         /// <param name="screenTip">The screen tip of the <see cref="RibbonDropDownItem"/>.</param>
