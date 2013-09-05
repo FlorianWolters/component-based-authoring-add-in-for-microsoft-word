@@ -76,7 +76,7 @@ namespace FlorianWolters.Office.Word.ContentControls.MappingStrategies
         /// <param name="node">The <see cref="Office.CustomXMLNode"/> to map the <see cref="Word.ContentControl"/> to.</param>
         /// <param name="range">The <see cref="Word.Range"/> to insert the <see cref="Word.ContentControl"/> in.</param>
         /// <returns>The <see cref="Word.Range"/> of the newly created <see cref="Word.ContentControl"/>.</returns>
-        protected virtual Word.ContentControl CreateContentControl(
+        protected Word.ContentControl CreateContentControl(
             Office.CustomXMLNode node,
             Word.Range range)
         {
