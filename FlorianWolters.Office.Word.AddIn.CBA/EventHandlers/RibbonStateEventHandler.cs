@@ -67,7 +67,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 bool activeDocumentSaved = this.application.ActiveDocument.IsSaved();
 
                 this.ribbon.splitButtonInclude.Enabled = activeDocumentSaved;
-                this.ribbon.buttonBindCustomXMLPart.Enabled = activeDocumentSaved;
+                this.ribbon.buttonBindXml.Enabled = activeDocumentSaved;
 
                 this.customDocumentPropertiesDropDown.Update(this.ribbon.checkBoxHideInternal.Checked);
                 this.ribbon.dropDownCustomDocumentProperties.Enabled = true;
@@ -105,7 +105,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
                 this.ribbon.buttonUpdateToSource.Enabled = documentActive;
                 this.ribbon.buttonCompare.Enabled = documentActive;
 
-                this.ribbon.buttonBindCustomXMLPart.Enabled = documentActive;
+                this.ribbon.buttonBindXml.Enabled = documentActive;
 
                 this.ribbon.splitButtonFieldInsert.Enabled = documentActive;
                 this.ribbon.menuFieldFormat.Enabled = documentActive;
@@ -159,7 +159,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA.EventHandlers
 
             bool oneOrMoreContentControlsSelected = range.ContentControls.Count > 0;
             this.ribbon.splitButtonFieldInsert.Enabled = !oneOrMoreContentControlsSelected;
-            this.ribbon.buttonBindCustomXMLPart.Enabled = !oneOrMoreContentControlsSelected;
+            this.ribbon.buttonBindXml.Enabled = !oneOrMoreContentControlsSelected;
 
             if (oneOrMoreContentControlsSelected)
             {

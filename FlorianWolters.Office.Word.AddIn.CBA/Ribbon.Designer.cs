@@ -87,7 +87,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonUpdateToSource = this.Factory.CreateRibbonButton();
             this.buttonCompare = this.Factory.CreateRibbonButton();
             this.buttonCompareDocuments = this.Factory.CreateRibbonButton();
-            this.buttonBindCustomXMLPart = this.Factory.CreateRibbonButton();
+            this.buttonBindXml = this.Factory.CreateRibbonButton();
             this.splitButtonFieldInsert = this.Factory.CreateRibbonSplitButton();
             this.buttonInsertEmptyField = this.Factory.CreateRibbonButton();
             this.buttonInsertDateField = this.Factory.CreateRibbonButton();
@@ -375,7 +375,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             // groupTools
             // 
             groupTools.Items.Add(this.buttonCompareDocuments);
-            groupTools.Items.Add(this.buttonBindCustomXMLPart);
+            groupTools.Items.Add(this.buttonBindXml);
             groupTools.Label = "Tools";
             groupTools.Name = "groupTools";
             // 
@@ -388,16 +388,16 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonCompareDocuments.ShowImage = true;
             this.buttonCompareDocuments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonCompareDocuments);
             // 
-            // buttonBindCustomXMLPart
+            // buttonBindXml
             // 
-            this.buttonBindCustomXMLPart.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonBindCustomXMLPart.Enabled = false;
-            this.buttonBindCustomXMLPart.Label = "Bind XML";
-            this.buttonBindCustomXMLPart.Name = "buttonBindCustomXMLPart";
-            this.buttonBindCustomXMLPart.OfficeImageId = "XmlStructure";
-            this.buttonBindCustomXMLPart.ScreenTip = "Binds content from a custom XML part to a content control.";
-            this.buttonBindCustomXMLPart.ShowImage = true;
-            this.buttonBindCustomXMLPart.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonBindCustomXMLPart);
+            this.buttonBindXml.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonBindXml.Enabled = false;
+            this.buttonBindXml.Label = "Bind XML";
+            this.buttonBindXml.Name = "buttonBindXml";
+            this.buttonBindXml.OfficeImageId = "XmlStructure";
+            this.buttonBindXml.ScreenTip = "Binds content from a custom XML part to a content control.";
+            this.buttonBindXml.ShowImage = true;
+            this.buttonBindXml.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonBindXml);
             // 
             // groupFields
             // 
@@ -651,7 +651,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.buttonShowHelp.OfficeImageId = "WorkflowPending";
             this.buttonShowHelp.ShowImage = true;
             this.buttonShowHelp.SuperTip = "Opens the \"Read Me\" dialog";
-            this.buttonShowHelp.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowHelpForm);
+            this.buttonShowHelp.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnClick_ButtonShowReadMeForm);
             // 
             // buttonShowConfiguration
             // 
@@ -723,7 +723,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDownFieldShading;
         internal RibbonButton buttonCompare;
         internal RibbonButton buttonShowConfiguration;
-        internal RibbonButton buttonBindCustomXMLPart;
+        internal RibbonButton buttonBindXml;
         internal RibbonButton buttonCompareDocuments;
         internal RibbonToggleButton toggleButtonShowMessages;
         internal RibbonToggleButton toggleButtonFieldFormatCaps;

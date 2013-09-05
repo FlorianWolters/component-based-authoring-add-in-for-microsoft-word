@@ -38,9 +38,9 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
     /// <summary>
     /// The class <see cref="Ribbon"/> contains the presentation logic and delegates to the business logic of the
-    /// "Microsoft Word" Application-Level Add-in.
+    /// "Microsoft Word" Application-Level Add-In.
     /// </summary>
-    internal partial class Ribbon
+    internal partial class Ribbon : IDocumentChangeEventHandler
     {
         /// <summary>
         /// The file name of the ReadMe file.
@@ -136,10 +136,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         {
             this.ConfigurationForm = new ConfigurationForm(settings);
             this.AboutForm = new AboutForm(assemblyInfo, settings);
-            this.InitializeHelpDialog(assemblyInfo);
+            this.InitializeReadMeForm(assemblyInfo);
         }
 
-        private void InitializeHelpDialog(AssemblyInfo assemblyInfo)
+        /// <summary>
+        /// Initializes the form to display the "README" file.
+        /// </summary>
+        /// <param name="assemblyInfo">The <see cref="AssemblyInfo"/> of this application.</param>
+        private void InitializeReadMeForm(AssemblyInfo assemblyInfo)
         {
             string readMeFilePath = assemblyInfo.CodeBasePath + Path.DirectorySeparatorChar + ReadMeFileName;
 
@@ -155,18 +159,27 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
         }
 
-        // TODO Move to other class.
+        /// <summary>
+        /// Handles the event which occurs when a new <see cref="Microsoft.Office.Interop.Word.Document"/> is created,
+        /// when an existing <see cref="Microsoft.Office.Interop.Word.Document"/> is opened, or when another <see
+        /// cref="Microsoft.Office.Interop.Word.Document"/> is made the active <see
+        /// cref="Microsoft.Office.Interop.Word.Document"/>. 
+        /// </summary>
         private void OnDocumentChange()
         {
-            // It is safe to access the Microsoft Word Application owner if the
-            // DocumentChange event occurs. We don't always need to retrieve the
-            // owner if we need it, since the Microsoft Word Application owner
-            // exists as long as this Add-in runs.
+            // It is safe to access the "Microsoft Word" application window owner if the DocumentChange event occurs. We
+            // don't always need to retrieve the owner if we need it, since the "Microsoft Word" application window
+            // owner exists as long as this Add-in runs.
             this.ApplicationWindow = ProcessUtils.MainWindowWin32HandleOfCurrentProcess();
         }
 
         #region Event handler methods for the group "References"
 
+        /// <summary>
+        /// Handles the event which occurs after the "Include Text" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonIncludeText(object sender, RibbonControlEventArgs e)
         {
             new InsertFileDialog(
@@ -175,6 +188,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 Settings.Default.DocPropertyNameForLastDirectoryPath).Show();
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Include Picture" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonIncludePicture(object sender, RibbonControlEventArgs e)
         {
             // TODO It does not seem to be possible to specify a default path for a built-in dialog.
@@ -186,6 +204,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
                 Settings.Default.DocPropertyNameForLastDirectoryPath).Show();
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Update From Source" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonUpdateFromSource(object sender, RibbonControlEventArgs e)
         {
             IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
@@ -198,6 +221,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Update To Source" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonUpdateToSource(object sender, RibbonControlEventArgs e)
         {
             IList<Word.Field> fields = this.application.Selection.AllIncludeTextFields().ToList();
@@ -210,6 +238,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
         }
 
+        /// <summary>
+        /// Updates the specified <see cref="Word.Field"/> objects with the specified update <i>Strategy</i>.
+        /// </summary>
+        /// <param name="fields">The <see cref="Word.Field"/> objects to update.</param>
+        /// <param name="updateStrategy">The update <i>Strategy</i> to use.</param>
         private void UpdateFields(IList<Word.Field> fields, IUpdateStrategy updateStrategy)
         {
             ExtendedIncludeField extendedIncludeField = null;
@@ -251,6 +284,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Open Source File" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonOpenSourceFile(object sender, RibbonControlEventArgs e)
         {
             IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
@@ -269,6 +307,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Compare" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonCompare(object sender, RibbonControlEventArgs e)
         {
             IList<Word.Field> fields = this.application.Selection.AllIncludeFields().ToList();
@@ -313,12 +356,22 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         #region Event handler methods for the group "Tools".
 
+        /// <summary>
+        /// Handles the event which occurs after the "Compare Documents" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonCompareDocuments(object sender, RibbonControlEventArgs e)
         {
             new CompareDocumentsDialog(this.application).Show();
         }
 
-        private void OnClick_ButtonBindCustomXMLPart(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Handles the event which occurs after the "Bind XML" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
+        private void OnClick_ButtonBindXml(object sender, RibbonControlEventArgs e)
         {
             Word.Document document = this.application.ActiveDocument;
             XMLBrowserForm xmlBrowserForm = new XMLBrowserForm();
@@ -491,12 +544,22 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         #region Event handler methods for the menu "Field Action".
 
+        /// <summary>
+        /// Handles the event which occurs after the "Update Field" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonFieldUpdate(object sender, RibbonControlEventArgs e)
         {
             // Update each field in the current selection.
             new FieldUpdater(new UpdateTarget()).Update(this.application.Selection.AllFields().ToList());
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Lock Field" toggle-button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ToggleButtonFieldLock(object sender, RibbonControlEventArgs e)
         {
             RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
@@ -510,6 +573,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Show Field Code" toggle-button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ToggleButtonFieldShowCode(object sender, RibbonControlEventArgs e)
         {
             RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
@@ -526,6 +594,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         #region Event handler methods for the group "Document Properties"
 
+        /// <summary>
+        /// Handles the event which occurs when a user selects a new item on the "Custom Document Properties" drop-down
+        /// list.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnSelectionChanged_DropDownCustomDocumentProperties(object sender, RibbonControlEventArgs e)
         {
             RibbonDropDown dropDown = (RibbonDropDown)sender;
@@ -538,12 +612,22 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             dropDown.SelectedItemIndex = 0;
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Hide Internal Custom Document Properties" checkbox is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_CheckBoxHideInternal(object sender, RibbonControlEventArgs e)
         {
             RibbonCheckBox checkBox = (RibbonCheckBox)sender;
             this.CustomDocumentPropertiesDropDown.Update(checkBox.Checked);
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Create Custom Document Property" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonCreateCustomDocumentProperty(object sender, RibbonControlEventArgs e)
         {
             CustomDocumentPropertyReader customDocumentPropertyReader = new CustomDocumentPropertyReader(this.application.ActiveDocument);
@@ -592,6 +676,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         #region Event handler methods for the group "View".
 
+        /// <summary>
+        /// Handles the event which occurs when a user selects a new item on the "Field Shading" drop-down list.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnSelectionChanged_DropDownFieldShading(object sender, RibbonControlEventArgs e)
         {
             RibbonDropDown dropDown = (RibbonDropDown)sender;
@@ -605,6 +694,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.application.ActiveWindow.View.FieldShading = fieldShading;
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Form Field Shading" toggle-button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ToggleButtonFormFieldShading(object sender, RibbonControlEventArgs e)
         {
             RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
@@ -613,6 +707,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             this.application.ActiveDocument.FormFields.Shaded = toggleButton.Checked;
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Field Codes" toggle-button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ToggleButtonFieldCodes(object sender, RibbonControlEventArgs e)
         {
             RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
@@ -625,6 +724,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
 
         #region Event handler methods for the group "Miscellaneous".
 
+        /// <summary>
+        /// Handles the event which occurs after the "Messages" toggle-button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ToggleButtonShowMessagesForm(object sender, RibbonControlEventArgs e)
         {
             RibbonToggleButton toggleButton = (RibbonToggleButton)sender;
@@ -639,16 +743,31 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             }
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "About" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonShowAboutForm(object sender, RibbonControlEventArgs e)
         {
             this.AboutForm.ShowDialog(this.ApplicationWindow);
         }
 
-        private void OnClick_ButtonShowHelpForm(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        /// Handles the event which occurs after the "ReadMe" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
+        private void OnClick_ButtonShowReadMeForm(object sender, RibbonControlEventArgs e)
         {
             this.ReadMeForm.ShowDialog(this.ApplicationWindow);
         }
 
+        /// <summary>
+        /// Handles the event which occurs after the "Configuration" button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void OnClick_ButtonShowConfigurationForm(object sender, RibbonControlEventArgs e)
         {
             this.ConfigurationForm.ShowDialog(this.ApplicationWindow);
@@ -657,6 +776,11 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         #endregion
 
         // TODO Move the following methods to another class.
+
+        /// <summary>
+        /// Selects the specified <see cref="Word.Field"/>.
+        /// </summary>
+        /// <param name="field">The <see cref="Word.Field"/> to select.</param>
         private void HighlightFieldAndShowMessageBoxForInvalidFieldCodeFormat(Word.Field field)
         {
             field.Select();
@@ -666,6 +790,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             range.Select();
         }
 
+        /// <summary>
+        /// Selects the specified <see cref="Word.Field"/> and shows a message-box which indicates that the file with
+        /// the specified file name is read-only.
+        /// </summary>
+        /// <param name="field">The <see cref="Word.Field"/> to select.</param>
+        /// <param name="fileName">The file name of the read-only file.</param>
         private void HighlightFieldAndShowMessageBoxForReadOnlyFile(Word.Field field, string fileName)
         {
             field.Select();
@@ -675,7 +805,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             range.Select();
         }
 
-        private IEnumerable<string> RetrieveFileNames(IEnumerable<Word.Field> fields)
+        /// <summary>
+        /// Returns all file names from the specified <see cref="Word.Field"/> objects.
+        /// </summary>
+        /// <param name="fields">The <see cref="Word.Field"/> objects to check.</param>
+        /// <returns>A list of file names.</returns>
+        private IList<string> RetrieveFileNames(IEnumerable<Word.Field> fields)
         {
             IList<string> result = new List<string>();
             ExtendedIncludeField extendedIncludeField = null;
@@ -694,7 +829,12 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             return result;
         }
 
-        private IEnumerable<string> RetrieveReadOnlyFileNames(IEnumerable<Word.Field> fields)
+        /// <summary>
+        /// Returns all file names for read-only files from the specified <see cref="Word.Field"/> objects.
+        /// </summary>
+        /// <param name="fields">The <see cref="Word.Field"/> objects to check.</param>
+        /// <returns>A list of file names.</returns>
+        private IList<string> RetrieveReadOnlyFileNames(IEnumerable<Word.Field> fields)
         {
             IList<string> result = new List<string>();
             ExtendedIncludeField extendedIncludeField = null;
@@ -715,6 +855,14 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
             return result;
         }
 
+        /// <summary>
+        /// Returns a <see cref="Office.CustomXMLNode"/> which has been selected in the specified <see 
+        /// cref="XMLBrowserForm"/> from the specified <see cref="CustomXMLPartRepository"/>.
+        /// </summary>
+        /// <param name="form">The form in which the node has been selected.</param>
+        /// <param name="repository">The <i>Repository</i> to query the custom XML parts.</param>
+        /// <returns>The selected <see cref="Office.CustomXMLNode"/>.</returns>
+        /// <exception cref="Exception">If the selected node is invalid.</exception>
         private Office.CustomXMLNode RetrieveCustomXMLNode(XMLBrowserForm form, CustomXMLPartRepository repository)
         {
             // Retrieve the selected CustomXMLPart via its (unique) default namespace.
