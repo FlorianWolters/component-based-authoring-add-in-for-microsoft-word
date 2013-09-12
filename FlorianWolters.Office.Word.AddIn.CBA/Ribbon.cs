@@ -165,7 +165,7 @@ namespace FlorianWolters.Office.Word.AddIn.CBA
         /// cref="Microsoft.Office.Interop.Word.Document"/> is made the active <see
         /// cref="Microsoft.Office.Interop.Word.Document"/>. 
         /// </summary>
-        private void OnDocumentChange()
+        public void OnDocumentChange()
         {
             // It is safe to access the "Microsoft Word" application window owner if the DocumentChange event occurs. We
             // don't always need to retrieve the owner if we need it, since the "Microsoft Word" application window
