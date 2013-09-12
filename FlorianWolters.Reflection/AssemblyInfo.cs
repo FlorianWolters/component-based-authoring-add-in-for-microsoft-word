@@ -12,8 +12,8 @@ namespace FlorianWolters.Reflection
     using System.Reflection;
 
     /// <summary>
-    /// The class <see cref="AssemblyInfo"/> represents a reader that can read
-    /// information from an <see cref="Assembly"/>.
+    /// The class <see cref="AssemblyInfo"/> represents a reader that can read information from an <see
+    /// cref="Assembly"/>.
     /// </summary>
     public class AssemblyInfo
     {
@@ -23,8 +23,8 @@ namespace FlorianWolters.Reflection
         private readonly Assembly assembly;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssemblyInfo"/> class
-        /// with the specified <see cref="Assembly"/> to read from.
+        /// Initializes a new instance of the <see cref="AssemblyInfo"/> class with the specified <see cref="Assembly"/>
+        /// to read from.
         /// </summary>
         /// <param name="assembly">The <see cref="Assembly"/> to read from.</param>
         /// <exception cref="ArgumentNullException">If the <c>assembly</c> argument is <c>null</c>.</exception>

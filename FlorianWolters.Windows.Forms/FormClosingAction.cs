@@ -9,8 +9,7 @@ namespace FlorianWolters.Windows.Forms
     using System.Windows.Forms;
 
     /// <summary>
-    /// The class <see cref="FormClosingAction"/> allows interaction with a <see
-    /// cref="FormClosingEventArgs"/> object.
+    /// The class <see cref="FormClosingAction"/> allows interaction with a <see cref="FormClosingEventArgs"/> object.
     /// </summary>
     public class FormClosingAction
     {
@@ -20,11 +19,10 @@ namespace FlorianWolters.Windows.Forms
         private readonly FormClosingEventArgs e;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FormClosingAction"/>
-        /// class with the specified <see cref="FormClosingEventArgs"/>.
+        /// Initializes a new instance of the <see cref="FormClosingAction"/> class with the specified <see
+        /// cref="FormClosingEventArgs"/>.
         /// </summary>
-        /// <param name="e">A <see cref="FormClosingEventArgs"/> that contains
-        /// the event data.</param>
+        /// <param name="e">A <see cref="FormClosingEventArgs"/> that contains the event data.</param>
         public FormClosingAction(FormClosingEventArgs e)
         {
             this.e = e;
