@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("FlorianWolters.Reflection")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Contains types that retrieve information about assemblies, modules, members, parameters, and other entities in managed code by examining their metadata.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Florian Wolters")]
 [assembly: AssemblyProduct("FlorianWolters.Reflection")]
@@ -19,4 +19,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: Guid("c4cebbdf-b7b8-4db7-97c7-e7939a292eae")]
 [assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("0.1.0.0")]

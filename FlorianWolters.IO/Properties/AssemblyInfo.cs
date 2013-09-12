@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("FlorianWolters.System.IO")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Contains contains types that allow reading and writing to files and data streams, and types that provide basic file and directory support.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Florian Wolters")]
 [assembly: AssemblyProduct("FlorianWolters.System.IO")]

@@ -235,6 +235,7 @@
       <DependentUpon>MarkdownForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MessageBoxes.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

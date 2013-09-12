@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="FormClosingAction.cs" />
     <Compile Include="HWndWrapper.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="ProcessUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

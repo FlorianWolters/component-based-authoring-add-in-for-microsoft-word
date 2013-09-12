@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("FlorianWolters.Office.Word")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Provides support for interoperability between the COM object model of Microsoft Word and managed applications that automate Word.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Florian Wolters")]
 [assembly: AssemblyProduct("FlorianWolters.Office.Word")]

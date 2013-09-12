@@ -1,4 +1,4 @@
-﻿# Component-Based Authoring Application Level Add-In for Microsoft Word
+# Component-Based Authoring Application Level Add-In for Microsoft Word
 
 ## Introduction
 
